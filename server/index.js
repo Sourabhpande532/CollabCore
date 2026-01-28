@@ -13,6 +13,8 @@ dbConnect();
 app.use(express.json());
 app.use(cors(corsOption));
 
+app.use("/auth", require("./routes/signup"));
+
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to expressjs");
 });

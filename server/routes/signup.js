@@ -1,0 +1,10 @@
+const express = require("express");
+const app = express.Router();
+const signupCntr = require("../controller/signupController");
+const auth = require("../middleware/auth");
+
+app.post("/signup", signupCntr.registerUser);
+app.post("/login", signupCntr.loginUser);
+app.get("/user", auth, signupCntr.users);
+
+module.exports = app;
