@@ -18,6 +18,9 @@ app.use("/auth", require("./routes/signup"));
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to expressjs");
 });
+app.get('/photos',(req,res)=>{
+  res.send("Welcome to photos libray")
+})
 
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {

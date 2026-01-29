@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import API_URL from "../api/axiosHelper";
 import toast from "react-hot-toast";
 
@@ -44,6 +44,9 @@ const AuthProvider = ({ children }) => {
       return false;
     }
   };
+  useEffect(()=>{
+  logout()
+  },[])
   return (
     <AuthContext.Provider
       value={{ userRegister, login, isAuthenticated, logout }}>
