@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./regi.css";
-import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
