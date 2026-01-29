@@ -40,7 +40,7 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--star-color);
+  /* background-color: var(--star-color); */
   color: var(--ink);
   /* Switch body to Instrument Sans to mirror reference site */
   font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system,

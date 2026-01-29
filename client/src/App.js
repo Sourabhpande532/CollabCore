@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Signup } from "./pages/Signup";
 import { Signin } from "./pages/Signin";
 import { Toaster } from "react-hot-toast";
+import { Dashboard } from "./pages/Dashboard";
+import { PrivateRoute } from "./component/ProtectedRoute/PrivateRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +18,14 @@ function App() {
         }}
       />
       <Routes>
+        <Route
+          path='/'
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
         <Route path='/login' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
       </Routes>
