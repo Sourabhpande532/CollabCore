@@ -10,9 +10,17 @@ exports.obtainedTeam = async (req, res) => {
 };
 
 exports.createTeam = async (req, res) => {
+  const { name, description } = req.body;
   try {
-    const team = await Team.create(req.body);
-    res.status(201).json({ success: true, data: { team } });
+    const newTeam = new Team({
+      name,
+      description,
+    });
+    newTeam
+      .save()
+      .then((team) => console.log(team))
+      .catch((err) => console.log(err));
+    res.status(201).json({ success: true, data: { team: newTeam } });
   } catch (error) {
     console.error("Error occuring team:", error.message);
   }
