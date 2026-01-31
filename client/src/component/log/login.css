@@ -175,3 +175,20 @@ html {
         bottom: 100%;
     }
 }
+
+.guest-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  border: 2px dashed #03e9f4;
+  color: #03e9f4;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.guest-btn:hover {
+  background-color: #03e9f4;
+  color: #000;
+}
