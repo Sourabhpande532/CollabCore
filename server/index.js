@@ -17,6 +17,8 @@ app.use("/auth", require("./routes/signup"));
 app.use("/auth/projects", require("./routes/project"));
 app.use("/auth/teams", require("./routes/team"));
 app.use("/auth/tags", require("./routes/tag"));
+app.use("/auth/tasks", require("./routes/task"));
+app.use("/auth/report", require("./routes/report"));
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to expressjs");

@@ -5,6 +5,6 @@ const auth = require("../middleware/auth");
 
 app.post("/signup", signupCntr.registerUser);
 app.post("/login", signupCntr.loginUser);
-app.get("/user", auth, signupCntr.users);
+app.get("/me", auth, signupCntr.users);
 
 module.exports = app;
