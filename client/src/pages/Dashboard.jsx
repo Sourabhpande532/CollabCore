@@ -2,24 +2,21 @@ import { useState } from "react";
 import { getProjects } from "../api/project.api";
 import { getTasks } from "../api/task.api";
 import { useEffect } from "react";
-import { Sidebar } from "../component/sidebar/Sidebar";
 import "./pages.css";
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState(null);
   console.log(projects);
   console.log(tasks);
 
   useEffect(() => {
     getProjects()
       .then((res) => setProjects(res.data?.data?.project))
-      .catch((err) => setError(err));
+      .catch((err) => console.log(err));
     getTasks()
       .then((res) => setTasks(res.data?.data?.tasks))
-      .catch((err) => setError(err));
+      .catch((err) => console.log(err));
   }, []);
-
   return (
     <div className='layout'>
       <div className='content'>
