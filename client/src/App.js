@@ -11,6 +11,8 @@ import { Team } from "./pages/Team";
 import { Reports } from "./pages/Reports";
 import { Setting } from "./pages/Setting";
 import { Layout } from "./component/layout/Layout";
+import { ProjectDetails } from "./pages/ProjectDetails";
+import { TeamDetails } from "./pages/TeamDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -37,7 +39,9 @@ function App() {
           }>
           <Route index element={<Dashboard />} />
           <Route path='/project' element={<Project />} />
+          <Route path='/project/:id' element={<ProjectDetails />} />
           <Route path='/team' element={<Team />} />
+          <Route path='/team/:id' element={<TeamDetails />} />
           <Route path='/report' element={<Reports />} />
           <Route path='/setting' element={<Setting />} />
         </Route>

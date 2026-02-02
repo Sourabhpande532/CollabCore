@@ -1,0 +1,17 @@
+body { background:#f8f9fa; }
+.layout { display:flex; }
+.sidebar {
+  width:220px;
+  background:#f1effd;
+  min-height:100vh;
+  padding:20px;
+}
+.sidebar a {
+  display:block;
+  margin:10px 0;
+  text-decoration:none;
+}
+.content {
+  flex:1;
+  padding:20px;
+}

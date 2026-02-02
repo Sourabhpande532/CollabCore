@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "../sidebar/Sidebar";
-
+import "./layout.css";
 const Layout = () => {
   return (
-    <div className='d-flex justify-content-around align-items-center'>
-      <div>
-        <Sidebar />
+    <div className='layout'>
+      <Sidebar />
+      <div className="content">
+        <Outlet />
       </div>
-      <Outlet />
     </div>
   );
 };
