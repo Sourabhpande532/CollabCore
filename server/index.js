@@ -19,6 +19,11 @@ app.use("/auth/teams", require("./routes/team"));
 app.use("/auth/tags", require("./routes/tag"));
 app.use("/auth/tasks", require("./routes/task"));
 app.use("/auth/report", require("./routes/report"));
+app.use((err, _req, res, next) => {
+  const status = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(status).json({ message, stack: err.stack });
+});
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to expressjs");
