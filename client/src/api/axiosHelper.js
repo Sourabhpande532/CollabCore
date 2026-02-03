@@ -1,14 +1,12 @@
 import axios from "axios";
 const API_URL = axios.create({
-  baseURL: "https://collab-core.vercel.app/auth",
+  baseURL: "http://localhost:4001/auth",
   headers: {
     "Content-Type": "application/json",
   },
 });
 API_URL.interceptors.request.use((req) => {
   const token = localStorage.getItem("userToken");
-  console.log(req);
-
   if (token) {
     req.headers.Authorization = "Bearer " + token;
   }
@@ -24,10 +22,6 @@ API_URL.interceptors.response.use(
     ) {
       // remove token
       localStorage.removeItem("userToken");
-
-      // optional: clear everything
-      localStorage.clear();
-
       // redirect to login
       window.location.href = "/login";
     }

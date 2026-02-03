@@ -65,3 +65,12 @@ exports.users = async (req, res) => {
     res.status(500).json({ message: "Internal error", error: error.message });
   }
 };
+
+exports.getAllUser = async (req, res) => {
+  try {
+    const users = await SignupUser.find();
+    res.status(200).json({ success: true, data: { users } });
+  } catch (error) {
+    console.error(error.message);
+  }
+};

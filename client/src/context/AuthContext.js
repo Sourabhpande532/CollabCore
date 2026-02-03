@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import API_URL from "../api/axiosHelper";
 import toast from "react-hot-toast";
 
@@ -7,11 +7,11 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("userToken"));
   const isAuthenticated = !!token;
-  console.log(isAuthenticated);
 
   const logout = () => {
     localStorage.removeItem("userToken");
     setToken(null);
+    toast.success("Logged out");
   };
 
   const userRegister = async (data) => {
@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
       return true;
     } catch (error) {
       console.error(error.message);
-      toast.error("Registration Failed");
+      toast.error(error.response?.data?.message || "Registration Failed");
       return false;
     }
   };

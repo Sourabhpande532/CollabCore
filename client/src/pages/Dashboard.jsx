@@ -1,54 +1,101 @@
-import { useState } from "react";
-import { getProjects } from "../api/project.api";
+import { useEffect, useState } from "react";
 import { getTasks } from "../api/task.api";
-import { useEffect } from "react";
+import Modal from "../component/model/Model";
+import AddProjectForm from "../component/projectform/AddProjectForm";
+import AddTaskForm from "../component/taskform/AddTaskForm";
 import "./pages.css";
+import { getProjects } from "../api/project.api";
+
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-  console.log(projects);
-  console.log(tasks);
+
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+
+  const fetchProjects = () => {
+    getProjects().then((res) => setProjects(res.data?.data?.project || []));
+  };
+
+  const fetchTasks = () => {
+    getTasks().then((res) => setTasks(res.data?.data?.tasks || []));
+  };
 
   useEffect(() => {
-    getProjects()
-      .then((res) => setProjects(res.data?.data?.project))
-      .catch((err) => console.log(err));
-    getTasks()
-      .then((res) => setTasks(res.data?.data?.tasks))
-      .catch((err) => console.log(err));
+    fetchProjects();
+    fetchTasks();
   }, []);
+
   return (
     <div className='layout'>
       <div className='content'>
-        <h4 className='section-title'>Projects</h4>
+        {/* Projects */}
+        <div className='d-flex justify-content-between align-items-center'>
+          <h4 className='section-title'>Projects</h4>
+          <button
+            className='btn btn-outline-primary'
+            onClick={() => setShowProjectModal(true)}>
+            + New Project
+          </button>
+        </div>
 
         <div className='projects-grid'>
-          {projects.length > 0 ? (
+          {projects.length ? (
             projects.map((p) => (
               <div key={p._id} className='project-card'>
-                <h6 className='project-title'>{p.name}</h6>
-                <p className='project-desc'>{p.description}</p>
+                <h6>{p.name}</h6>
+                <p>{p.description}</p>
               </div>
             ))
           ) : (
-            <p className='empty-text'>Project not found</p>
+            <p>No projects found</p>
           )}
         </div>
 
-        <h4 className='section-title mt'>My Tasks</h4>
+        {/* Tasks */}
+        <div className='d-flex justify-content-between align-items-center mt-4'>
+          <h4 className='section-title'>My Tasks</h4>
+          <button
+            className='btn btn-outline-primary'
+            onClick={() => setShowTaskModal(true)}>
+            + Add Tasks
+          </button>
+        </div>
 
         <div className='tasks-list'>
           {tasks.map((t) => (
             <div key={t._id} className='task-card'>
-              <span className='task-name'>{t.name}</span>
+              <span>{t.name}</span>
               <span className={`task-status ${t.status.toLowerCase()}`}>
                 {t.status}
               </span>
             </div>
           ))}
         </div>
+
+        {/* Modals */}
+        <Modal
+          show={showProjectModal}
+          title='Add Project'
+          onClose={() => setShowProjectModal(false)}>
+          <AddProjectForm
+            onSuccess={fetchProjects}
+            onClose={() => setShowProjectModal(false)}
+          />
+        </Modal>
+
+        <Modal
+          show={showTaskModal}
+          title='Add Task'
+          onClose={() => setShowTaskModal(false)}>
+          <AddTaskForm
+            onSuccess={fetchTasks}
+            onClose={() => setShowTaskModal(false)}
+          />
+        </Modal>
       </div>
     </div>
   );
 };
+
 export { Dashboard };
