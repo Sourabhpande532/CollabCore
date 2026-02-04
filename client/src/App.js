@@ -13,6 +13,7 @@ import { Setting } from "./pages/Setting";
 import { Layout } from "./component/layout/Layout";
 import { ProjectDetails } from "./pages/ProjectDetails";
 import { TeamDetails } from "./pages/TeamDetails";
+import Tasks from "./pages/Task";
 function App() {
   return (
     <BrowserRouter>
@@ -44,6 +45,7 @@ function App() {
           <Route path='/team/:id' element={<TeamDetails />} />
           <Route path='/report' element={<Reports />} />
           <Route path='/setting' element={<Setting />} />
+          <Route path='/tasks' element={<Tasks />} />
         </Route>
       </Routes>
     </BrowserRouter>

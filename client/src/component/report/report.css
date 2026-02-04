@@ -1,0 +1,87 @@
+/* ===== Page Wrapper ===== */
+.reports-page {
+  min-height: 100vh;
+  padding: 20px 16px;
+}
+
+/* Page Title */
+.reports-page h3 {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* ===== Card Styling ===== */
+.reports-page .card {
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  height: 100%;
+}
+
+.reports-page .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.reports-page .card-body {
+  padding: 20px;
+}
+
+/* Card Titles */
+.reports-page .card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 12px;
+}
+
+/* ===== Chart Containers ===== */
+.reports-page canvas {
+  max-height: 260px !important;
+}
+
+/* ===== Grid Spacing Fix ===== */
+.reports-page .row > [class*="col"] {
+  margin-bottom: 20px;
+}
+
+/* ===== Tablet View ===== */
+@media (max-width: 992px) {
+  .reports-page {
+    padding: 16px 12px;
+  }
+
+  .reports-page h3 {
+    font-size: 22px;
+  }
+
+  .reports-page canvas {
+    max-height: 240px !important;
+  }
+}
+
+/* ===== Mobile View ===== */
+@media (max-width: 576px) {
+  .reports-page {
+    padding: 12px 8px;
+  }
+
+  .reports-page h3 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .reports-page .card {
+    border-radius: 12px;
+  }
+
+  .reports-page .card-title {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .reports-page canvas {
+    max-height: 220px !important;
+  }
+}

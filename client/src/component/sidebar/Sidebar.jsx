@@ -10,6 +10,7 @@ const Sidebar = () => {
       <Link to='/project'>Projects</Link>
       <Link to='/team'>Teams</Link>
       <Link to='/report'>Reports</Link>
+      <Link to='/tasks'>Tasks</Link>
       {isAuthenticated ? (
         <Link to='/login' onClick={() => logout()}>
           Logout

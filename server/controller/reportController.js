@@ -10,7 +10,7 @@ exports.getReportsLastWeek = async (req, res) => {
     });
     res
       .status(200)
-      .json({ success: true, coutn: tasks.length, data: { tasks } });
+      .json({ success: true, count: tasks.length, data: { tasks } });
   } catch (error) {
     console.error("last week report error", error.message);
     res.status(500).json({ success: false, message: "Server last-week-erro" });
