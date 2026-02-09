@@ -46,7 +46,6 @@ exports.getReportIfClosedTask = async (req, res, next) => {
     const tasks = await Task.find({ status: "Completed" }).populate(
       "team project",
     );
-    console.log(tasks);
     const byTeam = {};
     tasks.forEach(
       (task) => (byTeam[task.team.name] = (byTeam[task.team.name] || 0) + 1),

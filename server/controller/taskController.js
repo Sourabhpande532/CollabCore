@@ -1,34 +1,42 @@
 const Task = require("../model/Task");
 const Team = require("../model/Team");
 const User = require("../model/Signup");
+
 exports.obtainedTask = async (req, res) => {
   try {
-    const { owners, team, status, tags } = req.query;
+    const { owners, team, status, tags, projectId, sort } = req.query;
     const query = {};
-    if (owners) {
-      const ownersDoc = await User.findOne({ name: owners });
-      if (ownersDoc) {
-        query.owners = ownersDoc._id;
-      }
-    }
+    if (projectId) query.project = projectId;
     if (status) query.status = status;
     if (tags) query.tags = tags;
+    if (owners) {
+      const ownerDoc = await User.findOne({ name: owners });
+      if (ownerDoc) query.owners = ownerDoc._id;
+    }
     if (team) {
       const teamDoc = await Team.findOne({ name: team });
-      if (teamDoc) {
-        query.team = teamDoc._id;
-      }
+      if (teamDoc) query.team = teamDoc._id;
     }
-    // OR
-    // const query = {};
-    // Object.keys(req.query).forEach((keys) => (query[keys] = req.query[keys]));
-    const tasks = await Task.find(query).populate("project team owners tags");
-    res
-      .status(200)
-      .json({ success: true, count: tasks.length, data: { tasks } });
+    let sortQuery = {};
+    if (sort === "priority_desc") sortQuery.priority = -1;
+    if (sort === "priority_asc") sortQuery.priority = 1;
+    if (sort === "newest") sortQuery.createdAt = -1;
+    if (sort === "oldest") sortQuery.createdAt = 1;
+
+    const tasks = await Task.find(query)
+      .populate('project', 'name')
+      .populate('team', 'name')
+      .populate('owners', 'name email')
+      .sort(sortQuery);
+
+    res.status(200).json({
+      success: true,
+      count: tasks.length,
+      data: { tasks },
+    });
   } catch (error) {
-    console.error("error getting task:", error.message);
-    res.status(500).json({ success: 500, message: "Error getting task" });
+    console.error(error);
+    res.status(500).json({ success: false });
   }
 };
 

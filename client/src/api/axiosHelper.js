@@ -30,3 +30,12 @@ API_URL.interceptors.response.use(
 );
 
 export default API_URL;
+/* 
+JUST SAKE OF UNDERSTANDING....
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+*/

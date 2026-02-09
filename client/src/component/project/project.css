@@ -1,0 +1,33 @@
+.project-page {
+    background: #f5f7fb;
+    min-height: 100vh;
+}
+
+.task-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+}
+
+.status.Completed {
+    color: green;
+}
+
+.status.InProgress {
+    color: orange;
+}
+
+.filters-box {
+    margin-top: 20px;
+}
+
+.filters-box select {
+    margin-right: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
