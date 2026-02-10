@@ -84,9 +84,21 @@ exports.deleteTask = async (req, res) => {
 
 exports.getTaskByTeam = async (req, res, next) => {
   try {
+    const { sort } = req.query;
+    let sortOption = {};
+    if (sort === "due_asc") {
+      sortOption.timeToComplete = 1;
+    }
+    if (sort === "due_desc") {
+      sortOption.timeToComplete = -1;
+    }
+    if (sort === "status") {
+      sortOption.status = 1;
+    }
     const tasks = await Task.find({ team: req.params.id })
       .populate("owners", "name email")
-      .populate("team", "name");
+      .populate("team", "name")
+      .sort(sortOption);
     res.json({ success: true, data: { tasks } });
   } catch (error) {
     console.error(error.message);
