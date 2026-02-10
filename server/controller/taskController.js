@@ -24,9 +24,9 @@ exports.obtainedTask = async (req, res) => {
     if (sort === "oldest") sortQuery.createdAt = 1;
 
     const tasks = await Task.find(query)
-      .populate('project', 'name')
-      .populate('team', 'name')
-      .populate('owners', 'name email')
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name email")
       .sort(sortQuery);
 
     res.status(200).json({
@@ -79,5 +79,17 @@ exports.deleteTask = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server delete task error" });
+  }
+};
+
+exports.getTaskByTeam = async (req, res, next) => {
+  try {
+    const tasks = await Task.find({ team: req.params.id })
+      .populate("owners", "name email")
+      .populate("team", "name");
+    res.json({ success: true, data: { tasks } });
+  } catch (error) {
+    console.error(error.message);
+    return next(error);
   }
 };
