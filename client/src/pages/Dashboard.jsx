@@ -5,11 +5,12 @@ import AddProjectForm from "../component/projectform/AddProjectForm";
 import AddTaskForm from "../component/taskform/AddTaskForm";
 import "./pages.css";
 import { getProjects } from "../api/project.api";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
-
+ 
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
 
@@ -65,7 +66,9 @@ const Dashboard = () => {
         <div className='tasks-list'>
           {tasks.map((t) => (
             <div key={t._id} className='task-card'>
-              <span>{t.name}</span>
+              <Link to={`/tasks/${t._id}`}>
+                <span>{t.name}</span>
+              </Link>
               <span className={`task-status ${t.status.toLowerCase()}`}>
                 {t.status}
               </span>

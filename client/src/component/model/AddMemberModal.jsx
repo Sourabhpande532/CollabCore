@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axiosHelper";
-import "./model.css";
+import "./modelcss/addMember.css";
 const AddMemberModal = ({ teamId, onClose, onAdded }) => {
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState("");

@@ -1,0 +1,91 @@
+/* Page Container */
+.task-details-container {
+  /* max-width: 1000px; */
+  /* margin: auto; */
+}
+
+/* Card Styling */
+.task-details-container .card {
+  border-radius: 16px;
+  border: none;
+  background: #ffffff;
+  transition: 0.3s ease;
+}
+
+.task-details-container .card:hover {
+  transform: translateY(-3px);
+}
+
+/* Title */
+.task-details-container h3 {
+  font-weight: 600;
+  color: #222;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Detail Labels */
+.task-details-container p {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #444;
+}
+
+.task-details-container strong {
+  color: #111;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-todo {
+  background-color: #ffe5e5;
+  color: #d63031;
+}
+
+.status-progress {
+  background-color: #e3f2fd;
+  color: #0984e3;
+}
+
+.status-completed {
+  background-color: #e6f9f0;
+  color: #00b894;
+}
+
+/* Tags Styling */
+.tags span {
+  background: #f1f3f5;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* Button */
+.task-details-container .btn-success {
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .task-details-container .row {
+    flex-direction: column;
+  }
+
+  .task-details-container .card {
+    padding: 20px;
+  }
+
+  .task-details-container h3 {
+    font-size: 20px;
+  }
+}

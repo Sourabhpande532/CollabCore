@@ -1,6 +1,6 @@
 const express = require("express");
 const { dbConnect } = require("./db/db.connect");
-const morgan = require("morgan")
+const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
 const corsOption = {
@@ -13,7 +13,7 @@ dbConnect();
 
 app.use(express.json());
 app.use(cors(corsOption));
-app.use(morgan("tiny"))
+app.use(morgan("tiny"));
 
 app.use("/auth", require("./routes/signup"));
 app.use("/auth/projects", require("./routes/project"));

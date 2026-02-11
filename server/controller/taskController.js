@@ -105,3 +105,34 @@ exports.getTaskByTeam = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.getTaskById = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id)
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name email");
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    res.status(200).json({ success: true, data: { task } });
+  } catch (error) {
+    console.error(error.message);
+    return next(error);
+  }
+};
+
+exports.updateTaskStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true },
+    );
+    res.json({ success: true, data: { task } });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};

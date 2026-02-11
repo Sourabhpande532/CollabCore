@@ -14,6 +14,7 @@ import { Layout } from "./component/layout/Layout";
 import { ProjectDetails } from "./pages/ProjectDetails";
 import { TeamDetails } from "./pages/TeamDetails";
 import Tasks from "./pages/Task";
+import { TaskDetails } from "./component/tdetails/TaskDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +47,7 @@ function App() {
           <Route path='/report' element={<Reports />} />
           <Route path='/setting' element={<Setting />} />
           <Route path='/tasks' element={<Tasks />} />
+          <Route path='/tasks/:id' element={<TaskDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>

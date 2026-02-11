@@ -1,4 +1,4 @@
-import "./model.css"
+import "./modelcss/model.css"
 
 const Modal = ({ show, onClose, title, children }) => {
   if (!show) return null;
