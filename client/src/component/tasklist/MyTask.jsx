@@ -1,0 +1,166 @@
+import { useEffect, useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import axios from "../../api/axiosHelper";
+import "./myTasks.css";
+
+const MyTasks = () => {
+  const [tasks, setTasks] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [teams, setTeams] = useState([]);
+  const [projects, setProjects] = useState([]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Read filters from URL
+  const owner = searchParams.get("owner") || "";
+  const team = searchParams.get("team") || "";
+  const project = searchParams.get("project") || "";
+  const status = searchParams.get("status") || "";
+  const sort = searchParams.get("sort") || "";
+
+  useEffect(() => {
+    fetchFilters();
+  }, []);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [searchParams]);
+
+  const fetchFilters = async () => {
+    try {
+      const [userRes, teamRes, projectRes] = await Promise.all([
+        axios.get("/users"),
+        axios.get("/teams"),
+        axios.get("/projects"),
+      ]);
+      setUsers(userRes.data.data.users);
+      setTeams(teamRes.data.data.team);
+      setProjects(projectRes.data.data.project);
+    } catch (error) {
+      console.error("Error fetching filters:", error);
+    }
+  };
+
+  const fetchTasks = async () => {
+    const res = await axios.get("/tasks/filter", {
+      params: { owner, team, project, status, sort },
+    });
+    setTasks(res.data.data.tasks);
+  };
+
+  const updateFilter = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
+  };
+  const deleteTask = async (id) => {
+    await axios.delete(`/tasks/${id}`);
+    fetchTasks();
+  };
+
+  const markComplete = async (id) => {
+    await axios.post(`/tasks/${id}`, { status: "Completed" });
+    fetchTasks();
+  };
+
+  return (
+    <div className='task-container'>
+      <h2>My Tasks</h2>
+
+      {/* FILTERS */}
+      <div className='task-filters'>
+        <select
+          value={owner}
+          onChange={(e) => updateFilter("owner", e.target.value)}>
+          <option value=''>All Owners</option>
+          {users.map((u) => (
+            <option key={u._id} value={u._id}>
+              {u.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={team}
+          onChange={(e) => updateFilter("team", e.target.value)}>
+          <option value=''>All Teams</option>
+          {teams.map((t) => (
+            <option key={t._id} value={t._id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={project}
+          onChange={(e) => updateFilter("project", e.target.value)}>
+          <option value=''>All Projects</option>
+          {projects.map((p) => (
+            <option key={p._id} value={p._id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) => updateFilter("status", e.target.value)}>
+          <option value=''>All Status</option>
+          <option value='To Do'>To Do</option>
+          <option value='In Progress'>In Progress</option>
+          <option value='Completed'>Completed</option>
+        </select>
+
+        <select
+          value={sort}
+          onChange={(e) => updateFilter("sort", e.target.value)}>
+          <option value=''>Sort</option>
+          <option value='due_asc'>Due Date ↑</option>
+          <option value='due_desc'>Due Date ↓</option>
+          <option value='priority'>Priority</option>
+        </select>
+      </div>
+
+      {/* TASK GRID */}
+      <div className='task-grid'>
+        {tasks.map((task) => (
+          <div key={task._id} className='task-card'>
+            <div className={`badge ${task.status.replace(" ", "")}`}>
+              {task.status}
+            </div>
+
+            <Link to={`/tasks/${task._id}`}>
+              <h5>{task.name}</h5>
+            </Link>
+
+            <p className='task-meta'>
+              {task.project?.name} • {task.team?.name}
+            </p>
+
+            <div className='task-actions'>
+              {task.status !== "Completed" && (
+                <button
+                  className='complete-btn'
+                  onClick={() => markComplete(task._id)}>
+                  ✔ Complete
+                </button>
+              )}
+
+              <button
+                className='delete-btn'
+                onClick={() => deleteTask(task._id)}>
+                🗑 Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export { MyTasks };

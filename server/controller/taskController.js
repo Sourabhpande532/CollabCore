@@ -40,6 +40,43 @@ exports.obtainedTask = async (req, res) => {
   }
 };
 
+exports.getFilterTask = async (req, res) => {
+  try {
+    const { team, owner, project, status, tags, sort } = req.query;
+    let filter = {};
+    if (team) {
+      filter.team = team;
+    }
+    if (owner) {
+      filter.owners = owner;
+    }
+    if (project) {
+      filter.project = project;
+    }
+    if (status) {
+      filter.status = status;
+    }
+    if (tags) {
+      filter.tags = { $in: tags.split(",") };
+    }
+    let sortOption = { createdAt: -1 }; // default newest first
+
+    if (sort === "due_asc") sortOption = { dueDate: 1 };
+    if (sort === "due_desc") sortOption = { dueDate: -1 };
+    if (sort === "priority") sortOption = { priority: -1 };
+
+    let tasks = await Task.find(filter)
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name")
+      .sort(sortOption);
+
+    res.json({ success: true, count: tasks.length, data: { tasks } });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 exports.createTask = async (req, res) => {
   try {
     const newTask = new Task(req.body);

@@ -3,14 +3,14 @@ import { getTasks } from "../api/task.api";
 import Modal from "../component/model/Model";
 import AddProjectForm from "../component/projectform/AddProjectForm";
 import AddTaskForm from "../component/taskform/AddTaskForm";
-import "./pages.css";
+// import "./pages.css";
 import { getProjects } from "../api/project.api";
-import { Link } from "react-router-dom";
+import { MyTasks } from "../component/tasklist/MyTask";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
- 
+
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
 
@@ -52,7 +52,6 @@ const Dashboard = () => {
             <p>No projects found</p>
           )}
         </div>
-
         {/* Tasks */}
         <div className='d-flex justify-content-between align-items-center mt-4'>
           <h4 className='section-title'>My Tasks</h4>
@@ -62,20 +61,7 @@ const Dashboard = () => {
             + Add Tasks
           </button>
         </div>
-
-        <div className='tasks-list'>
-          {tasks.map((t) => (
-            <div key={t._id} className='task-card'>
-              <Link to={`/tasks/${t._id}`}>
-                <span>{t.name}</span>
-              </Link>
-              <span className={`task-status ${t.status.toLowerCase()}`}>
-                {t.status}
-              </span>
-            </div>
-          ))}
-        </div>
-
+        <MyTasks />
         {/* Modals */}
         <Modal
           show={showProjectModal}

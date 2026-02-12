@@ -8,6 +8,7 @@ const {
   getTaskById,
   deleteTask,
   updateTaskStatus,
+  getFilterTask,
 } = require("../controller/taskController");
 const auth = require("../middleware/auth");
 
@@ -15,6 +16,7 @@ app.get("/", auth, obtainedTask);
 app.post("/", auth, createTask);
 app.post("/:id", auth, updateTask);
 app.get("/team/:id", auth, getTaskByTeam);
+app.get("/filter", auth, getFilterTask);
 app.get("/:id", auth, getTaskById);
 app.put("/:id/status", auth, updateTaskStatus);
 app.delete("/:id", auth, deleteTask);

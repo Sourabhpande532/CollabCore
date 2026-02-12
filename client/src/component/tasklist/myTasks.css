@@ -1,0 +1,210 @@
+/* ================================
+   PAGE LAYOUT
+================================ */
+
+.task-container {
+  padding: 32px 48px;
+  background: #f1f5f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Center content area */
+.task-container-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.task-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #0f172a;
+}
+
+/* ================================
+   FILTER BAR (Toolbar Style)
+================================ */
+
+.task-filters {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  align-items: center;
+}
+
+/* Uniform select styling */
+.task-filters select {
+  height: 38px;
+  min-width: 160px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 14px;
+  color: #334155;
+  transition: 0.2s ease;
+}
+
+.task-filters select:hover {
+  border-color: #3b82f6;
+}
+
+.task-filters select:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: white;
+}
+
+/* ================================
+   TASK GRID
+================================ */
+
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+/* ================================
+   TASK CARD (Modern Style)
+================================ */
+
+.task-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.task-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-3px);
+}
+
+/* Title */
+.task-card h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+/* Meta Info */
+.task-meta {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+/* ================================
+   STATUS BADGE (Better Design)
+================================ */
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  width: fit-content;
+}
+
+/* Soft colored badges */
+.ToDo {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.InProgress {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.Completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+.Blocked {
+    background-color: white;
+    color: gray;
+}
+.Medium {
+    background: white;
+    color: yellow;
+}
+
+/* ================================
+   ACTION BUTTONS
+================================ */
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Do NOT stretch full width */
+.task-actions button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;   /* prevents ugly wrapping */
+  transition: all 0.2s ease;
+}
+
+/* Complete */
+.complete-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.complete-btn:hover {
+  background: #1e40af;
+}
+
+/* Delete */
+.delete-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1024px) {
+  .task-container {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .task-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-filters select {
+    width: 100%;
+  }
+}
