@@ -6,6 +6,7 @@ import AddTaskForm from "../component/taskform/AddTaskForm";
 // import "./pages.css";
 import { getProjects } from "../api/project.api";
 import { MyTasks } from "../component/tasklist/MyTask";
+import { ProjectPage } from "../component/projectlist/ProjectList";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
@@ -40,18 +41,7 @@ const Dashboard = () => {
           </button>
         </div>
 
-        <div className='projects-grid'>
-          {projects.length ? (
-            projects.map((p) => (
-              <div key={p._id} className='project-card'>
-                <h6>{p.name}</h6>
-                <p>{p.description}</p>
-              </div>
-            ))
-          ) : (
-            <p>No projects found</p>
-          )}
-        </div>
+        <div className='projects-grid'>{<ProjectPage />}</div>
         {/* Tasks */}
         <div className='d-flex justify-content-between align-items-center mt-4'>
           <h4 className='section-title'>My Tasks</h4>
@@ -72,7 +62,6 @@ const Dashboard = () => {
             onClose={() => setShowProjectModal(false)}
           />
         </Modal>
-
         <Modal
           show={showTaskModal}
           title='Add Task'

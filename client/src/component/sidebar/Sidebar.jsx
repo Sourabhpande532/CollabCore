@@ -7,7 +7,14 @@ const Sidebar = () => {
     <div className='sidebar'>
       <h5 className='logo'>workasana</h5>
       <Link to='/'>Dashboard</Link>
-      <Link to='/project'>Projects</Link>
+      <Link
+        to={
+          localStorage.getItem("activeProject")
+            ? `/project/${localStorage.getItem("activeProject")}`
+            : "/project"
+        }>
+        Projects
+      </Link>
       <Link to='/team'>Teams</Link>
       <Link to='/report'>Reports</Link>
       <Link to='/tasks'>Tasks</Link>
