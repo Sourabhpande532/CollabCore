@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const url = process.env.MONGO_URL;
 const dbConnect = async () => {
   try {
-    const connection = await mongoose.connect(url, {
+    const connection = await mongoose.connect(process.env.MONGO_URL, {
       dbName: "myWorkasanaDatabase",
     });
     if (connection) {
