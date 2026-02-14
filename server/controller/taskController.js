@@ -79,11 +79,7 @@ exports.getFilterTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    const newTask = new Task(req.body);
-    newTask
-      .save()
-      .then((task) => console.log(task))
-      .catch((err) => console.log(err));
+    const newTask = Task.create(req.body);
     res.status(201).json({ success: true, data: { task: newTask } });
   } catch (error) {
     console.error(error.message, "creating task");
