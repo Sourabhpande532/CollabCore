@@ -1,6 +1,6 @@
 import axios from "axios";
 const API_URL = axios.create({
-  baseURL: "https://collab-core.vercel.app/auth",
+  baseURL: "https://collabcore-2ozg.onrender.com/auth",
   headers: {
     "Content-Type": "application/json",
   },

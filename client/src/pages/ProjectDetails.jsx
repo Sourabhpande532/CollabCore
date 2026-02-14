@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import axios from "../api/axiosHelper";
@@ -18,7 +19,7 @@ const ProjectDetails = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, [searchParams]);
+  },[searchParams]);
 
   const fetchProject = async () => {
     const res = await axios.get("/projects");
