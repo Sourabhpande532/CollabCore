@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { createProject } from "../../api/project.api";
 import axios from "../../api/axiosHelper";
