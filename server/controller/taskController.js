@@ -143,7 +143,7 @@ exports.getTaskByTeam = async (req, res, next) => {
   }
 };
 
-exports.getTaskById = async (req, res) => {
+exports.getTaskById = async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id)
       .populate("project", "name")

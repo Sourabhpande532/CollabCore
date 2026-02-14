@@ -3,13 +3,14 @@ import { getTasks } from "../api/task.api";
 import Modal from "../component/model/Model";
 import AddProjectForm from "../component/projectform/AddProjectForm";
 import AddTaskForm from "../component/taskform/AddTaskForm";
-// import "./pages.css";
 import { getProjects } from "../api/project.api";
 import { MyTasks } from "../component/tasklist/MyTask";
 import { ProjectPage } from "../component/projectlist/ProjectList";
 
 const Dashboard = () => {
+  // eslint-disable-next-line no-unused-vars
   const [projects, setProjects] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [tasks, setTasks] = useState([]);
 
   const [showProjectModal, setShowProjectModal] = useState(false);
