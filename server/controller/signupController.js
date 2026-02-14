@@ -1,6 +1,5 @@
 const SignupUser = require("../model/Signup");
 const bcrypt = require("bcryptjs");
-const JWT_SECRET = process.env.JWT_SECRET;
 const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
@@ -40,7 +39,7 @@ exports.loginUser = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     const token = await jwt.sign(
       { userId: user._id, role: "admin", email },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       {
         expiresIn: "1d",
       },

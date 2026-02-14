@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET;
-
 require("dotenv").config();
 
 module.exports = (req, res, next) => {
@@ -8,7 +6,7 @@ module.exports = (req, res, next) => {
   if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch {

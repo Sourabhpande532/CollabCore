@@ -29,7 +29,7 @@ app.use((err, _req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to expressjs");
+  res.status(200).send("Welcome to expressjs new library");
 });
 app.get("/photos", (req, res) => {
   res.send("Welcome to photos libray");
