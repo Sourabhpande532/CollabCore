@@ -1,31 +1,39 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./sidebar.css";
-const Sidebar = () => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const { isAuthenticated, logout } = useAuth();
+
   return (
-    <div className='sidebar'>
-      <h5 className='logo'>workasana</h5>
-      <Link to='/'>Dashboard</Link>
+    <div className={`sidebar ${isOpen ? "open" : ""}`}>
+      <h5 className="logo">workasana</h5>
+
+      <Link to="/" onClick={() => setIsOpen(false)}>Dashboard</Link>
+
       <Link
         to={
           localStorage.getItem("activeProject")
             ? `/project/${localStorage.getItem("activeProject")}`
             : "/project"
-        }>
+        }
+        onClick={() => setIsOpen(false)}
+      >
         Projects
       </Link>
-      <Link to='/team'>Teams</Link>
-      <Link to='/report'>Reports</Link>
-      <Link to='/tasks'>Tasks</Link>
+
+      <Link to="/team" onClick={() => setIsOpen(false)}>Teams</Link>
+      <Link to="/report" onClick={() => setIsOpen(false)}>Reports</Link>
+      <Link to="/tasks" onClick={() => setIsOpen(false)}>Tasks</Link>
+
       {isAuthenticated ? (
-        <Link to='/login' onClick={() => logout()}>
+        <Link to="/login" onClick={() => logout()}>
           Logout
         </Link>
       ) : (
-        <Link to='/login'>Login</Link>
+        <Link to="/login">Login</Link>
       )}
     </div>
   );
 };
+
 export { Sidebar };

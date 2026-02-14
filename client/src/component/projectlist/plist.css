@@ -4,9 +4,7 @@
 
 .project-container {
   padding: 25px 30px;
-  background: #f8fafc;
-
-  /* REMOVE full height */
+  background: #f1f5f9;
   min-height: auto;
   height: auto;
 
@@ -14,7 +12,6 @@
   box-sizing: border-box;
 }
 
-/* Prevent extra spacing */
 .project-container h2 {
   font-size: 22px;
   margin-bottom: 20px;

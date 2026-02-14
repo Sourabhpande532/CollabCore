@@ -41,7 +41,6 @@ const Dashboard = () => {
             + New Project
           </button>
         </div>
-
         <div className='projects-grid'>{<ProjectPage />}</div>
         {/* Tasks */}
         <div className='d-flex justify-content-between align-items-center mt-4'>
