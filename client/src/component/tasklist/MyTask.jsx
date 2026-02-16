@@ -1,18 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "../../api/axiosHelper";
 import "./myTasks.css";
+import toast from "react-hot-toast";
 
-const MyTasks = () => {
+const MyTasks = ({ refresh }) => {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [teams, setTeams] = useState([]);
   const [projects, setProjects] = useState([]);
-
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // Read filters from URL
   const owner = searchParams.get("owner") || "";
   const team = searchParams.get("team") || "";
   const project = searchParams.get("project") || "";
@@ -25,7 +24,7 @@ const MyTasks = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, [searchParams]);
+  }, [searchParams, refresh]);
 
   const fetchFilters = async () => {
     try {
@@ -62,6 +61,7 @@ const MyTasks = () => {
   const deleteTask = async (id) => {
     await axios.delete(`/tasks/${id}`);
     fetchTasks();
+    toast.success("Deleted Task");
   };
 
   const markComplete = async (id) => {
@@ -130,15 +130,15 @@ const MyTasks = () => {
       {/* TASK GRID */}
       <div className='task-grid'>
         {tasks.map((task) => (
-          <div key={task._id} className='task-card'>
+          <div
+            key={task._id}
+            className='shadow-sm task-card'
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`tasks/${task._id}`)}>
             <div className={`badge ${task.status.replace(" ", "")}`}>
               {task.status}
             </div>
-
-            <Link to={`/tasks/${task._id}`}>
-              <h5>{task.name}</h5>
-            </Link>
-
+            <h5 className='fs-6'>{task.name}</h5>
             <p className='task-meta'>
               {task.project?.name} • {task.team?.name}
             </p>

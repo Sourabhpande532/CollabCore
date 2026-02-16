@@ -1,16 +1,18 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import "./plist.css";
 import axios from "../../api/axiosHelper";
-import { Link } from "react-router-dom";
-const ProjectPage = () => {
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+const ProjectPage = ({ refresh }) => {
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchProject();
-  }, [search, sort]);
+  }, [search, sort, refresh]);
 
   const fetchProject = async () => {
     const res = await axios.get("/projects", {
@@ -22,6 +24,7 @@ const ProjectPage = () => {
   const deleteProject = async (id) => {
     await axios.delete(`/projects/${id}`);
     fetchProject();
+    toast.success("Deleted project");
   };
 
   return (
@@ -42,18 +45,13 @@ const ProjectPage = () => {
       </div>
       <div className='project-grid'>
         {projects.map((project) => (
-          <div key={project._id} className='project-card'>
-            <Link
-              className='text-docoration-none'
-              to={`/project/${project._id}`}
-              onClick={() =>
-                localStorage.setItem("activeProject", project._id)
-              }>
-              <h4>{project.name}</h4>
-            </Link>
-            <p className='fw-lighter'>
-              {project.description || "No description"}
-            </p>
+          <div
+            key={project._id}
+            className='shadow-sm project-card'
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`/project/${project._id}`)}>
+            <h4 className='fs-6'>{project.name}</h4>
+            <p className=''>{project.description || "No description"}</p>
             <button
               onClick={() => deleteProject(project._id)}
               className='delete-btn'>

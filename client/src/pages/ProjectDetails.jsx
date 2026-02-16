@@ -19,7 +19,7 @@ const ProjectDetails = () => {
 
   useEffect(() => {
     fetchTasks();
-  },[searchParams]);
+  }, [searchParams]);
 
   const fetchProject = async () => {
     const res = await axios.get("/projects");
@@ -39,10 +39,11 @@ const ProjectDetails = () => {
     value ? searchParams.set(key, value) : searchParams.delete(key);
     setSearchParams(searchParams);
   };
+  const handleTaskCreated = (newTask) => {
+    setTasks((prev) => [newTask, ...prev]); //optimistic update
+  };
 
-  const handleTaskCreated = (newTask)=>{
-    setTasks(prev=>[newTask, ...prev]) //optimistic update 
-  }
+  const STATUS_OPTIONS = ["To Do", "In Progress", "Completed", "Blocked"];
 
   return (
     <div className='project-page'>
@@ -62,9 +63,12 @@ const ProjectDetails = () => {
           </select>
 
           <select onChange={(e) => updateFilter("status", e.target.value)}>
-            <option value=''>Status</option>
-            <option value='Completed'>Completed</option>
-            <option value='In Progress'>In Progress</option>
+            <option value=''>All Status</option>
+            {STATUS_OPTIONS.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
           </select>
 
           <button onClick={() => setShowModal(true)}>+ New Task</button>

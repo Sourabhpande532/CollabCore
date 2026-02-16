@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { getTasks } from "../api/task.api";
 import Modal from "../component/model/Model";
@@ -8,22 +9,19 @@ import { MyTasks } from "../component/tasklist/MyTask";
 import { ProjectPage } from "../component/projectlist/ProjectList";
 
 const Dashboard = () => {
-  // eslint-disable-next-line no-unused-vars
   const [projects, setProjects] = useState([]);
-  // eslint-disable-next-line no-unused-vars
   const [tasks, setTasks] = useState([]);
-
+  const [refreshProjects, setRefreshProject] = useState(false);
+  const [refreshTasks, setRefreshTasks] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
 
   const fetchProjects = () => {
     getProjects().then((res) => setProjects(res.data?.data?.project || []));
   };
-
   const fetchTasks = () => {
     getTasks().then((res) => setTasks(res.data?.data?.tasks || []));
   };
-
   useEffect(() => {
     fetchProjects();
     fetchTasks();
@@ -41,7 +39,9 @@ const Dashboard = () => {
             + New Project
           </button>
         </div>
-        <div className='projects-grid'>{<ProjectPage />}</div>
+        <div className='projects-grid'>
+          {<ProjectPage refresh={refreshProjects} />}
+        </div>
         {/* Tasks */}
         <div className='d-flex justify-content-between align-items-center mt-4'>
           <h4 className='section-title'>My Tasks</h4>
@@ -51,14 +51,15 @@ const Dashboard = () => {
             + Add Tasks
           </button>
         </div>
-        <MyTasks />
+
+        <MyTasks refresh={refreshTasks} />
         {/* Modals */}
         <Modal
           show={showProjectModal}
           title='Add Project'
           onClose={() => setShowProjectModal(false)}>
           <AddProjectForm
-            onSuccess={fetchProjects}
+            onSuccess={() => setRefreshProject((prev) => !prev)}
             onClose={() => setShowProjectModal(false)}
           />
         </Modal>
@@ -67,7 +68,7 @@ const Dashboard = () => {
           title='Add Task'
           onClose={() => setShowTaskModal(false)}>
           <AddTaskForm
-            onSuccess={fetchTasks}
+            onSuccess={() => setRefreshTasks((prev) => !prev)}
             onClose={() => setShowTaskModal(false)}
           />
         </Modal>

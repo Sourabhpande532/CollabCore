@@ -1,24 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createProject } from "../../api/project.api";
-import axios from "../../api/axiosHelper";
+import toast from "react-hot-toast";
 
 const AddProjectForm = ({ onSuccess, onClose }) => {
   const [form, setForm] = useState({
     name: "",
     description: "",
   });
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    fetchProject();
-  }, []);
-
-  const fetchProject = async () => {
-    const res = await axios.get("/projects");
-    setProjects(res.data.data.project);
-  };
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -27,11 +16,12 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
     e.preventDefault();
     try {
       await createProject(form);
-      fetchProject();
-      onClose(); // close modal
+      onSuccess();
+      onClose();
+      toast.success("Project Added successfully");
     } catch (err) {
       console.log(err);
-      alert("Failed to create project");
+      toast.error("Failed to create project");
     }
   };
 
