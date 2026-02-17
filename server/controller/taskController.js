@@ -63,13 +63,22 @@ exports.getFilterTask = async (req, res) => {
 
     if (sort === "due_asc") sortOption = { dueDate: 1 };
     if (sort === "due_desc") sortOption = { dueDate: -1 };
-    if (sort === "priority") sortOption = { priority: -1 };
-
+  
     let tasks = await Task.find(filter)
       .populate("project", "name")
       .populate("team", "name")
       .populate("owners", "name")
       .sort(sortOption);
+    if (sort === "priority") {
+      const priorityOrder = {
+        High: 1,
+        Medium: 2,
+        Low: 3,
+      };
+      tasks = tasks.sort(
+        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority],
+      );
+    }
 
     res.json({ success: true, count: tasks.length, data: { tasks } });
   } catch (error) {

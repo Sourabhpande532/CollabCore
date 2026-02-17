@@ -142,7 +142,7 @@ const MyTasks = ({ refresh }) => {
             <p className='task-meta'>
               {task.project?.name} • {task.team?.name}
             </p>
-
+            <small>Priority: {task?.priority}</small>
             <div className='task-actions'>
               {task.status !== "Completed" && (
                 <button
