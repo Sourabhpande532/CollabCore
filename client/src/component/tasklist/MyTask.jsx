@@ -142,7 +142,22 @@ const MyTasks = ({ refresh }) => {
             <p className='task-meta'>
               {task.project?.name} • {task.team?.name}
             </p>
-            <small>Priority: {task?.priority}</small>
+            <div className='mt-2'>
+              <span
+                className={`badge rounded-pill px-3 py-2 d-inline-flex align-items-center gap-1 ${
+                  task.priority === "High"
+                    ? "bg-danger"
+                    : task.priority === "Medium"
+                      ? "bg-warning text-dark"
+                      : "bg-success"
+                }`}>
+                {task.priority === "High" && "🔴"}
+                {task.priority === "Medium" && "🟡"}
+                {task.priority === "Low" && "🟢"}
+                {task.priority}
+              </span>
+            </div>
+
             <div className='task-actions'>
               {task.status !== "Completed" && (
                 <button

@@ -17,11 +17,19 @@ exports.obtainedTask = async (req, res) => {
       const teamDoc = await Team.findOne({ name: team });
       if (teamDoc) query.team = teamDoc._id;
     }
-    let sortQuery = {};
-    if (sort === "priority_desc") sortQuery.priority = -1;
-    if (sort === "priority_asc") sortQuery.priority = 1;
-    if (sort === "newest") sortQuery.createdAt = -1;
-    if (sort === "oldest") sortQuery.createdAt = 1;
+    // ✅ DEFAULT SORT
+    let sortQuery = { createdAt: -1 };
+
+    // ✅ OLD DASHBOARD SORT (keep working)
+    if (sort === "priority_desc") sortQuery = { priority: -1 };
+    else if (sort === "priority_asc") sortQuery = { priority: 1 };
+    else if (sort === "newest") sortQuery = { createdAt: -1 };
+    else if (sort === "oldest") sortQuery = { createdAt: 1 };
+    // ✅ NEW TASK PAGE SORT (added safely)
+    else if (sort === "name") sortQuery = { name: 1 };
+    else if (sort === "-name") sortQuery = { name: -1 };
+    else if (sort === "status") sortQuery = { status: 1 };
+    else if (sort === "-createdAt") sortQuery = { createdAt: -1 };
 
     const tasks = await Task.find(query)
       .populate("project", "name")
@@ -63,7 +71,7 @@ exports.getFilterTask = async (req, res) => {
 
     if (sort === "due_asc") sortOption = { dueDate: 1 };
     if (sort === "due_desc") sortOption = { dueDate: -1 };
-  
+
     let tasks = await Task.find(filter)
       .populate("project", "name")
       .populate("team", "name")
@@ -178,3 +186,4 @@ exports.updateTaskStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
