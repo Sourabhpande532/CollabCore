@@ -8,8 +8,12 @@ exports.obtainedProjects = async (req, res) => {
       filter.name = { $regex: search, $options: "i" };
     }
     let sortOption = { createdAt: -1 };
-    if (sort === "name_asc") sortOption = { name: 1 };
-    if (sort === "name_desc") sortOption = { name: -1 };
+
+    if (sort === "name_asc") {
+      sortOption = { name: -1 };
+    } else if (sort === "name_desc") {
+      sortOption = { name: 1 };
+    }
     const project = await Project.find(filter).sort(sortOption);
     res.status(201).json({
       message: "Fetch projects",
@@ -19,6 +23,7 @@ exports.obtainedProjects = async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({message: "Sever error"})
   }
 };
 

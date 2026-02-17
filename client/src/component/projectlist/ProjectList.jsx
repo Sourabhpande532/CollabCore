@@ -37,9 +37,9 @@ const ProjectPage = ({ refresh }) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <select onChange={(e) => setSort(e.target.value)}>
+        <select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value=''>--Sort--</option>
-          <option value='name-asc'>Name A-Z</option>
+          <option value='name_asc'>Name A-Z</option>
           <option value='name_desc'>Name Z-A</option>
         </select>
       </div>
