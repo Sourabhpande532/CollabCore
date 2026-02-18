@@ -4,9 +4,12 @@ const User = require("../model/Signup");
 
 exports.obtainedTask = async (req, res) => {
   try {
-    const { owners, team, status, tags, projectId, sort } = req.query;
+    const { owners, team, status, tags, project, projectId, sort } = req.query;
     const query = {};
-    if (projectId) query.project = projectId;
+
+    if (project || projectId) {
+      query.project = project || projectId;
+    }
     if (status) query.status = status;
     if (tags) query.tags = tags;
     if (owners) {
@@ -186,4 +189,3 @@ exports.updateTaskStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-

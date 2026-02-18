@@ -12,6 +12,7 @@ const initialState = {
   tags: [],
   timeToComplete: "",
   status: "To Do",
+  priority: "Medium",
 };
 
 const AddTaskForm = ({ onClose, onSuccess }) => {
@@ -21,15 +22,9 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    getProjects().then((res) =>
-      setProjects(res.data?.data?.project || [])
-    );
-    getUsers().then((res) =>
-      setUsers(res.data?.data?.users || [])
-    );
-    getTeams().then((res) =>
-      setTeams(res.data?.data?.team || [])
-    );
+    getProjects().then((res) => setProjects(res.data?.data?.project || []));
+    getUsers().then((res) => setUsers(res.data?.data?.users || []));
+    getTeams().then((res) => setTeams(res.data?.data?.team || []));
   }, []);
 
   const handleChange = (e) => {
@@ -47,6 +42,7 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
       tags: form.tags,
       timeToComplete: Number(form.timeToComplete),
       status: form.status,
+      priority: form.priority,
     };
 
     if (!payload.name || !payload.project || !payload.team) {
@@ -69,14 +65,13 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
   return (
     <div style={{ maxHeight: "70vh", overflowY: "auto", paddingRight: "8px" }}>
       <form onSubmit={handleSubmit}>
-        <div className="row">
-
+        <div className='row'>
           {/* Task Name */}
-          <div className="col-md-6 mb-2">
+          <div className='col-md-6 mb-2'>
             <input
-              className="form-control"
-              placeholder="Task Name"
-              name="name"
+              className='form-control'
+              placeholder='Task Name'
+              name='name'
               value={form.name}
               onChange={handleChange}
               required
@@ -84,27 +79,26 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           </div>
 
           {/* Time */}
-          <div className="col-md-6 mb-2">
+          <div className='col-md-6 mb-2'>
             <input
-              type="number"
-              className="form-control"
-              placeholder="Time (days)"
-              name="timeToComplete"
+              type='number'
+              className='form-control'
+              placeholder='Time (days)'
+              name='timeToComplete'
               value={form.timeToComplete}
               onChange={handleChange}
             />
           </div>
 
           {/* Project */}
-          <div className="col-md-6 mb-2">
+          <div className='col-md-6 mb-2'>
             <select
-              className="form-select"
-              name="project"
+              className='form-select'
+              name='project'
               value={form.project}
               onChange={handleChange}
-              required
-            >
-              <option value="">Select Project</option>
+              required>
+              <option value=''>Select Project</option>
               {projects.map((p) => (
                 <option key={p._id} value={p._id}>
                   {p.name}
@@ -114,15 +108,14 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           </div>
 
           {/* Team */}
-          <div className="col-md-6 mb-2">
+          <div className='col-md-6 mb-2'>
             <select
-              className="form-select"
-              name="team"
+              className='form-select'
+              name='team'
               value={form.team}
               onChange={handleChange}
-              required
-            >
-              <option value="">Select Team</option>
+              required>
+              <option value=''>Select Team</option>
               {teams.map((t) => (
                 <option key={t._id} value={t._id}>
                   {t.name}
@@ -132,32 +125,41 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           </div>
 
           {/* Status */}
-          <div className="col-12 mb-3">
+          <div className='col-12 mb-3'>
             <select
-              className="form-select"
-              name="status"
+              className='form-select'
+              name='status'
               value={form.status}
-              onChange={handleChange}
-            >
-              <option value="To Do">To Do</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Completed">Completed</option>
-              <option value="Blocked">Blocked</option>
+              onChange={handleChange}>
+              <option value='To Do'>To Do</option>
+              <option value='In Progress'>In Progress</option>
+              <option value='Completed'>Completed</option>
+              <option value='Blocked'>Blocked</option>
+            </select>
+          </div>
+
+          {/* Priority */}
+          <div className='col-12 mb-3'>
+            <select
+              className='form-select'
+              name='priority'
+              value={form.priority}
+              onChange={handleChange}>
+              <option value='High'>High</option>
+              <option value='Medium'>Medium</option>
+              <option value='Low'>Low</option>
             </select>
           </div>
 
           {/* Owners */}
-          <div className="col-12 mb-3">
-            <label className="form-label">Owners</label>
+          <div className='col-12 mb-3'>
+            <label className='form-label'>Owners</label>
             <div>
               {users.map((u) => (
-                <div
-                  key={u._id}
-                  className="form-check form-check-inline"
-                >
+                <div key={u._id} className='form-check form-check-inline'>
                   <input
-                    type="checkbox"
-                    className="form-check-input"
+                    type='checkbox'
+                    className='form-check-input'
                     value={u._id}
                     checked={form.owners.includes(u._id)}
                     onChange={(e) => {
@@ -167,26 +169,21 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
                       setForm({ ...form, owners: updated });
                     }}
                   />
-                  <label className="form-check-label">
-                    {u.name}
-                  </label>
+                  <label className='form-check-label'>{u.name}</label>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Tags */}
-          <div className="col-12 mb-3">
-            <label className="form-label">Tags</label>
+          <div className='col-12 mb-3'>
+            <label className='form-label'>Tags</label>
             <div>
               {["Urgent", "Bug", "Immediate", "Tech"].map((tag) => (
-                <div
-                  key={tag}
-                  className="form-check form-check-inline"
-                >
+                <div key={tag} className='form-check form-check-inline'>
                   <input
-                    type="checkbox"
-                    className="form-check-input"
+                    type='checkbox'
+                    className='form-check-input'
                     checked={form.tags.includes(tag)}
                     onChange={(e) => {
                       const updated = e.target.checked
@@ -195,33 +192,26 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
                       setForm({ ...form, tags: updated });
                     }}
                   />
-                  <label className="form-check-label">
-                    {tag}
-                  </label>
+                  <label className='form-check-label'>{tag}</label>
                 </div>
               ))}
             </div>
           </div>
-
         </div>
 
         {/* Buttons */}
-        <div className="d-flex gap-2 mt-3">
-          <button
-            type="submit"
-            className="btn btn-primary w-50"
-          >
+        <div className='d-flex gap-2 mt-3'>
+          <button type='submit' className='btn btn-primary w-50'>
             Create
           </button>
 
           <button
-            type="button"
-            className="btn btn-secondary w-50"
+            type='button'
+            className='btn btn-secondary w-50'
             onClick={() => {
               setForm(initialState);
               onClose();
-            }}
-          >
+            }}>
             Cancel
           </button>
         </div>

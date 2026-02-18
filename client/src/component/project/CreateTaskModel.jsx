@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axiosHelper";
 import "./model.css";
+import toast from "react-hot-toast";
 
 const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
   const [teams, setTeams] = useState([]);
@@ -59,6 +60,7 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
       // Update UI
       onCreated(res.data.data.task);
       onClose();
+      toast.success("Project Task completed");
     } catch (err) {
       console.error("Create task failed", err);
       alert("Failed to create task");
@@ -68,97 +70,152 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className='modal-overlay'>
-      <div className='task-modal'>
-        <h3>
-          Create New Task for <span>{projectName}</span>
-        </h3>
-
-        {/* TASK NAME */}
-        <input
-          placeholder='Task name'
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-
-        {/* TEAM */}
-        <select
-          value={form.team}
-          onChange={(e) => setForm({ ...form, team: e.target.value })}>
-          <option value=''>Select Team</option>
-          {teams.map((team) => (
-            <option key={team._id} value={team._id}>
-              {team.name}
-            </option>
-          ))}
-        </select>
-
-        {/* OWNERS */}
-        <div className='owners-select'>
-          <p className='field-label'>Owners</p>
-
-          <div className='owners-grid'>
-            {users.map((user) => {
-              const selected = form.owners.includes(user._id);
-
-              return (
-                <div
-                  key={user._id}
-                  className={`owner-option ${selected ? "selected" : ""}`}
-                  onClick={() => handleOwnerSelect(user._id)}>
-                  <div className='owner-avatar'>
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span>{user.name}</span>
-                </div>
-              );
-            })}
+    <div className='modal d-block' tabIndex='-1'>
+      <div className='modal-dialog modal-dialog-centered modal-lg'>
+        <div className='modal-content' style={{ maxHeight: "90vh" }}>
+          {/* HEADER */}
+          <div className='modal-header'>
+            <h5 className='modal-title'>
+              Create New Task for{" "}
+              <span className='text-primary'>{projectName}</span>
+            </h5>
+            <button
+              type='button'
+              className='btn-close'
+              onClick={onClose}></button>
           </div>
-        </div>
 
-        {/* TAGS */}
-        <input
-          placeholder='Tags (comma separated)'
-          onChange={(e) =>
-            setForm({
-              ...form,
-              tags: e.target.value.split(",").map((t) => t.trim()),
-            })
-          }
-        />
+          {/* BODY (Scrollable) */}
+          <div className='modal-body' style={{ overflowY: "auto" }}>
+            <div className='container-fluid'>
+              <div className='row g-3'>
+                {/* TASK NAME */}
+                <div className='col-12'>
+                  <input
+                    className='form-control'
+                    placeholder='Task name'
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  />
+                </div>
 
-        {/* DUE DATE */}
-        <input
-          type='date'
-          value={form.dueDate}
-          onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-        />
+                {/* TEAM */}
+                <div className='col-12 col-md-6'>
+                  <select
+                    className='form-select'
+                    value={form.team}
+                    onChange={(e) =>
+                      setForm({ ...form, team: e.target.value })
+                    }>
+                    <option value=''>Select Team</option>
+                    {teams.map((team) => (
+                      <option key={team._id} value={team._id}>
+                        {team.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-        {/* TIME */}
-        <input
-          type='number'
-          placeholder='Time (days)'
-          value={form.timeToComplete}
-          onChange={(e) => setForm({ ...form, timeToComplete: e.target.value })}
-        />
+                {/* TIME */}
+                <div className='col-12 col-md-6'>
+                  <input
+                    type='number'
+                    className='form-control'
+                    placeholder='Time (days)'
+                    value={form.timeToComplete}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        timeToComplete: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-        {/* PRIORITY */}
-        <select
-          value={form.priority}
-          onChange={(e) => setForm({ ...form, priority: e.target.value })}>
-          <option>High</option>
-          <option>Medium</option>
-          <option>Low</option>
-        </select>
+                {/* DUE DATE */}
+                <div className='col-12 col-md-6'>
+                  <input
+                    type='date'
+                    className='form-control'
+                    value={form.dueDate}
+                    onChange={(e) =>
+                      setForm({ ...form, dueDate: e.target.value })
+                    }
+                  />
+                </div>
 
-        {/* ACTIONS */}
-        <div className='modal-actions'>
-          <button className='btn-primary' onClick={handleSubmit}>
-            Create Task
-          </button>
-          <button className='btn-secondary' onClick={onClose}>
-            Cancel
-          </button>
+                {/* PRIORITY */}
+                <div className='col-12 col-md-6'>
+                  <select
+                    className='form-select'
+                    value={form.priority}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        priority: e.target.value,
+                      })
+                    }>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                  </select>
+                </div>
+
+                {/* TAGS */}
+                <div className='col-12'>
+                  <input
+                    className='form-control'
+                    placeholder='Tags (comma separated)'
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        tags: e.target.value.split(",").map((t) => t.trim()),
+                      })
+                    }
+                  />
+                </div>
+
+                {/* OWNERS */}
+                <div className='col-12'>
+                  <label className='form-label fw-semibold'>Owners</label>
+
+                  <div className='row g-2'>
+                    {users.map((user) => {
+                      const selected = form.owners.includes(user._id);
+
+                      return (
+                        <div key={user._id} className='col-6 col-sm-4 col-md-3'>
+                          <div
+                            className={`border rounded p-2 text-center ${
+                              selected
+                                ? "bg-primary text-white border-primary"
+                                : ""
+                            }`}
+                            style={{ cursor: "pointer", fontSize: "14px" }}
+                            onClick={() => handleOwnerSelect(user._id)}>
+                            <div className='fw-bold'>
+                              {user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <small>{user.name}</small>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FOOTER (Always Visible) */}
+          <div className='modal-footer'>
+            <button className='btn btn-primary' onClick={handleSubmit}>
+              Create Task
+            </button>
+            <button className='btn btn-secondary' onClick={onClose}>
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

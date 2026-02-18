@@ -7,6 +7,7 @@ import "../pages/productDetails.css";
 
 const ProjectDetails = () => {
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [tasks, setTasks] = useState([]);
@@ -14,12 +15,10 @@ const ProjectDetails = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    if (!id) return;
     fetchProject();
-  }, []);
-
-  useEffect(() => {
     fetchTasks();
-  }, [searchParams]);
+  }, [id, searchParams]);
 
   const fetchProject = async () => {
     const res = await axios.get("/projects");
@@ -28,19 +27,22 @@ const ProjectDetails = () => {
   };
 
   const fetchTasks = async () => {
+    setLoading(true);
     const params = Object.fromEntries(searchParams.entries());
-    params.projectId = id;
-
+    params.project = id;
     const res = await axios.get("/tasks", { params });
     setTasks(res.data.data.tasks);
+    setLoading(false);
   };
 
   const updateFilter = (key, value) => {
-    value ? searchParams.set(key, value) : searchParams.delete(key);
-    setSearchParams(searchParams);
-  };
-  const handleTaskCreated = (newTask) => {
-    setTasks((prev) => [newTask, ...prev]); //optimistic update
+    const newParams = new URLSearchParams(searchParams);
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    setSearchParams(newParams);
   };
 
   const STATUS_OPTIONS = ["To Do", "In Progress", "Completed", "Blocked"];
@@ -75,46 +77,72 @@ const ProjectDetails = () => {
         </div>
 
         {/* TASK TABLE */}
-        <div className='task-table'>
-          <div className='table-head'>
-            <div>Task</div>
-            <div>Owner</div>
-            <div>Priority</div>
-            <div>Due</div>
-            <div>Status</div>
+        {loading ? (
+          <p>Loading tasks...</p>
+        ) : (
+          <div className='table-responsive mt-4'>
+            <table className='table table-hover align-middle'>
+              <thead className='table-light'>
+                <tr>
+                  <th>Task</th>
+                  <th>Owner</th>
+                  <th>Priority</th>
+                  <th>Due</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map((task) => {
+                  const ownerName = task.owners?.[0]?.name || "NA";
+                  const ownerInitial = ownerName.charAt(0).toUpperCase();
+
+                  return (
+                    <tr key={task._id}>
+                      {/* TASK */}
+                      <td>{task.name}</td>
+
+                      {/* OWNER */}
+                      <td>
+                        <div className='d-flex align-items-center gap-2'>
+                          <div
+                            className='rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center'
+                            style={{
+                              width: "32px",
+                              height: "32px",
+                              fontSize: "14px",
+                            }}>
+                            {ownerInitial}
+                          </div>
+                          <span>{ownerName}</span>
+                        </div>
+                      </td>
+
+                      {/* PRIORITY */}
+                      <td>
+                        <span
+                          className={`badge ${
+                            task.priority === "High"
+                              ? "bg-danger"
+                              : task.priority === "Medium"
+                                ? "bg-warning text-dark"
+                                : "bg-success"
+                          }`}>
+                          {task.priority}
+                        </span>
+                      </td>
+
+                      {/* DUE */}
+                      <td>{task.timeToComplete} days</td>
+
+                      {/* STATUS */}
+                      <td>{task.status}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-
-          {tasks.map((task) => {
-            const ownerName = task.owners?.[0]?.name || "NA";
-            const ownerInitial = ownerName.charAt(0).toUpperCase();
-
-            return (
-              <div className='table-row' key={task._id}>
-                {/* TASK NAME */}
-                <div>{task.name}</div>
-
-                {/* OWNER WITH AVATAR */}
-                <div className='owner-cell'>
-                  <div className='owner-avatar'>{ownerInitial}</div>
-                  <span>{ownerName}</span>
-                </div>
-
-                {/* PRIORITY */}
-                <div>
-                  <span className={`badge ${task.priority}`}>
-                    {task.priority}
-                  </span>
-                </div>
-
-                {/* DUE */}
-                <div>{task.timeToComplete} days</div>
-
-                {/* STATUS */}
-                <div>{task.status}</div>
-              </div>
-            );
-          })}
-        </div>
+        )}
       </main>
 
       {/* MODAL */}
@@ -123,7 +151,7 @@ const ProjectDetails = () => {
           projectId={id}
           projectName={project?.name}
           onClose={() => setShowModal(false)}
-          onCreated={handleTaskCreated}
+          onCreated={fetchTasks}
         />
       )}
     </div>
