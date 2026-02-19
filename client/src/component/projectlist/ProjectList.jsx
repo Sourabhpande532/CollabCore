@@ -53,7 +53,10 @@ const ProjectPage = ({ refresh }) => {
             <h4 className='fs-6'>{project.name}</h4>
             <p className=''>{project.description || "No description"}</p>
             <button
-              onClick={() => deleteProject(project._id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteProject(project._id);
+              }}
               className='delete-btn'>
               Delete
             </button>

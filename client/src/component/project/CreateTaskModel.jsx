@@ -60,7 +60,8 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
       // Update UI
       onCreated(res.data.data.task);
       onClose();
-      toast.success("Project Task completed");
+      onCreated()
+      toast.success("Project Task Added");
     } catch (err) {
       console.error("Create task failed", err);
       alert("Failed to create task");

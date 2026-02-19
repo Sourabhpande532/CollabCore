@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axiosHelper";
 import "./modelcss/addMember.css";
+import toast from "react-hot-toast";
 const AddMemberModal = ({ teamId, onClose, onAdded }) => {
   const [users, setUsers] = useState([]);
   const [selected, setSelected] = useState("");
@@ -13,6 +14,7 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
     await axios.post(`/teams/${teamId}/members`, { userId: selected });
     onAdded();
     onClose();
+    toast.success("Added Member")
   };
 
   return (

@@ -67,6 +67,7 @@ const MyTasks = ({ refresh }) => {
   const markComplete = async (id) => {
     await axios.post(`/tasks/${id}`, { status: "Completed" });
     fetchTasks();
+    toast.success("Task Completed")
   };
 
   return (
@@ -162,14 +163,20 @@ const MyTasks = ({ refresh }) => {
               {task.status !== "Completed" && (
                 <button
                   className='complete-btn'
-                  onClick={() => markComplete(task._id)}>
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    markComplete(task._id);
+                  }}>
                   ✔ Complete
                 </button>
               )}
 
               <button
                 className='delete-btn'
-                onClick={() => deleteTask(task._id)}>
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteTask(task._id);
+                }}>
                 🗑 Delete
               </button>
             </div>
