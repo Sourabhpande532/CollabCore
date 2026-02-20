@@ -76,10 +76,12 @@ const ProjectDetails = () => {
           <button onClick={() => setShowModal(true)}>+ New Task</button>
         </div>
 
+        {tasks?.length === 0 && (
+          <p className='alert alert-danger'>No Task for the Project</p>
+        )}
+
         {/* TASK TABLE */}
-        {loading ? (
-          <p>Loading tasks...</p>
-        ) : (
+        {tasks.length > 0 && (
           <div className='table-responsive mt-4'>
             <table className='table table-hover align-middle'>
               <thead className='table-light'>

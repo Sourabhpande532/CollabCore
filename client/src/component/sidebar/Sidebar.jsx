@@ -6,31 +6,27 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
-      <h5 className="logo">workasana</h5>
+      <h5 className='logo'>workasana</h5>
 
-      <Link to="/" onClick={() => setIsOpen(false)}>Dashboard</Link>
-
-      <Link
-        to={
-          localStorage.getItem("activeProject")
-            ? `/project/${localStorage.getItem("activeProject")}`
-            : "/project"
-        }
-        onClick={() => setIsOpen(false)}
-      >
-        Projects
+      <Link to='/' onClick={() => setIsOpen(false)}>
+        Dashboard
+      </Link>
+      <Link to='/team' onClick={() => setIsOpen(false)}>
+        Teams
+      </Link>
+      <Link to='/report' onClick={() => setIsOpen(false)}>
+        Reports
+      </Link>
+      <Link to='/tasks' onClick={() => setIsOpen(false)}>
+        Tasks
       </Link>
 
-      <Link to="/team" onClick={() => setIsOpen(false)}>Teams</Link>
-      <Link to="/report" onClick={() => setIsOpen(false)}>Reports</Link>
-      <Link to="/tasks" onClick={() => setIsOpen(false)}>Tasks</Link>
-
       {isAuthenticated ? (
-        <Link to="/login" onClick={() => logout()}>
+        <Link to='/login' onClick={() => logout()}>
           Logout
         </Link>
       ) : (
-        <Link to="/login">Login</Link>
+        <Link to='/login'>Login</Link>
       )}
     </div>
   );

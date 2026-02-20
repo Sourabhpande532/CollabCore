@@ -25,7 +25,13 @@ const Team = () => {
           + New Team
         </button>
       </div>
-
+      {teams.length === 0 && (
+        <div className="text-center">
+         <div className="spinner-border">
+          <span className="visually-hidden">Loading...</span>
+         </div>
+        </div>
+      )}
       <div className='teams-grid'>
         {teams.map((team) => (
           <div

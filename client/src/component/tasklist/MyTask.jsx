@@ -4,6 +4,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "../../api/axiosHelper";
 import "./myTasks.css";
 import toast from "react-hot-toast";
+import useLoading from "../../utils/useLoading";
+import ShimmerGrid from "../common/ShimmerGrid";
 
 const MyTasks = ({ refresh }) => {
   const [tasks, setTasks] = useState([]);
@@ -17,6 +19,7 @@ const MyTasks = ({ refresh }) => {
   const project = searchParams.get("project") || "";
   const status = searchParams.get("status") || "";
   const sort = searchParams.get("sort") || "";
+  const { loading, startLoading, stopLoading } = useLoading();
 
   useEffect(() => {
     fetchFilters();
@@ -40,17 +43,22 @@ const MyTasks = ({ refresh }) => {
       console.error("Error fetching filters:", error);
     }
   };
-
   const fetchTasks = async () => {
-    const res = await axios.get("/tasks/filter", {
-      params: { owner, team, project, status, sort },
-    });
-    setTasks(res.data.data.tasks);
+    try {
+      startLoading();
+      const res = await axios.get("/tasks/filter", {
+        params: { owner, team, project, status, sort },
+      });
+      setTasks(res.data.data.tasks);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      stopLoading(false);
+    }
   };
 
   const updateFilter = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
-
     if (value) {
       newParams.set(key, value);
     } else {
@@ -59,21 +67,29 @@ const MyTasks = ({ refresh }) => {
     setSearchParams(newParams);
   };
   const deleteTask = async (id) => {
-    await axios.delete(`/tasks/${id}`);
-    fetchTasks();
-    toast.success("Deleted Task");
+    try {
+      await axios.delete(`/tasks/${id}`);
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+      toast.success("Deleted Task");
+    } catch (error) {
+      toast.error("Failed to delete");
+    }
   };
-
   const markComplete = async (id) => {
-    await axios.post(`/tasks/${id}`, { status: "Completed" });
-    fetchTasks();
-    toast.success("Task Completed")
+    try {
+      await axios.post(`/tasks/${id}`, { status: "Completed" });
+      setTasks((prev) =>
+        prev.map((task) =>
+          task._id === id ? { ...task, status: "Completed" } : task,
+        ),
+      );
+      toast.success("Task Completed");
+    } catch (error) {
+      console.error(error);
+    }
   };
-
   return (
     <div className='task-container'>
-      <h2>My Tasks</h2>
-
       {/* FILTERS */}
       <div className='task-filters'>
         <select
@@ -130,58 +146,62 @@ const MyTasks = ({ refresh }) => {
 
       {/* TASK GRID */}
       <div className='task-grid'>
-        {tasks.map((task) => (
-          <div
-            key={task._id}
-            className='shadow-sm task-card'
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate(`tasks/${task._id}`)}>
-            <div className={`badge ${task.status.replace(" ", "")}`}>
-              {task.status}
-            </div>
-            <h5 className='fs-6'>{task.name}</h5>
-            <p className='task-meta'>
-              {task.project?.name} • {task.team?.name}
-            </p>
-            <div className='mt-2'>
-              <span
-                className={`badge rounded-pill px-3 py-2 d-inline-flex align-items-center gap-1 ${
-                  task.priority === "High"
-                    ? "bg-danger"
-                    : task.priority === "Medium"
-                      ? "bg-warning text-dark"
-                      : "bg-success"
-                }`}>
-                {task.priority === "High" && "🔴"}
-                {task.priority === "Medium" && "🟡"}
-                {task.priority === "Low" && "🟢"}
-                {task.priority}
-              </span>
-            </div>
+        {loading ? (
+          <ShimmerGrid count={15} />
+        ) : (
+          tasks.map((task) => (
+            <div
+              key={task._id}
+              className='shadow-sm task-card'
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`tasks/${task._id}`)}>
+              <div className={`badge ${task.status.replace(" ", "")}`}>
+                {task.status}
+              </div>
+              <h5 className='fs-6'>{task.name}</h5>
+              <p className='task-meta'>
+                {task.project?.name} • {task.team?.name}
+              </p>
+              <div className='mt-2'>
+                <span
+                  className={`badge rounded-pill px-3 py-2 d-inline-flex align-items-center gap-1 ${
+                    task.priority === "High"
+                      ? "bg-danger"
+                      : task.priority === "Medium"
+                        ? "bg-warning text-dark"
+                        : "bg-success"
+                  }`}>
+                  {task.priority === "High" && "🔴"}
+                  {task.priority === "Medium" && "🟡"}
+                  {task.priority === "Low" && "🟢"}
+                  {task.priority}
+                </span>
+              </div>
 
-            <div className='task-actions'>
-              {task.status !== "Completed" && (
+              <div className='task-actions'>
+                {task.status !== "Completed" && (
+                  <button
+                    className='complete-btn'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      markComplete(task._id);
+                    }}>
+                    ✔ Complete
+                  </button>
+                )}
+
                 <button
-                  className='complete-btn'
+                  className='delete-btn'
                   onClick={(e) => {
                     e.stopPropagation();
-                    markComplete(task._id);
+                    deleteTask(task._id);
                   }}>
-                  ✔ Complete
+                  🗑 Delete
                 </button>
-              )}
-
-              <button
-                className='delete-btn'
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteTask(task._id);
-                }}>
-                🗑 Delete
-              </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
