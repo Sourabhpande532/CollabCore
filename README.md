@@ -43,7 +43,7 @@ npm start
 
 Watch a walkthrough (5-7 minutes) of all major features of this app:
 
-[Drive Video Link]()
+[Drive Video Link](https://drive.google.com/file/d/15QX55FIjWCMrOuBl7EyAmGk_tTM_3pjA/view?usp=sharing)
 
 ---
 
