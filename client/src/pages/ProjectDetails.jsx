@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import axios from "../api/axiosHelper";
 import CreateTaskModal from "../component/project/CreateTaskModel";
-import "../pages/productDetails.css";
+import "../../src/App.css";
 
 const ProjectDetails = () => {
   const { id } = useParams();

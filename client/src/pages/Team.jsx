@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../api/axiosHelper";
-import "./globalpagecss/teams.css";
+import "../../src/App.css";
 import { useNavigate } from "react-router-dom";
 import AddTeamModal from "../component/model/AddTeamModal";
 const Team = () => {

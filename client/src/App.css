@@ -1,0 +1,199 @@
+/* PAGE LAYOUT */
+.project-page {
+  min-height: 100vh;
+  /* background: #f6f8fb; */
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.project-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  /* background: #ffffff; */
+  padding: 24px;
+  border-radius: 10px;
+  /* box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); */
+}
+
+.project-content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.project-content p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* TOP ACTION BAR */
+.top-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.top-actions select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+}
+
+.top-actions button {
+  margin-left: auto;
+  padding: 9px 16px;
+  background: #4f46e5;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.top-actions button:hover {
+  background: #4338ca;
+}
+
+/* TASK TABLE */
+.task-table {
+  width: 100%;
+  border-top: 1px solid #e5e7eb;
+}
+
+.table-head,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr 1.2fr;
+  align-items: center;
+  padding: 12px 10px;
+}
+
+.table-head {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f9fafb;
+}
+
+.table-row {
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.table-row:hover {
+  background: #f9fafb;
+}
+
+/* OWNER AVATAR */
+.owner-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.owner-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* PRIORITY BADGES */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.badge.High {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge.Medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.Low {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* TEAMS CSS */
+
+.teams-page {
+  padding: 24px;
+}
+
+.teams-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.primary-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.secondary-btn {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.team-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.avatars {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  background: #6366f1;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}

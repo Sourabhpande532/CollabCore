@@ -32,7 +32,7 @@ const Dashboard = () => {
       <div className='content'>
         {/* Projects */}
         <div className='d-flex justify-content-between align-items-center'>
-          <h7 className='display-6 fw-lighter'>Projects</h7>
+          <h6 className='display-6 fw-lighter'>Projects</h6>
           <button
             className='btn btn-outline-primary'
             onClick={() => setShowProjectModal(true)}>
@@ -44,7 +44,7 @@ const Dashboard = () => {
         </div>
         {/* Tasks */}
         <div className='d-flex justify-content-between align-items-center mt-4'>
-          <h7 className='display-6 fw-lighter'>My Tasks</h7>
+          <h6 className='display-6 fw-lighter'>My Tasks</h6>
           <button
             className='btn btn-outline-primary'
             onClick={() => setShowTaskModal(true)}>

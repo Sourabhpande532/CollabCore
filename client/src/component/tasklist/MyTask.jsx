@@ -4,8 +4,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "../../api/axiosHelper";
 import "./myTasks.css";
 import toast from "react-hot-toast";
-import useLoading from "../../utils/useLoading";
 import ShimmerGrid from "../common/ShimmerGrid";
+import useLoading from "../../hooks/useLoading";
 
 const MyTasks = ({ refresh }) => {
   const [tasks, setTasks] = useState([]);

@@ -5,8 +5,8 @@ import "./plist.css";
 import axios from "../../api/axiosHelper";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import useLoading from "../../utils/useLoading";
 import ProjectShimmerGrid from "../common/ProjectShimmerGrid";
+import useLoading from "../../hooks/useLoading";
 const ProjectPage = ({ refresh }) => {
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");

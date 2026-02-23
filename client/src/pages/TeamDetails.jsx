@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "../api/axiosHelper";
 import AddMemberModal from "../component/model/AddMemberModal";
-import "./globalpagecss/teams.css";
+import "../../src/App.css";
 
 const TeamDetails = () => {
   const { id } = useParams();
