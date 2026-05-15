@@ -1,111 +1,92 @@
-/* ===============================
-   MAIN CONTAINER
-================================ */
-
 .project-container {
-  padding: 25px 30px;
-  background: #f1f5f9;
-  min-height: auto;
-  height: auto;
-
+  padding: 1.5rem 0;
   width: 100%;
   box-sizing: border-box;
 }
 
-.project-container h2 {
-  font-size: 22px;
-  margin-bottom: 20px;
-  color: #1e293b;
-}
-
-/* ===============================
-   TOOLBAR
-================================ */
-
 .project-toolbar {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
   align-items: center;
 }
 
-/* Search & Select */
 .project-toolbar input,
 .project-toolbar select {
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 6px;
-  border: 1px solid #dcdcdc;
-  background: white;
+  height: 42px;
+  padding: 0 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
   font-size: 14px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
 }
 
-.project-toolbar input {
-  min-width: 220px;
+.project-toolbar input:focus,
+.project-toolbar select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
-
-.project-toolbar select {
-  min-width: 140px;
-}
-
-/* ===============================
-   GRID
-================================ */
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
-/* ===============================
-   CARD
-================================ */
-
 .project-card {
-  background: white;
-  padding: 18px;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  transition: 0.2s ease;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-card:hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
 
-/* Title */
 .project-card h4 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #0f172a;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
-/* Description */
 .project-card p {
-  font-size: 13px;
-  color: #64748b;
-  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
 }
 
-/* Delete Button */
 .delete-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   border: none;
-  font-size: 13px;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-
-  background: #fee2e2;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transition: all 0.2s ease;
+  align-self: flex-start;
 }
 
 .delete-btn:hover {
-  background: #fecaca;
+  background: #ef4444;
+  color: white;
 }
 
-/* Remove unwanted link underline */
 .text-docoration-none {
   text-decoration: none;
   color: inherit;

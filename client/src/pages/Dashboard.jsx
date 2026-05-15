@@ -28,51 +28,61 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className='layout'>
-      <div className='content'>
-        {/* Projects */}
-        <div className='d-flex justify-content-between align-items-center'>
-          <h6 className='display-6 fw-lighter'>Projects</h6>
+    <div className="dashboard-page">
+      {/* Projects Section */}
+      <section className="mb-5">
+        <div className='d-flex justify-content-between align-items-center mb-4'>
+          <div>
+            <h2 className='fw-bold mb-0'>Projects</h2>
+            <p className="text-secondary mb-0">Manage your workspace projects</p>
+          </div>
           <button
-            className='btn btn-outline-primary'
+            className='btn btn-primary shadow-sm'
             onClick={() => setShowProjectModal(true)}>
             + New Project
           </button>
         </div>
-        <div className='projects-grid'>
-          {<ProjectPage refresh={refreshProjects} />}
+        <div className='projects-grid-wrapper'>
+          <ProjectPage refresh={refreshProjects} />
         </div>
-        {/* Tasks */}
-        <div className='d-flex justify-content-between align-items-center mt-4'>
-          <h6 className='display-6 fw-lighter'>My Tasks</h6>
+      </section>
+
+      {/* Tasks Section */}
+      <section className="mb-5">
+        <div className='d-flex justify-content-between align-items-center mb-4'>
+          <div>
+            <h2 className='fw-bold mb-0'>My Tasks</h2>
+            <p className="text-secondary mb-0">Track your personal progress</p>
+          </div>
           <button
-            className='btn btn-outline-primary'
+            className='btn btn-primary shadow-sm'
             onClick={() => setShowTaskModal(true)}>
             + Add Tasks
           </button>
         </div>
 
         <MyTasks refresh={refreshTasks} />
-        {/* Modals */}
-        <Modal
-          show={showProjectModal}
-          title='Add Project'
-          onClose={() => setShowProjectModal(false)}>
-          <AddProjectForm
-            onSuccess={() => setRefreshProject((prev) => !prev)}
-            onClose={() => setShowProjectModal(false)}
-          />
-        </Modal>
-        <Modal
-          show={showTaskModal}
-          title='Add Task'
-          onClose={() => setShowTaskModal(false)}>
-          <AddTaskForm
-            onSuccess={() => setRefreshTasks((prev) => !prev)}
-            onClose={() => setShowTaskModal(false)}
-          />
-        </Modal>
-      </div>
+      </section>
+
+      {/* Modals */}
+      <Modal
+        show={showProjectModal}
+        title='Add Project'
+        onClose={() => setShowProjectModal(false)}>
+        <AddProjectForm
+          onSuccess={() => setRefreshProject((prev) => !prev)}
+          onClose={() => setShowProjectModal(false)}
+        />
+      </Modal>
+      <Modal
+        show={showTaskModal}
+        title='Add Task'
+        onClose={() => setShowTaskModal(false)}>
+        <AddTaskForm
+          onSuccess={() => setRefreshTasks((prev) => !prev)}
+          onClose={() => setShowTaskModal(false)}
+        />
+      </Modal>
     </div>
   );
 };

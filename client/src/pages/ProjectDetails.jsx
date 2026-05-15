@@ -123,13 +123,12 @@ const ProjectDetails = () => {
                       {/* PRIORITY */}
                       <td>
                         <span
-                          className={`badge ${
-                            task.priority === "High"
-                              ? "bg-danger"
-                              : task.priority === "Medium"
-                                ? "bg-warning text-dark"
-                                : "bg-success"
-                          }`}>
+                          className={`badge ${task.priority === "High"
+                            ? "bg-danger"
+                            : task.priority === "Medium"
+                              ? "bg-warning text-dark"
+                              : "bg-success"
+                            }`}>
                           {task.priority}
                         </span>
                       </td>

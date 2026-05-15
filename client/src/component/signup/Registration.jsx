@@ -18,43 +18,55 @@ const Registration = () => {
   };
 
   return (
-    <div className='auth-container'>
-      <div className='auth-card'>
-        <h1 className='auth-title'>Register</h1>
+    <div className="signup-page-container">
+      <div className='signup-box animate-fade-in'>
+        <h2>Create Account</h2>
+        <p className="text-center text-secondary mb-4">Join Workasana today</p>
 
-        <form className='auth-form' onSubmit={register}>
-          <input
-            name='name'
-            type='text'
-            placeholder='Full Name'
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
+        <form onSubmit={register}>
+          <div className='user-box'>
+            <label>Full Name</label>
+            <input
+              type='text'
+              name='name'
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Your Name"
+              required
+            />
+          </div>
 
-          <input
-            name='email'
-            type='email'
-            placeholder='Email'
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            required
-          />
+          <div className='user-box'>
+            <label>Email Address</label>
+            <input
+              type='email'
+              name='email'
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="name@company.com"
+              required
+            />
+          </div>
 
-          <input
-            name='password'
-            type='password'
-            placeholder='Password'
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-          />
+          <div className='user-box'>
+            <label>Password</label>
+            <input
+              type='password'
+              name='password'
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="••••••••"
+              required
+            />
+          </div>
 
-          <button type='submit'>Register</button>
+          <button type='submit' className='signup-btn'>
+            Sign Up
+          </button>
 
-          <p className='auth-text'>
-            Already have an account? <Link to='/login'>Login ➡️</Link>
-          </p>
+          <div className="login-link-container">
+            Already have an account? <Link to='/login'>Sign In</Link>
+          </div>
         </form>
       </div>
     </div>

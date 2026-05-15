@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card } from "react-bootstrap";
 import {
   fetchLastWeekReport,
   fetchPendingReport,
@@ -37,45 +37,45 @@ const Reports = () => {
   };
 
   return (
-    <Container fluid className='reports-page ms-4'>
-      <Row>
-        {/* Main Content */}
-        <Col md={10}>
-          <h3 className='mb-4'>Workasana Reports</h3>
+    <div className='reports-page animate-fade-in'>
+      <div className='mb-4'>
+        <h2 className='fw-bold mb-0'>Workasana Reports</h2>
+        <p className='text-secondary'>
+          Visualize your team's productivity and progress
+        </p>
+      </div>
 
-          <Row className='mb-4'>
-            <Col md={6}>
-              <Card className="h-100">
-                <Card.Body>
-                  <Card.Title>Total Work Done Last Week</Card.Title>
-                  <LastWeekChart count={lastWeekCount} />
-                </Card.Body>
-              </Card>
-            </Col>
+      <Row className='g-4 mb-4'>
+        <Col lg={6}>
+          <Card className='h-100 border-0 shadow-sm'>
+            <Card.Body>
+              <Card.Title>Total Work Done Last Week</Card.Title>
+              <LastWeekChart count={lastWeekCount} />
+            </Card.Body>
+          </Card>
+        </Col>
 
-            <Col md={6}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Total Days of Work Pending</Card.Title>
-                  <PendingWorkChart totalDays={pendingDays} />
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>Tasks Closed by Team</Card.Title>
-                  <ClosedTasksChart data={closedByTeam} />
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+        <Col lg={6}>
+          <Card className='h-100 border-0 shadow-sm'>
+            <Card.Body>
+              <Card.Title>Total Days of Work Pending</Card.Title>
+              <PendingWorkChart totalDays={pendingDays} />
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
-    </Container>
+
+      <Row>
+        <Col md={12}>
+          <Card className='border-0 shadow-sm'>
+            <Card.Body>
+              <Card.Title>Tasks Closed by Team</Card.Title>
+              <ClosedTasksChart data={closedByTeam} />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 };
 export { Reports };

@@ -9,24 +9,26 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <h5 className='logo'>workasana</h5>
 
       <Link to='/' onClick={() => setIsOpen(false)}>
-        Dashboard
+        <span>📊</span> Dashboard
       </Link>
       <Link to='/team' onClick={() => setIsOpen(false)}>
-        Teams
+        <span>👥</span> Teams
       </Link>
       <Link to='/report' onClick={() => setIsOpen(false)}>
-        Reports
+        <span>📈</span> Reports
       </Link>
       <Link to='/tasks' onClick={() => setIsOpen(false)}>
-        Tasks
+        <span>✅</span> Tasks
       </Link>
 
+      <div style={{ flexGrow: 1 }}></div>
+
       {isAuthenticated ? (
-        <Link to='/login' onClick={() => logout()}>
-          Logout
+        <Link to='/login' className="logout-link" onClick={() => logout()}>
+          <span>🚪</span> Logout
         </Link>
       ) : (
-        <Link to='/login'>Login</Link>
+        <Link to='/login'><span>🔑</span> Login</Link>
       )}
     </div>
   );

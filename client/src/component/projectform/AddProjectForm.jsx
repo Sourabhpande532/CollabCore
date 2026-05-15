@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { createProject } from "../../api/project.api";
 import toast from "react-hot-toast";
+import "./project.css";
 
 const AddProjectForm = ({ onSuccess, onClose }) => {
   const [form, setForm] = useState({
@@ -26,15 +27,15 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="add-project-form animate-fade-in">
       {/* Project Name */}
-      <div className='mb-3'>
-        <label className='form-label fw-semibold'>Project Name</label>
+      <div className='form-group'>
+        <label className='form-label'>Project Name</label>
         <input
           type='text'
           className='form-control'
           name='name'
-          placeholder='e.g. Mobile App Launch'
+          placeholder='What is the project name?'
           value={form.name}
           required
           onChange={handleChange}
@@ -42,13 +43,12 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
       </div>
 
       {/* Description */}
-      <div className='mb-4'>
-        <label className='form-label fw-semibold'>Project Description</label>
+      <div className='form-group'>
+        <label className='form-label'>Description</label>
         <textarea
           className='form-control'
           name='description'
-          placeholder='Describe the project goals and timeline'
-          rows='3'
+          placeholder='What needs to be done in this project?'
           value={form.description}
           required
           onChange={handleChange}
@@ -56,7 +56,7 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className='d-flex justify-content-end gap-2'>
+      <div className='d-flex justify-content-end gap-3 mt-4'>
         <button
           type='button'
           className='btn btn-outline-secondary'

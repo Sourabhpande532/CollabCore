@@ -28,43 +28,47 @@ const Form = () => {
   };
 
   return (
-    <div className='login-box'>
-      <h2>Login</h2>
+    <div className="login-page-container">
+      <div className='login-box animate-fade-in'>
+        <h2>Welcome Back</h2>
+        <p className="text-center text-secondary mb-4">Login to continue to Workasana</p>
 
-      <form onSubmit={handleLogin}>
-        <div className='user-box'>
-          <input
-            type='email'
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            required
-          />
-          <label>Email</label>
-        </div>
+        <form onSubmit={handleLogin}>
+          <div className='user-box'>
+            <label>Email Address</label>
+            <input
+              type='email'
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="e.g. name@company.com"
+              required
+            />
+          </div>
 
-        <div className='user-box'>
-          <input
-            type='password'
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-          />
-          <label>Password</label>
-        </div>
+          <div className='user-box'>
+            <label>Password</label>
+            <input
+              type='password'
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              placeholder="••••••••"
+              required
+            />
+          </div>
 
-        <button type='submit' className='login-btn'>
-          Submit
-        </button>
+          <button type='submit' className='login-btn'>
+            Sign In
+          </button>
 
-        <button type='button' className='guest-btn' onClick={handleGuestLogin}>
-          Login as Guest
-        </button>
-        <br />
-        <br />
-        <Link className='sign' to='/signup'>
-          Sign Up
-        </Link>
-      </form>
+          <button type='button' className='guest-btn' onClick={handleGuestLogin}>
+            Try as Guest
+          </button>
+          
+          <div className="sign-link-container">
+            Don't have an account? <Link to='/signup'>Create Account</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
