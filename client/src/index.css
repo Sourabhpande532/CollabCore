@@ -112,6 +112,55 @@ a {
   color: var(--text-secondary) !important;
 }
 
+/* Sidebar Toggle Button (Mobile Only) */
+@media (max-width: 991.98px) {
+  button[aria-label="Toggle Sidebar"] {
+    color: var(--text-primary) !important;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  [data-theme="light"] button[aria-label="Toggle Sidebar"] {
+    background: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  button[aria-label="Toggle Sidebar"]:hover {
+    background: var(--primary-color) !important;
+    color: white !important;
+    transform: scale(1.05);
+  }
+}
+
+/* Theme Toggle Button (Global) */
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  width: 42px;
+  height: 42px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--primary-color) !important;
+  color: white !important;
+  transform: rotate(30deg) scale(1.1);
+}
+
 .card {
   background-color: var(--card-bg);
   border: 1px solid var(--glass-border);
@@ -143,13 +192,15 @@ a {
 }
 
 /* Global Table Theme Overrides */
-.table, .table > :not(caption) > * > * {
+.table,
+.table> :not(caption)>*>* {
   color: var(--text-primary) !important;
   background-color: transparent !important;
   border-bottom-color: var(--glass-border) !important;
 }
 
-.table thead th, .table thead td {
+.table thead th,
+.table thead td {
   background-color: rgba(0, 0, 0, 0.05) !important;
   color: var(--text-secondary) !important;
   border-bottom: 2px solid var(--glass-border) !important;
@@ -158,7 +209,8 @@ a {
   font-size: 0.8rem !important;
 }
 
-[data-theme="dark"] .table thead th, [data-theme="dark"] .table thead td {
+[data-theme="dark"] .table thead th,
+[data-theme="dark"] .table thead td {
   background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
@@ -179,14 +231,16 @@ a {
 }
 
 /* Global Form Theme Overrides */
-.form-control, .form-select {
+.form-control,
+.form-select {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--glass-border) !important;
   transition: all 0.2s ease !important;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
   border-color: var(--primary-color) !important;
