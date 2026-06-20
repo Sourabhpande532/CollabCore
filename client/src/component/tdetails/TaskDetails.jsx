@@ -19,7 +19,14 @@ const TaskDetails = () => {
     });
     setTask(res.data.data.task);
   };
-  if (!task) return <p>Loading...</p>;
+  if (!task)
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "50vh" }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   const daysLeft = task.dueDate
     ? Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24))
     : "N/A";

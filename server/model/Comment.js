@@ -1,0 +1,10 @@
+const mongoose = require("mongoose");
+
+const commentSchema = new mongoose.Schema({
+  text: { type: String, required: true },
+  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project", required: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "WorkasanaSignupUser", required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("Comment", commentSchema);

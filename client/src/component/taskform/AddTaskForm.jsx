@@ -200,14 +200,14 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
         </div>
 
         {/* Buttons */}
-        <div className='d-flex gap-2 mt-3'>
-          <button type='submit' className='btn btn-primary w-50'>
+        <div className='d-flex gap-3 mt-4'>
+          <button type='submit' className='btn btn-primary flex-grow-1'>
             Create
           </button>
 
           <button
             type='button'
-            className='btn btn-secondary w-50'
+            className='btn btn-secondary flex-grow-1'
             onClick={() => {
               setForm(initialState);
               onClose();

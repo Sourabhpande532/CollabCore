@@ -22,6 +22,7 @@ app.use("/auth/teams", require("./routes/team"));
 app.use("/auth/tags", require("./routes/tag"));
 app.use("/auth/tasks", require("./routes/task"));
 app.use("/auth/report", require("./routes/report"));
+app.use("/auth/comments", require("./routes/comment"));
 
 app.use((err, _req, res, next) => {
   const status = err.statusCode || 500;

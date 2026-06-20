@@ -113,9 +113,11 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
             </h5>
             <button
               type="button"
-              className="btn-close"
+              className="close-btn"
               onClick={onClose}
-            ></button>
+            >
+              &times;
+            </button>
           </div>
 
           {/* BODY (Scrollable) */}
@@ -244,7 +246,7 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
 
           {/* FOOTER (Always Visible) */}
           <div className="modal-footer">
-            <button className="btn btn-primary" onClick={handleSubmit}>
+            <button className="btn btn-primary me-2" onClick={handleSubmit}>
               Create Task
             </button>
             <button className="btn btn-secondary" onClick={onClose}>

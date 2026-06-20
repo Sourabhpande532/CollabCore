@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&display=swap');
 
 :root {
   --primary-color: #6366f1;
@@ -40,7 +40,7 @@
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Karla', sans-serif;
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text-primary);

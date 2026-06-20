@@ -148,6 +148,11 @@ const MyTasks = ({ refresh }) => {
       <div className='task-grid'>
         {loading ? (
           <ShimmerGrid count={15} />
+        ) : tasks.length === 0 ? (
+          <div className="w-100 text-center py-5" style={{ gridColumn: "1 / -1" }}>
+            <h5 className="text-secondary fw-bold">Task not found</h5>
+            <p className="text-muted">Try adjusting your filters.</p>
+          </div>
         ) : (
           tasks.map((task) => (
             <div

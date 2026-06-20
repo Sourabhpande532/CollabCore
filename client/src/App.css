@@ -32,6 +32,19 @@
   flex-wrap: wrap;
 }
 
+.table-responsive {
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+}
+
+/* Fix dropdown options white-on-white issue in dark theme */
+select option {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
 .top-actions select {
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -254,4 +267,13 @@
 
 [data-theme="dark"] .member-row:hover {
   background: rgba(255, 255, 255, 0.02);
+}
+
+/* Dashboard Responsive Action Buttons */
+@media (max-width: 576px) {
+  .dashboard-action-btn {
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 8px !important;
+  }
 }

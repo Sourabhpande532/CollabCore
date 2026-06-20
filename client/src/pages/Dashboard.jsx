@@ -31,13 +31,13 @@ const Dashboard = () => {
     <div className="dashboard-page">
       {/* Projects Section */}
       <section className="mb-5">
-        <div className='d-flex justify-content-between align-items-center mb-4'>
+        <div className='dashboard-section-header d-flex justify-content-between align-items-center mb-4'>
           <div>
             <h2 className='fw-bold mb-0'>Projects</h2>
-            <p className="text-secondary mb-0">Manage your workspace projects</p>
+            <p className="text-secondary mb-0 d-none d-sm-block">Manage your workspace projects</p>
           </div>
           <button
-            className='btn btn-primary shadow-sm'
+            className='btn btn-primary shadow-sm dashboard-action-btn'
             onClick={() => setShowProjectModal(true)}>
             + New Project
           </button>
@@ -49,13 +49,13 @@ const Dashboard = () => {
 
       {/* Tasks Section */}
       <section className="mb-5">
-        <div className='d-flex justify-content-between align-items-center mb-4'>
+        <div className='dashboard-section-header d-flex justify-content-between align-items-center mb-4'>
           <div>
             <h2 className='fw-bold mb-0'>My Tasks</h2>
-            <p className="text-secondary mb-0">Track your personal progress</p>
+            <p className="text-secondary mb-0 d-none d-sm-block">Track your personal progress</p>
           </div>
           <button
-            className='btn btn-primary shadow-sm'
+            className='btn btn-primary shadow-sm dashboard-action-btn'
             onClick={() => setShowTaskModal(true)}>
             + Add Tasks
           </button>
