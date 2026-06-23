@@ -1,8 +1,8 @@
-# Workasana - Project & Task Management System
+# CollabCore - Project & Task Management System
 
 ---
 
-A MERN Stack **Workasana** project management system to manage projects, create and assign tasks, track progress, and organize teams efficiently with secure authentication.  
+A MERN Stack **CollabCore** project management system to manage projects, create and assign tasks, track progress, and organize teams efficiently with secure authentication.  
 Built with a React frontend, Express/Node backend, MongoDB database, and JWT-based authentication.
 
 ---
