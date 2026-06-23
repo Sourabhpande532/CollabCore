@@ -6,7 +6,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
-      <h5 className='logo'>workasana</h5>
+      <h5 className='logo'>collabcore</h5>
 
       <Link to='/' onClick={() => setIsOpen(false)}>
         <span>📊</span> Dashboard
