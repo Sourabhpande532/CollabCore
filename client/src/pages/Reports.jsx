@@ -39,7 +39,7 @@ const Reports = () => {
   return (
     <div className='reports-page animate-fade-in'>
       <div className='mb-4'>
-        <h2 className='fw-bold mb-0'>Workasana Reports</h2>
+        <h2 className='fw-bold mb-0'>CollabCore Reports</h2>
         <p className='text-secondary'>
           Visualize your team's productivity and progress
         </p>

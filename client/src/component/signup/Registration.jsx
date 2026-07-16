@@ -21,7 +21,7 @@ const Registration = () => {
     <div className="signup-page-container">
       <div className='signup-box animate-fade-in'>
         <h2>Create Account</h2>
-        <p className="text-center text-secondary mb-4">Join Workasana today</p>
+        <p className="text-center text-secondary mb-4">Join collabcore today</p>
 
         <form onSubmit={register}>
           <div className='user-box'>

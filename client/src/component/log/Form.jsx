@@ -31,7 +31,7 @@ const Form = () => {
     <div className="login-page-container">
       <div className='login-box animate-fade-in'>
         <h2>Welcome Back</h2>
-        <p className="text-center text-secondary mb-4">Login to continue to Workasana</p>
+        <p className="text-center text-secondary mb-4">Login to continue to collabcore</p>
 
         <form onSubmit={handleLogin}>
           <div className='user-box'>
