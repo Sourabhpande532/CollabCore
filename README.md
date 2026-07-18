@@ -49,11 +49,7 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 ## Reference Images 
 
-![](./assets/Workasana.png)
----
-![](./assets/tracking.png)
----
-![](./assets/login.png)
+![](./assets/content.png)
 
 ---
 
@@ -283,7 +279,7 @@ PORT=4001
 NODE_ENV=development
 
 # Database
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/workasana
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/CollaCore
 
 # JWT
 JWT_SECRET=your_super_secret_key
