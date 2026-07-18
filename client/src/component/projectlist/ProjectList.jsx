@@ -7,21 +7,21 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import ProjectShimmerGrid from "../common/ProjectShimmerGrid";
 import useLoading from "../../hooks/useLoading";
-const ProjectPage = ({ refresh }) => {
+const ProjectPage = ({ refresh, searchQuery = "" }) => {
   const [projects, setProjects] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search] = useState("");
   const [sort, setSort] = useState("");
   const { loading, startLoading, stopLoading } = useLoading();
   const navigate = useNavigate();
   useEffect(() => {
     fetchProject();
-  }, [search, sort, refresh]);
+  }, [search, sort, refresh, searchQuery]);
 
   const fetchProject = async () => {
     try {
       startLoading();
       const res = await axios.get("/projects", {
-        params: { search, sort },
+        params: { search: search || searchQuery, sort },
       });
       setProjects(res.data.data.project);
     } catch (error) {
@@ -32,6 +32,10 @@ const ProjectPage = ({ refresh }) => {
   };
 
   const deleteProject = async (id) => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
     await axios.delete(`/projects/${id}`);
     setProjects((prev) => prev.filter((p) => p._id !== id));
     toast.success("Deleted project");
@@ -40,12 +44,6 @@ const ProjectPage = ({ refresh }) => {
   return (
     <div className='project-container'>
       <div className='project-toolbar'>
-        <input
-          type='text'
-          placeholder='Search project'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
         <select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value=''>--Sort--</option>
           <option value='name_asc'>Name A-Z</option>

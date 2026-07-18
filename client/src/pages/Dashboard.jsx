@@ -16,19 +16,62 @@ const Dashboard = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const fetchProjects = () => {
-    getProjects().then((res) => setProjects(res.data?.data?.project || []));
+    getProjects()
+      .then((res) => setProjects(res.data?.data?.project || []))
+      .catch(() => setProjects([]));
   };
   const fetchTasks = () => {
-    getTasks().then((res) => setTasks(res.data?.data?.tasks || []));
+    getTasks()
+      .then((res) => setTasks(res.data?.data?.tasks || []))
+      .catch(() => setTasks([]));
   };
   useEffect(() => {
     fetchProjects();
     fetchTasks();
   }, []);
 
+  const handleAddProject = () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    setShowProjectModal(true);
+  };
+
+  const handleAddTask = () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    setShowTaskModal(true);
+  };
+  
   return (
     <div className="dashboard-page">
+      {/* Global Search Section */}
+      <section 
+        className="mb-4 py-2"
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 1020,
+          background: "var(--bg-gradient)", // Matches the body background
+          margin: "0 -10px",
+          padding: "10px",
+        }}
+      >
+        <input
+          type="text"
+          className="form-control form-control-lg shadow-sm"
+          placeholder="Search by project or task..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </section>
+
       {/* Projects Section */}
       <section className="mb-5">
         <div className='dashboard-section-header d-flex justify-content-between align-items-center mb-4'>
@@ -38,12 +81,12 @@ const Dashboard = () => {
           </div>
           <button
             className='btn btn-primary shadow-sm dashboard-action-btn'
-            onClick={() => setShowProjectModal(true)}>
+            onClick={handleAddProject}>
             + New Project
           </button>
         </div>
         <div className='projects-grid-wrapper'>
-          <ProjectPage refresh={refreshProjects} />
+          <ProjectPage refresh={refreshProjects} searchQuery={searchQuery} />
         </div>
       </section>
 
@@ -56,12 +99,12 @@ const Dashboard = () => {
           </div>
           <button
             className='btn btn-primary shadow-sm dashboard-action-btn'
-            onClick={() => setShowTaskModal(true)}>
+            onClick={handleAddTask}>
             + Add Tasks
           </button>
         </div>
 
-        <MyTasks refresh={refreshTasks} />
+        <MyTasks refresh={refreshTasks} searchQuery={searchQuery} />
       </section>
 
       {/* Modals */}

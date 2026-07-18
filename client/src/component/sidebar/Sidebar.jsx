@@ -6,7 +6,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
-      <h5 className='logo'>CollabCore</h5>
+      <h5 className='logo'>
+        <Link to="/">CollabCore</Link>
+      </h5>
 
       <Link to='/' onClick={() => setIsOpen(false)}>
         <span>📊</span> Dashboard
@@ -24,11 +26,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <div style={{ flexGrow: 1 }}></div>
 
       {isAuthenticated ? (
-        <Link to='/login' className="logout-link" onClick={() => logout()}>
+        <Link to='/login' className='logout-link' onClick={() => logout()}>
           <span>🚪</span> Logout
         </Link>
       ) : (
-        <Link to='/login'><span>🔑</span> Login</Link>
+        <Link to='/login'>
+          <span>🔑</span> Login
+        </Link>
       )}
     </div>
   );

@@ -13,15 +13,28 @@ const Team = () => {
   }, []);
 
   const fetchTeams = async () => {
-    const res = await axios.get("/teams");
-    setTeams(res.data.data.team);
+    try {
+      const res = await axios.get("/teams");
+      setTeams(res.data.data.team || []);
+    } catch (error) {
+      console.error(error);
+      setTeams([]);
+    }
+  };
+
+  const handleAddTeam = () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    setShowModal(true);
   };
 
   return (
     <div className='teams-page'>
       <div className='teams-header'>
         <h2>Teams</h2>
-        <button className='primary-btn' onClick={() => setShowModal(true)}>
+        <button className='primary-btn' onClick={handleAddTeam}>
           + New Team
         </button>
       </div>

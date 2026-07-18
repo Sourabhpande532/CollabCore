@@ -47,9 +47,10 @@ exports.getReportIfClosedTask = async (req, res, next) => {
       "team project",
     );
     const byTeam = {};
-    tasks.forEach(
-      (task) => (byTeam[task.team.name] = (byTeam[task.team.name] || 0) + 1),
-    );
+    tasks.forEach((task) => {
+      const teamName = task.team ? task.team.name : "Unassigned";
+      byTeam[teamName] = (byTeam[teamName] || 0) + 1;
+    });
     res.json(byTeam);
   } catch (error) {
     return next(error);

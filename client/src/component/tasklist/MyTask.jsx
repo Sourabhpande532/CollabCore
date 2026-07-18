@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import ShimmerGrid from "../common/ShimmerGrid";
 import useLoading from "../../hooks/useLoading";
 
-const MyTasks = ({ refresh }) => {
+const MyTasks = ({ refresh, searchQuery = "" }) => {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [teams, setTeams] = useState([]);
@@ -67,6 +67,10 @@ const MyTasks = ({ refresh }) => {
     setSearchParams(newParams);
   };
   const deleteTask = async (id) => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
     try {
       await axios.delete(`/tasks/${id}`);
       setTasks((prev) => prev.filter((task) => task._id !== id));
@@ -76,6 +80,10 @@ const MyTasks = ({ refresh }) => {
     }
   };
   const markComplete = async (id) => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
     try {
       await axios.post(`/tasks/${id}`, { status: "Completed" });
       setTasks((prev) =>
@@ -154,7 +162,16 @@ const MyTasks = ({ refresh }) => {
             <p className="text-muted">Try adjusting your filters.</p>
           </div>
         ) : (
-          tasks.map((task) => (
+          tasks
+            .filter((task) => {
+              if (!searchQuery) return true;
+              const q = searchQuery.toLowerCase();
+              return (
+                task.name.toLowerCase().includes(q) ||
+                (task.project?.name || "").toLowerCase().includes(q)
+              );
+            })
+            .map((task) => (
             <div
               key={task._id}
               className='shadow-sm task-card'

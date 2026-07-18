@@ -4,6 +4,6 @@ const commentCtrl = require("../controller/commentController");
 const auth = require("../middleware/auth");
 
 app.post("/", auth, commentCtrl.addComment);
-app.get("/project/:projectId", auth, commentCtrl.getProjectComments);
+app.get("/project/:projectId", commentCtrl.getProjectComments);
 
 module.exports = app;

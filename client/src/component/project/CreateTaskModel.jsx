@@ -249,7 +249,7 @@ const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {
             <button className="btn btn-primary me-2" onClick={handleSubmit}>
               Create Task
             </button>
-            <button className="btn btn-secondary" onClick={onClose}>
+            <button className="btn btn-secondary text-black" onClick={onClose}>
               Cancel
             </button>
           </div>

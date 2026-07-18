@@ -2,22 +2,36 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../api/axiosHelper";
 import "./taskDetails.css";
+import EditTaskModal from "../taskform/EditTaskForm";
+
 const TaskDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [task, setTask] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    axios.get(`/tasks/${id}`).then((res) => {
-      setTask(res.data.data.task);
-    });
+    axios
+      .get(`/tasks/${id}`)
+      .then((res) => {
+        setTask(res.data.data.task);
+      })
+      .catch((error) => console.error(error));
   }, [id]);
 
   const updateStatus = async (newStaus) => {
-    const res = await axios.put(`/tasks/${id}/status`, {
-      status: newStaus,
-    });
-    setTask(res.data.data.task);
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    try {
+      const res = await axios.put(`/tasks/${id}/status`, {
+        status: newStaus,
+      });
+      setTask(res.data.data.task);
+    } catch (error) {
+      console.error(error);
+    }
   };
   if (!task)
     return (
@@ -30,11 +44,24 @@ const TaskDetails = () => {
   const daysLeft = task.dueDate
     ? Math.ceil((new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24))
     : "N/A";
+  const handleEditTask = () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    setIsEditing(true);
+  };
+
   return (
     <div className='container mt-4 task-details-container'>
-      <button className='btn btn-secondary mb-3' onClick={() => navigate(-1)}>
-        Back
-      </button>
+      <div className="d-flex justify-content-between mb-3">
+        <button className='btn btn-secondary' onClick={() => navigate(-1)}>
+          Back
+        </button>
+        <button className='btn btn-primary' onClick={handleEditTask}>
+          Edit Task
+        </button>
+      </div>
 
       <div className='card p-4 shadow-sm'>
         <h3 className='mb-4'>{task?.name}</h3>
@@ -49,7 +76,7 @@ const TaskDetails = () => {
             </p>
             <p>
               <strong>Owners:</strong>{" "}
-              {task.owners.map((o) => o.name).join(", ")}
+              {task.owners?.map((o) => o.name).join(", ")}
             </p>
             <p>
               <strong>Tags:</strong>{" "}
@@ -94,6 +121,17 @@ const TaskDetails = () => {
           )}
         </div>
       </div>
+
+      {isEditing && (
+        <EditTaskModal 
+          task={task} 
+          onClose={() => setIsEditing(false)} 
+          onUpdated={(updatedTask) => {
+            setTask(updatedTask);
+            setIsEditing(false);
+          }} 
+        />
+      )}
     </div>
   );
 };

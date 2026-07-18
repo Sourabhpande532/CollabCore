@@ -14,7 +14,7 @@ const Navbar = ({ toggleSidebar }) => {
           >
             <span className="fs-3">☰</span>
           </button>
-          <h4 className="m-0 fw-bold d-lg-none">workasana</h4>
+          <h4 className="m-0 fw-bold d-lg-none">CollabCore</h4>
         </div>
 
         <div className="d-flex align-items-center gap-3">

@@ -22,8 +22,16 @@ API_URL.interceptors.response.use(
     ) {
       // remove token
       localStorage.removeItem("userToken");
-      // redirect to login
-      window.location.href = "/login";
+
+      // Redirect users to Login page ONLY for protected actions
+      const method = error.config?.method?.toLowerCase();
+      if (method && ["post", "put", "delete", "patch"].includes(method)) {
+        window.location.href = "/login";
+      } else {
+        // For GET requests, we don't force redirect, allowing the user to browse
+        // even if data fails to load due to being unauthenticated.
+        console.warn("Unauthenticated request:", method);
+      }
     }
     return Promise.reject(error);
   },

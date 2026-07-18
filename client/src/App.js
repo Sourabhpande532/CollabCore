@@ -5,7 +5,6 @@ import { Signup } from "./pages/Signup";
 import { Signin } from "./pages/Signin";
 import { Toaster } from "react-hot-toast";
 import { Dashboard } from "./pages/Dashboard";
-import { PrivateRoute } from "./component/ProtectedRoute/PrivateRoute";
 import { Project } from "./pages/Project";
 import { Team } from "./pages/Team";
 import { Reports } from "./pages/Reports";
@@ -34,9 +33,7 @@ function App() {
         <Route
           path='/'
           element={
-            <PrivateRoute>
               <Layout />
-            </PrivateRoute>
           }>
           <Route index element={<Dashboard />} />
           <Route path='/project' element={<Project />} />

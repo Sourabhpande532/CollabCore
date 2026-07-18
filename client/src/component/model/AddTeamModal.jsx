@@ -99,7 +99,7 @@ const AddTeamModal = ({ onClose, onCreated }) => {
 
         {/* Actions */}
         <div className='modal-actions'>
-          <button className='btn btn-secondary' onClick={onClose}>
+          <button className='btn btn-secondary text-black' onClick={onClose}>
             Cancel
           </button>
           <button className='btn btn-primary' onClick={createTeam}>

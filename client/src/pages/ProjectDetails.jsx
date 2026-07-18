@@ -36,6 +36,10 @@ const ProjectDetails = () => {
   };
 
   const handlePostComment = async () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
     if (!newComment.trim()) return;
     try {
       await addComment({ projectId: id, text: newComment });
@@ -49,18 +53,28 @@ const ProjectDetails = () => {
   };
 
   const fetchProject = async () => {
-    const res = await axios.get("/projects");
-    const found = res.data.data.project.find((p) => p._id === id);
-    setProject(found);
+    try {
+      const res = await axios.get("/projects");
+      const found = res.data.data.project.find((p) => p._id === id);
+      setProject(found);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fetchTasks = async () => {
     setLoading(true);
-    const params = Object.fromEntries(searchParams.entries());
-    params.project = id;
-    const res = await axios.get("/tasks", { params });
-    setTasks(res.data.data.tasks);
-    setLoading(false);
+    try {
+      const params = Object.fromEntries(searchParams.entries());
+      params.project = id;
+      const res = await axios.get("/tasks", { params });
+      setTasks(res.data.data.tasks || []);
+    } catch (error) {
+      console.error(error);
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateFilter = (key, value) => {
@@ -74,6 +88,14 @@ const ProjectDetails = () => {
   };
 
   const STATUS_OPTIONS = ["To Do", "In Progress", "Completed", "Blocked"];
+
+  const handleAddTask = () => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    setShowModal(true);
+  };
 
   return (
     <div className='project-page'>
@@ -100,7 +122,7 @@ const ProjectDetails = () => {
             ))}
           </select>
 
-          <button className="btn btn-primary ms-sm-auto dashboard-action-btn" onClick={() => setShowModal(true)}>+ New Task</button>
+          <button className="btn btn-primary ms-sm-auto dashboard-action-btn" onClick={handleAddTask}>+ New Task</button>
         </div>
 
         {tasks?.length === 0 && (

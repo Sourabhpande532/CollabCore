@@ -207,7 +207,7 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
 
           <button
             type='button'
-            className='btn btn-secondary flex-grow-1'
+            className='btn btn-secondary text-black flex-grow-1'
             onClick={() => {
               setForm(initialState);
               onClose();

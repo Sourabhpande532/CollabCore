@@ -31,7 +31,8 @@
   max-height: 90vh !important;
   display: flex !important;
   flex-direction: column !important;
-  overflow-y: auto !important; /* Fixed: Allow container scroll if body is missing */
+  overflow-y: auto !important;
+  /* Fixed: Allow container scroll if body is missing */
   animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -44,8 +45,8 @@
 
 /* 3. MODAL HEADER */
 .modal-header,
-.custom-modal > h3:first-child,
-.modal-box > h3:first-child {
+.custom-modal>h3:first-child,
+.modal-box>h3:first-child {
   padding: 1.25rem 2rem !important;
   border-bottom: 1px solid var(--glass-border) !important;
   display: flex !important;
@@ -59,8 +60,8 @@
 .modal-header h3,
 .modal-header h5,
 .modal-header .modal-title,
-.custom-modal > h3:first-child,
-.modal-box > h3:first-child {
+.custom-modal>h3:first-child,
+.modal-box>h3:first-child {
   font-size: 1.5rem !important;
   font-weight: 800 !important;
   color: var(--text-primary) !important;
@@ -77,16 +78,17 @@
 }
 
 /* Handling legacy structure where everything is direct child of container */
-.custom-modal > div:not(.modal-header):not(.modal-footer):not(.modal-actions),
-.modal-box > div:not(.modal-header):not(.modal-footer):not(.modal-actions) {
-  padding: 0 !important; /* Avoid double padding if body class is used */
+.custom-modal>div:not(.modal-header):not(.modal-footer):not(.modal-actions),
+.modal-box>div:not(.modal-header):not(.modal-footer):not(.modal-actions) {
+  padding: 0 !important;
+  /* Avoid double padding if body class is used */
 }
 
 /* 5. MODAL FOOTER / ACTIONS */
 .modal-footer,
 .modal-actions,
-.modal-box > .modal-actions,
-.custom-modal > .modal-actions {
+.modal-box>.modal-actions,
+.custom-modal>.modal-actions {
   padding: 1.25rem 2rem !important;
   border-top: 1px solid var(--glass-border) !important;
   display: flex !important;
@@ -151,10 +153,12 @@
   cursor: pointer !important;
 }
 
+
+
 .btn-close:hover,
 .close-btn:hover {
   opacity: 1 !important;
-  background: #ef4444 !important;
+  /* background: #ef4444 !important; */
   color: white !important;
   transform: rotate(90deg);
 }
@@ -171,16 +175,22 @@
 
 /* 10. ANIMATIONS */
 @keyframes overlayFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modalSlideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(30px) scale(0.98);
   }
-  to { 
+
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
@@ -191,13 +201,17 @@
   .modal-overlay {
     padding: 1rem !important;
   }
-  
-  .modal-box, .custom-modal, .modal-content {
+
+  .modal-box,
+  .custom-modal,
+  .modal-content {
     max-height: 95vh !important;
     border-radius: 20px !important;
   }
-  
-  .modal-header, .modal-body, .modal-footer {
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
     padding: 1rem 1.25rem !important;
   }
 }
