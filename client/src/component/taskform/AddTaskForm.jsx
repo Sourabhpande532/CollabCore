@@ -3,6 +3,7 @@ import { createTask, getUsers } from "../../api/task.api";
 import { getProjects } from "../../api/project.api";
 import { getTeams } from "../../api/team.api";
 import toast from "react-hot-toast";
+import axios from "../../api/axiosHelper";
 
 const initialState = {
   name: "",
@@ -20,12 +21,36 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
   const [projects, setProjects] = useState([]);
   const [users, setUsers] = useState([]);
   const [teams, setTeams] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
+  const [newTagInput, setNewTagInput] = useState("");
 
   useEffect(() => {
     getProjects().then((res) => setProjects(res.data?.data?.project || []));
     getUsers().then((res) => setUsers(res.data?.data?.users || []));
     getTeams().then((res) => setTeams(res.data?.data?.team || []));
+    axios.get("/tags").then((res) => {
+      const fetched = res.data?.data?.tag?.map(t => t.name) || [];
+      setAvailableTags(fetched.length > 0 ? fetched : ["Urgent", "Bug", "Immediate", "Tech"]);
+    }).catch(() => setAvailableTags(["Urgent", "Bug", "Immediate", "Tech"]));
   }, []);
+
+  const handleAddTag = async () => {
+    const trimmed = newTagInput.trim();
+    if (!trimmed) return;
+    if (availableTags.includes(trimmed)) {
+      toast.error("Tag already exists");
+      return;
+    }
+    try {
+      await axios.post("/tags", { name: trimmed });
+      setAvailableTags([...availableTags, trimmed]);
+      setForm({ ...form, tags: [...form.tags, trimmed] });
+      setNewTagInput("");
+      toast.success("Tag created successfully");
+    } catch (err) {
+      toast.error("Failed to create tag");
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -179,7 +204,7 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           <div className='col-12 mb-3'>
             <label className='form-label'>Tags</label>
             <div>
-              {["Urgent", "Bug", "Immediate", "Tech"].map((tag) => (
+              {availableTags.map((tag) => (
                 <div key={tag} className='form-check form-check-inline'>
                   <input
                     type='checkbox'
@@ -195,6 +220,28 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
                   <label className='form-check-label'>{tag}</label>
                 </div>
               ))}
+            </div>
+            <div className="d-flex mt-2" style={{ maxWidth: '300px' }}>
+              <input 
+                type="text" 
+                className="form-control form-control-sm me-2" 
+                placeholder="New Tag Name" 
+                value={newTagInput}
+                onChange={(e) => setNewTagInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddTag();
+                  }
+                }}
+              />
+              <button 
+                type="button" 
+                className="btn btn-sm btn-outline-primary"
+                onClick={handleAddTag}
+              >
+                Add
+              </button>
             </div>
           </div>
         </div>
