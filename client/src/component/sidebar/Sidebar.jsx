@@ -22,6 +22,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       <Link to='/tasks' onClick={() => setIsOpen(false)}>
         <span>✅</span> Tasks
       </Link>
+      <Link to='/landing' onClick={() => setIsOpen(false)}>
+        <span>🌐</span> Overview
+      </Link>
 
       <div style={{ flexGrow: 1 }}></div>
 

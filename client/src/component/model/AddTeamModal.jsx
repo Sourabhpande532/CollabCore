@@ -17,8 +17,13 @@ const AddTeamModal = ({ onClose, onCreated }) => {
   }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get("/users");
-    setUsers(res.data.data.users);
+    try {
+      const res = await axios.get("/users");
+      setUsers(res.data?.data?.users || res.data?.users || []);
+    } catch (err) {
+      console.error("Error fetching users:", err);
+      setUsers([]);
+    }
   };
 
   const toggleMember = (userId) => {
@@ -35,75 +40,89 @@ const AddTeamModal = ({ onClose, onCreated }) => {
   };
 
   const createTeam = async () => {
-    if (!form.name) {
+    if (!form.name.trim()) {
       toast.error("Team name is required");
       return;
     }
-    await axios.post("/teams", form);
-    onCreated();
-    onClose();
-    toast.success("Team Added");
+    try {
+      await axios.post("/teams", form);
+      if (onCreated) onCreated();
+      onClose();
+      toast.success("Team Added");
+    } catch (err) {
+      console.error("Error creating team:", err);
+      toast.error(err.response?.data?.error || "Failed to create team");
+    }
   };
 
   return ReactDOM.createPortal(
     <div className='modal-overlay' onClick={onClose}>
       <div className='custom-modal' onClick={(e) => e.stopPropagation()}>
-        <h3>Create New Team</h3>
-
-        {/* Team Name */}
-        <div className='form-group'>
-          <label>Team Name</label>
-          <input
-            type='text'
-            className="form-control"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder='Enter team name'
-          />
+        {/* Header */}
+        <div className="modal-header">
+          <h5 className="modal-title fw-bold">Create New Team</h5>
+          <button type="button" className="close-btn" onClick={onClose} aria-label="Close">
+            &times;
+          </button>
         </div>
 
-        {/* Description */}
-        <div className='form-group'>
-          <label>Description</label>
-          <textarea
-            className="form-control"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            placeholder='Enter description'
-            rows={3}
-          />
-        </div>
+        {/* Scrollable Body */}
+        <div className="modal-body">
+          {/* Team Name */}
+          <div className='form-group mb-3'>
+            <label className="form-label">Team Name</label>
+            <input
+              type='text'
+              className="form-control"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder='Enter team name'
+            />
+          </div>
 
-        {/* Members */}
-        <div className='form-group'>
-          <label>Add Members</label>
-          <div className='members-grid'>
-            {users.map((user) => {
-              const selected = form.members.includes(user._id);
+          {/* Description */}
+          <div className='form-group mb-3'>
+            <label className="form-label">Description</label>
+            <textarea
+              className="form-control"
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              placeholder='Enter description'
+              rows={3}
+            />
+          </div>
 
-              return (
-                <div
-                  key={user._id}
-                  className={`member-card ${selected ? "selected" : ""}`}
-                  onClick={() => toggleMember(user._id)}
-                >
-                  <div className='avatar'>
-                    {user.name.charAt(0).toUpperCase()}
+          {/* Members */}
+          <div className='form-group mb-3'>
+            <label className="form-label">Add Members</label>
+            <div className='members-grid'>
+              {users.map((user) => {
+                const selected = form.members.includes(user._id);
+
+                return (
+                  <div
+                    key={user._id}
+                    className={`member-card ${selected ? "selected" : ""}`}
+                    onClick={() => toggleMember(user._id)}
+                  >
+                    <div className='avatar'>
+                      {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                    </div>
+                    <span>{user.name}</span>
                   </div>
-                  <span>{user.name}</span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Actions */}
-        <div className='modal-actions'>
-          <button className='btn btn-secondary text-black' onClick={onClose}>
-            Cancel
-          </button>
+        {/* Actions Footer */}
+        <div className='modal-footer'>
           <button className='btn btn-primary' onClick={createTeam}>
             Create Team
+          </button>
+          <button className='btn btn-secondary' onClick={onClose}>
+            Cancel
           </button>
         </div>
       </div>
@@ -111,4 +130,5 @@ const AddTeamModal = ({ onClose, onCreated }) => {
     document.body
   );
 };
+
 export default AddTeamModal;

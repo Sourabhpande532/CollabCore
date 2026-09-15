@@ -1,37 +1,16 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
-import { getTasks } from "../api/task.api";
+import { useState } from "react";
 import Modal from "../component/model/Model";
 import AddProjectForm from "../component/projectform/AddProjectForm";
 import AddTaskForm from "../component/taskform/AddTaskForm";
-import { getProjects } from "../api/project.api";
 import { MyTasks } from "../component/tasklist/MyTask";
 import { ProjectPage } from "../component/projectlist/ProjectList";
 
 const Dashboard = () => {
-  const [projects, setProjects] = useState([]);
-  const [tasks, setTasks] = useState([]);
   const [refreshProjects, setRefreshProject] = useState(false);
   const [refreshTasks, setRefreshTasks] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
-
-  const fetchProjects = () => {
-    getProjects()
-      .then((res) => setProjects(res.data?.data?.project || []))
-      .catch(() => setProjects([]));
-  };
-  const fetchTasks = () => {
-    getTasks()
-      .then((res) => setTasks(res.data?.data?.tasks || []))
-      .catch(() => setTasks([]));
-  };
-  useEffect(() => {
-    fetchProjects();
-    fetchTasks();
-  }, []);
 
   const handleAddProject = () => {
     if (!localStorage.getItem("userToken")) {
@@ -48,9 +27,9 @@ const Dashboard = () => {
     }
     setShowTaskModal(true);
   };
-  
+
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page animate-fade-in">
       {/* Global Search Section */}
       <section 
         className="mb-4 py-2"
@@ -58,7 +37,7 @@ const Dashboard = () => {
           position: "sticky",
           top: 0,
           zIndex: 1020,
-          background: "var(--bg-gradient)", // Matches the body background
+          background: "var(--bg-gradient)",
           margin: "0 -10px",
           padding: "10px",
         }}
@@ -100,7 +79,7 @@ const Dashboard = () => {
           <button
             className='btn btn-primary shadow-sm dashboard-action-btn'
             onClick={handleAddTask}>
-            + Add Tasks
+            + Add Task
           </button>
         </div>
 

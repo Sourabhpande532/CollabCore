@@ -5,10 +5,14 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useTheme } from "../../context/ThemeContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ClosedTasksChart = ({ data }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const labels = Object.keys(data);
   const values = Object.values(data);
 
@@ -18,17 +22,30 @@ const ClosedTasksChart = ({ data }) => {
       {
         data: values,
         backgroundColor: [
-          "#198754",
-          "#0d6efd",
-          "#dc3545",
-          "#6f42c1",
-          "#fd7e14",
+          "#10b881",
+          "#0284c7",
+          "#f59e0b",
+          "#8b5cf6",
+          "#ef4444",
         ],
+        borderWidth: isDark ? 2 : 1,
+        borderColor: isDark ? "#111827" : "#ffffff",
       },
     ],
   };
 
-  return <Pie data={chartData} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: isDark ? "#9ca3af" : "#475569",
+        },
+      },
+    },
+  };
+
+  return <Pie data={chartData} options={options} />;
 };
 
 export default ClosedTasksChart;

@@ -1,33 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #6366f1;
-  --primary-hover: #4f46e5;
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --primary-color: #0f766e;
+  --primary-hover: #0d9488;
+  --primary-rgb: 15, 118, 110;
+  --bg-gradient: #f8fafc;
+  --glass-bg: #ffffff;
+  --glass-border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --card-bg: #ffffff;
   --sidebar-bg: #ffffff;
-  --nav-bg: rgba(255, 255, 255, 0.8);
-  --transition-speed: 0.3s;
+  --nav-bg: #ffffff;
+  --input-bg: #f8fafc;
+  --transition-speed: 0.25s;
   --border-radius: 12px;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
 }
 
 [data-theme="dark"] {
-  --primary-color: #818cf8;
-  --primary-hover: #6366f1;
-  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --card-bg: #1e293b;
-  --sidebar-bg: #1e293b;
-  --nav-bg: rgba(15, 23, 42, 0.8);
+  --primary-color: #14b8a6;
+  --primary-hover: #2dd4bf;
+  --primary-rgb: 20, 184, 166;
+  --bg-gradient: #090d16;
+  --glass-bg: #111827;
+  --glass-border: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --card-bg: #111827;
+  --sidebar-bg: #111827;
+  --nav-bg: #111827;
+  --input-bg: #1f2937;
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
   --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
 }
@@ -40,9 +44,8 @@
 }
 
 body {
-  font-family: 'Karla', sans-serif;
-  background: var(--bg-gradient);
-  background-attachment: fixed;
+  font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-gradient);
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -65,9 +68,7 @@ a {
 }
 
 .glass-morphism {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--card-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow);
 }
@@ -75,8 +76,9 @@ a {
 .btn-primary {
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
+  color: #ffffff !important;
   border-radius: var(--border-radius);
-  padding: 0.6rem 1.2rem;
+  padding: 0.55rem 1.25rem;
   font-weight: 600;
   transition: all var(--transition-speed) ease;
 }
@@ -84,8 +86,8 @@ a {
 .btn-primary:hover {
   background-color: var(--primary-hover) !important;
   border-color: var(--primary-hover) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
 }
 
 .themed-table-container {
@@ -95,132 +97,113 @@ a {
   overflow: hidden;
 }
 
-/* Task Card Improvements */
-.task-card {
+/* Task & Project Card Styling */
+.task-card,
+.project-card,
+.team-card {
   background: var(--card-bg) !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--glass-border) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 
-.task-card:hover {
-  transform: translateY(-5px);
+.task-card:hover,
+.project-card:hover,
+.team-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-color) !important;
   box-shadow: var(--shadow-lg) !important;
 }
 
-.text-muted, .text-secondary {
+.text-muted, 
+.text-secondary {
   color: var(--text-secondary) !important;
+}
+
+.text-primary-dark {
+  color: var(--text-primary) !important;
 }
 
 /* Sidebar Toggle Button (Mobile Only) */
 @media (max-width: 991.98px) {
   button[aria-label="Toggle Sidebar"] {
     color: var(--text-primary) !important;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+    display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: var(--input-bg) !important;
     border: 1px solid var(--glass-border) !important;
     transition: all 0.2s ease !important;
   }
 
-  [data-theme="light"] button[aria-label="Toggle Sidebar"] {
-    background: rgba(0, 0, 0, 0.05) !important;
-  }
-
   button[aria-label="Toggle Sidebar"]:hover {
     background: var(--primary-color) !important;
-    color: white !important;
-    transform: scale(1.05);
+    color: #ffffff !important;
   }
 }
 
 /* Theme Toggle Button (Global) */
 .theme-toggle-btn {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: var(--input-bg) !important;
   border: 1px solid var(--glass-border) !important;
   color: var(--text-primary) !important;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   display: flex !important;
   align-items: center;
   justify-content: center;
   border-radius: 50% !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-[data-theme="light"] .theme-toggle-btn {
-  background: rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.25s ease !important;
+  cursor: pointer;
 }
 
 .theme-toggle-btn:hover {
   background: var(--primary-color) !important;
-  color: white !important;
-  transform: rotate(30deg) scale(1.1);
+  color: #ffffff !important;
+  transform: rotate(20deg) scale(1.05);
 }
 
 .card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text-primary) !important;
   transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
 }
 
 /* Global Table Theme Overrides */
 .table,
-.table> :not(caption)>*>* {
+.table > :not(caption) > * > * {
   color: var(--text-primary) !important;
   background-color: transparent !important;
   border-bottom-color: var(--glass-border) !important;
 }
 
 .table thead th,
-.table thead td {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+.table thead td,
+.table-light {
+  background-color: var(--input-bg) !important;
   color: var(--text-secondary) !important;
   border-bottom: 2px solid var(--glass-border) !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  font-size: 0.8rem !important;
-}
-
-[data-theme="dark"] .table thead th,
-[data-theme="dark"] .table thead td {
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em !important;
 }
 
 .table tbody tr {
   background-color: transparent !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.15s ease !important;
 }
 
 .table-hover tbody tr:hover {
-  background-color: rgba(99, 102, 241, 0.05) !important;
+  background-color: rgba(var(--primary-rgb), 0.06) !important;
 }
 
 .table-responsive {
@@ -230,13 +213,14 @@ a {
   background: var(--card-bg);
 }
 
-/* Global Form Theme Overrides */
+/* Global Form & Input Controls */
 .form-control,
 .form-select {
-  background-color: var(--card-bg) !important;
+  background-color: var(--input-bg) !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--glass-border) !important;
-  transition: all 0.2s ease !important;
+  border-radius: 8px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .form-control:focus,
@@ -244,17 +228,39 @@ a {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
   border-color: var(--primary-color) !important;
-  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2) !important;
 }
 
 .form-control::placeholder {
   color: var(--text-secondary) !important;
-  opacity: 0.7;
+  opacity: 0.6;
+}
+
+select option {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -262,10 +268,10 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-secondary);
+  background: var(--glass-border);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+  background: var(--text-secondary);
 }

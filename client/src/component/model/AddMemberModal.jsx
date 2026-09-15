@@ -9,7 +9,13 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    axios.get("/users").then((res) => setUsers(res.data.data.users));
+    axios
+      .get("/users")
+      .then((res) => setUsers(res.data?.data?.users || res.data?.users || []))
+      .catch((err) => {
+        console.error("Error fetching users:", err);
+        setUsers([]);
+      });
   }, []);
 
   const addMember = async () => {
@@ -17,54 +23,52 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
       toast.error("Please select a member");
       return;
     }
-    await axios.post(`/teams/${teamId}/members`, { userId: selected });
-    onAdded();
-    onClose();
-    toast.success("Added Member");
+    try {
+      await axios.post(`/teams/${teamId}/members`, { userId: selected });
+      if (onAdded) onAdded();
+      onClose();
+      toast.success("Added Member");
+    } catch (err) {
+      console.error("Error adding member:", err);
+      toast.error(err.response?.data?.error || "Failed to add member");
+    }
   };
 
   return ReactDOM.createPortal(
-    <div className='modal-overlay' onClick={onClose} style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10000,
-      backdropFilter: 'blur(8px)'
-    }}>
-      <div className='modal-box' onClick={(e) => e.stopPropagation()} style={{
-        backgroundColor: 'var(--card-bg, #fff)',
-        color: 'var(--text-primary, #000)',
-        padding: '2rem',
-        borderRadius: '12px',
-        maxWidth: '400px',
-        width: '90%',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
-      }}>
-        <h4 style={{ marginBottom: '1.5rem', fontWeight: '700' }}>Add New Member</h4>
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='modal-box sm' onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="modal-header">
+          <h5 className="modal-title fw-bold">Add New Member</h5>
+          <button type="button" className="close-btn" onClick={onClose} aria-label="Close">
+            &times;
+          </button>
+        </div>
 
-        <select 
-          onChange={(e) => setSelected(e.target.value)}
-          className="form-select"
-          style={{ marginBottom: '1.5rem' }}
-        >
-          <option value=''>Select Member</option>
-          {users.map((u) => (
-            <option key={u._id} value={u._id}>
-              {u.name}
-            </option>
-          ))}
-        </select>
+        {/* Body */}
+        <div className="modal-body">
+          <label className="form-label mb-2">Select Team Member</label>
+          <select 
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
+            className="form-select"
+          >
+            <option value=''>Select Member</option>
+            {users.map((u) => (
+              <option key={u._id} value={u._id}>
+                {u.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <div className='modal-actions' style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+        {/* Footer */}
+        <div className='modal-footer'>
           <button className='btn btn-primary' onClick={addMember}>
             Add Member
+          </button>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Cancel
           </button>
         </div>
       </div>
@@ -72,4 +76,5 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
     document.body
   );
 };
+
 export default AddMemberModal;

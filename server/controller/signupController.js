@@ -14,13 +14,14 @@ exports.registerUser = async (req, res) => {
     if (exists) {
       return res
         .status(409)
-        .json({ success: false, message: `${exists.email} already exits.` });
+        .json({ success: false, message: `${exists.email} already exists.` });
     }
     const hash = await bcrypt.hash(password, 10);
     const user = await SignupUser.create({ name, email, password: hash });
     res.status(201).json({ success: true, message: "Signup Successful", user });
   } catch (error) {
-    console.error("Error occured registration", error.message);
+    console.error("Error occurred registration", error.message);
+    res.status(500).json({ success: false, message: "Registration failed" });
   }
 };
 
@@ -67,9 +68,11 @@ exports.users = async (req, res) => {
 
 exports.getAllUser = async (req, res) => {
   try {
-    const users = await SignupUser.find();
+    const limit = req.query.limit ? parseInt(req.query.limit) : 7;
+    const users = await SignupUser.find().select("-password").limit(limit);
     res.status(200).json({ success: true, data: { users } });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({ success: false, message: "Failed to fetch users" });
   }
 };

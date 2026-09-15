@@ -2,7 +2,7 @@ const Project = require("../model/Project");
 
 exports.obtainedProjects = async (req, res) => {
   try {
-    const { search, sort } = req.query;
+    const { search, sort, limit } = req.query;
     let filter = {};
     if (search) {
       filter.name = { $regex: search, $options: "i" };
@@ -10,12 +10,15 @@ exports.obtainedProjects = async (req, res) => {
     let sortOption = { createdAt: -1 };
 
     if (sort === "name_asc") {
-      sortOption = { name: -1 };
-    } else if (sort === "name_desc") {
       sortOption = { name: 1 };
+    } else if (sort === "name_desc") {
+      sortOption = { name: -1 };
     }
-    const project = await Project.find(filter).sort(sortOption);
-    res.status(201).json({
+
+    const maxLimit = limit ? parseInt(limit) : 7;
+    const project = await Project.find(filter).sort(sortOption).limit(maxLimit);
+    
+    res.status(200).json({
       message: "Fetch projects",
       result: project.length,
       success: true,
@@ -23,7 +26,7 @@ exports.obtainedProjects = async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({message: "Sever error"})
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -39,10 +42,11 @@ exports.createProject = async (req, res) => {
       .json({ success: true, message: "Added it", data: { project } });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-exports.deleteProject = async (req, res, next) => {
+exports.deleteProject = async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
 
@@ -52,5 +56,6 @@ exports.deleteProject = async (req, res, next) => {
     });
   } catch (error) {
     console.error(error.message);
+    res.status(500).json({ message: "Server error" });
   }
 };

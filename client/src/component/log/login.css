@@ -1,118 +1,110 @@
 .login-page-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-gradient);
-    padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-gradient);
+  padding: 20px;
 }
 
 .login-box {
-    width: 100%;
-    max-width: 420px;
-    padding: 3rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
 }
 
 .login-box h2 {
-    margin-bottom: 2rem;
-    color: var(--text-primary);
-    text-align: center;
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: -1px;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.75rem;
+  letter-spacing: -0.5px;
 }
 
 .login-box .user-box {
-    position: relative;
-    margin-bottom: 1.5rem;
+  position: relative;
+  margin-bottom: 1.25rem;
 }
 
 .login-box .user-box input {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    color: var(--text-primary);
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-[data-theme="dark"] .login-box .user-box input {
-    background: rgba(255, 255, 255, 0.05);
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
 .login-box .user-box label {
-    position: absolute;
-    top: -22px;
-    left: 5px;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .login-box .user-box input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
 }
 
 .login-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
 }
 
 .login-btn:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+  background: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 .guest-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.75rem;
 }
 
 .guest-btn:hover {
-    background: rgba(99, 102, 241, 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
 }
 
 .sign-link-container {
-    text-align: center;
-    margin-top: 2rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .sign-link-container a {
-    color: var(--primary-color);
-    font-weight: 700;
-    text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 600;
 }
 
 .sign-link-container a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

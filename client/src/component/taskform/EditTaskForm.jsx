@@ -10,18 +10,29 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
   const [teams, setTeams] = useState([]);
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+
+  const initialProjectId = typeof task?.project === "object" ? task?.project?._id : (task?.project || "");
+  const initialTeamId = typeof task?.team === "object" ? task?.team?._id : (task?.team || "");
+  const initialOwners = Array.isArray(task?.owners)
+    ? task.owners.map((o) => (typeof o === "object" ? o._id : o))
+    : [];
+  const initialDueDate = task?.dueDate
+    ? new Date(task.dueDate).toISOString().split("T")[0]
+    : "";
 
   const [form, setForm] = useState({
     name: task?.name || "",
-    project: task?.project?._id || task?.project || "",
-    team: task?.team?._id || task?.team || "",
-    owners: task?.owners?.map(o => o._id || o) || [],
-    tags: task?.tags || [],
-    dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
-    timeToComplete: task?.timeToComplete || "",
+    project: initialProjectId,
+    team: initialTeamId,
+    owners: initialOwners,
+    dueDate: initialDueDate,
+    timeToComplete: task?.timeToComplete || 1,
     priority: task?.priority || "Medium",
     status: task?.status || "To Do",
   });
+
+  const [tagInput, setTagInput] = useState((task?.tags || []).join(", "));
 
   /* ---------------- FETCH DATA ---------------- */
 
@@ -32,18 +43,30 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
   }, []);
 
   const fetchTeams = async () => {
-    const res = await getTeams();
-    setTeams(res.data?.data?.team || []);
+    try {
+      const res = await getTeams();
+      setTeams(res.data?.data?.team || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchUsers = async () => {
-    const res = await getUsers();
-    setUsers(res.data?.data?.users || []);
+    try {
+      const res = await getUsers();
+      setUsers(res.data?.data?.users || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchProjects = async () => {
-    const res = await getProjects();
-    setProjects(res.data?.data?.project || []);
+    try {
+      const res = await getProjects();
+      setProjects(res.data?.data?.project || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   /* ---------------- HANDLERS ---------------- */
@@ -58,87 +81,74 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.project || !form.team) {
+    if (!form.name.trim() || !form.project || !form.team) {
       toast.error("Task Name, Project & Team are required");
       return;
     }
 
+    const parsedTags = tagInput
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
+    const payload = {
+      name: form.name.trim(),
+      project: form.project,
+      team: form.team,
+      owners: form.owners,
+      tags: parsedTags,
+      dueDate: form.dueDate ? form.dueDate : undefined,
+      timeToComplete: Number(form.timeToComplete) || 1,
+      priority: form.priority,
+      status: form.status,
+    };
+
     try {
-      const res = await updateTask(task._id, {
-        name: form.name,
-        project: form.project,
-        team: form.team,
-        owners: form.owners,
-        tags: form.tags,
-        dueDate: form.dueDate,
-        timeToComplete: Number(form.timeToComplete),
-        priority: form.priority,
-        status: form.status,
-      });
-      // Update UI
-      onUpdated(res.data.data.task);
-      onClose();
+      setSubmitting(true);
+      const res = await updateTask(task._id, payload);
+
+      if (onUpdated) {
+        await onUpdated(res.data?.data?.task);
+      }
       toast.success("Task Updated Successfully");
+      onClose();
     } catch (err) {
       console.error("Update task failed", err);
       toast.error(err.response?.data?.message || "Failed to update task");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   /* ---------------- UI ---------------- */
 
   return ReactDOM.createPortal(
-    <div
-      className="modal-overlay"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10000,
-        backdropFilter: "blur(8px)",
-      }}
-      onClick={onClose}
-    >
+    <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-dialog modal-dialog-centered modal-lg"
         onClick={(e) => e.stopPropagation()}
-        style={{ margin: "auto", width: "100%", maxWidth: "800px" }}
       >
-        <div
-          className="modal-content"
-          style={{
-            maxHeight: "90vh",
-            backgroundColor: "var(--card-bg, #fff)",
-            color: "var(--text-primary, #000)",
-            borderRadius: "12px",
-            border: "1px solid var(--glass-border, #ddd)",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <div className="modal-content">
           {/* HEADER */}
           <div className="modal-header">
             <h5 className="modal-title">Edit Task</h5>
             <button
               type="button"
-              style={{background:'red', color:"black"}}
+              className="close-btn"
               onClick={onClose}
-            ></button>
+              aria-label="Close"
+            >
+              &times;
+            </button>
           </div>
 
           {/* BODY (Scrollable) */}
-          <div className="modal-body" style={{ overflowY: "auto" }}>
-            <div className="container-fluid">
+          <div className="modal-body">
+            <div className="container-fluid p-0">
               <div className="row g-3">
                 {/* TASK NAME */}
                 <div className="col-12">
+                  <label className="form-label">Task Name</label>
                   <input
                     className="form-control"
                     placeholder="Task name"
@@ -149,6 +159,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* PROJECT */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Project</label>
                   <select
                     className="form-select"
                     value={form.project}
@@ -167,6 +178,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* TEAM */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Team</label>
                   <select
                     className="form-select"
                     value={form.team}
@@ -175,9 +187,9 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
                     }
                   >
                     <option value="">Select Team</option>
-                    {teams.map((team) => (
-                      <option key={team._id} value={team._id}>
-                        {team.name}
+                    {teams.map((t) => (
+                      <option key={t._id} value={t._id}>
+                        {t.name}
                       </option>
                     ))}
                   </select>
@@ -185,6 +197,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* TIME */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Time (Days)</label>
                   <input
                     type="number"
                     className="form-control"
@@ -201,6 +214,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* DUE DATE */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Due Date</label>
                   <input
                     type="date"
                     className="form-control"
@@ -213,6 +227,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* PRIORITY */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Priority</label>
                   <select
                     className="form-select"
                     value={form.priority}
@@ -223,14 +238,15 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
                       })
                     }
                   >
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
                   </select>
                 </div>
 
                 {/* STATUS */}
                 <div className="col-12 col-md-6">
+                  <label className="form-label">Status</label>
                   <select
                     className="form-select"
                     value={form.status}
@@ -250,23 +266,19 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
 
                 {/* TAGS */}
                 <div className="col-12">
+                  <label className="form-label">Tags (comma separated)</label>
                   <input
+                    type="text"
                     className="form-control"
-                    placeholder="Tags (comma separated)"
-                    value={form.tags.join(", ")}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        tags: e.target.value.split(",").map((t) => t.trim()).filter(t => t),
-                      })
-                    }
+                    placeholder="e.g. Urgent, Frontend, Bug"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
                   />
                 </div>
 
                 {/* OWNERS */}
                 <div className="col-12">
-                  <label className="form-label fw-semibold">Owners</label>
-
+                  <label className="form-label">Assign Owners</label>
                   <div className="row g-2">
                     {users.map((user) => {
                       const selected = form.owners.includes(user._id);
@@ -274,17 +286,15 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
                       return (
                         <div key={user._id} className="col-6 col-sm-4 col-md-3">
                           <div
-                            className={`border rounded p-2 text-center ${selected
-                              ? "bg-primary text-white border-primary"
-                              : ""
-                              }`}
-                            style={{ cursor: "pointer", fontSize: "14px" }}
+                            className={`owner-card-btn ${selected ? "selected" : ""}`}
                             onClick={() => handleOwnerSelect(user._id)}
                           >
-                            <div className="fw-bold">
-                              {user.name.charAt(0).toUpperCase()}
+                            <div className="avatar-initial">
+                              {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                             </div>
-                            <small>{user.name}</small>
+                            <div className="owner-name" title={user.name}>
+                              {user.name}
+                            </div>
                           </div>
                         </div>
                       );
@@ -295,12 +305,16 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
             </div>
           </div>
 
-          {/* FOOTER (Always Visible) */}
+          {/* FOOTER */}
           <div className="modal-footer">
-            <button className="btn btn-primary me-2" onClick={handleSubmit}>
-              Update Task
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmit}
+              disabled={submitting}
+            >
+              {submitting ? "Updating..." : "Update Task"}
             </button>
-            <button className="btn btn-secondary text-black" onClick={onClose}>
+            <button className="btn btn-secondary" onClick={onClose}>
               Cancel
             </button>
           </div>

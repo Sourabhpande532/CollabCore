@@ -99,7 +99,11 @@ exports.getFilterTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    const newTask = Task.create(req.body);
+    let newTask = await Task.create(req.body);
+    newTask = await Task.findById(newTask._id)
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name email");
     res.status(201).json({ success: true, data: { task: newTask } });
   } catch (error) {
     console.error(error.message, "creating task");
@@ -113,7 +117,10 @@ exports.updateTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    })
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name email");
     res.status(200).json({ success: true, data: { task } });
   } catch (error) {
     console.error(error.message);
@@ -182,7 +189,10 @@ exports.updateTaskStatus = async (req, res) => {
       req.params.id,
       { status },
       { new: true },
-    );
+    )
+      .populate("project", "name")
+      .populate("team", "name")
+      .populate("owners", "name email");
     res.json({ success: true, data: { task } });
   } catch (error) {
     console.error(error.message);

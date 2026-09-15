@@ -176,7 +176,7 @@ const MyTasks = ({ refresh, searchQuery = "" }) => {
               key={task._id}
               className='shadow-sm task-card'
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(`tasks/${task._id}`)}>
+              onClick={() => navigate(`/tasks/${task._id}`)}>
               <div className={`badge ${task.status.replace(" ", "")}`}>
                 {task.status}
               </div>

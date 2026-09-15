@@ -1,1 +1,1 @@
-export const baseUrl = "http://localhost:4001/auth";
+export const baseUrl = "https://collabcore-2ozg.onrender.com/auth";
