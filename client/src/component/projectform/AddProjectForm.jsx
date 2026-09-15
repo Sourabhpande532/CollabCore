@@ -13,16 +13,27 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.name.trim()) {
+      toast.error("Project name is required");
+      return;
+    }
+
     try {
+      setSubmitting(true);
       await createProject(form);
-      onSuccess();
-      onClose();
+      if (onSuccess) onSuccess();
+      if (onClose) onClose();
       toast.success("Project Added successfully");
     } catch (err) {
-      console.log(err);
-      toast.error("Failed to create project");
+      console.error("Failed to create project:", err);
+      const msg = err.response?.data?.message || err.response?.data?.error || "Failed to create project";
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -64,8 +75,8 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
           Cancel
         </button>
 
-        <button type='submit' className='btn btn-primary'>
-          Create Project
+        <button type='submit' className='btn btn-primary' disabled={submitting}>
+          {submitting ? "Creating..." : "Create Project"}
         </button>
       </div>
     </form>

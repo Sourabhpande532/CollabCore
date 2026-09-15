@@ -4,8 +4,10 @@ const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
 const corsOption = {
-  origin: "*",
+  origin: true,
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
 };
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]); 

@@ -10,7 +10,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <Link to="/">CollabCore</Link>
       </h5>
 
-      <Link to='/' onClick={() => setIsOpen(false)}>
+      <Link to='/dashboard' onClick={() => setIsOpen(false)}>
         <span>📊</span> Dashboard
       </Link>
       <Link to='/team' onClick={() => setIsOpen(false)}>

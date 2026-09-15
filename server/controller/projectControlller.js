@@ -33,16 +33,41 @@ exports.obtainedProjects = async (req, res) => {
 exports.createProject = async (req, res) => {
   try {
     const { name, description } = req.body;
-    if (!name || !description)
-      return res.status(400).json({ message: "missing required fields" });
-    const create = new Project(req.body);
-    const project = await create.save();
-    res
-      .status(201)
-      .json({ success: true, message: "Added it", data: { project } });
+    if (!name || !name.trim()) {
+      return res.status(400).json({ success: false, message: "Project name is required" });
+    }
+
+    const trimmedName = name.trim();
+    const existingProject = await Project.findOne({
+      name: { $regex: `^${trimmedName}$`, $options: "i" }
+    });
+
+    if (existingProject) {
+      return res.status(400).json({
+        success: false,
+        message: `Project name '${trimmedName}' already exists. Please choose a different name.`
+      });
+    }
+
+    const project = await Project.create({
+      name: trimmedName,
+      description: description ? description.trim() : ""
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Project created successfully",
+      data: { project }
+    });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error creating project:", error.message);
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "Project name already exists. Please choose a different name."
+      });
+    }
+    res.status(500).json({ success: false, message: "Failed to create project", error: error.message });
   }
 };
 

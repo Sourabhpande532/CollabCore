@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "../../api/axiosHelper";
+import "./modelcss/model.css";
 import "./modelcss/addMember.css";
 import toast from "react-hot-toast";
 
