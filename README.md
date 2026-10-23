@@ -49,7 +49,7 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 ## Reference Images 
 
-![](./assets/content.png)
+![](./assets/landing.png)
 
 ---
 
