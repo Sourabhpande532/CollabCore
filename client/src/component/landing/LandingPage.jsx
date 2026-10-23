@@ -31,7 +31,7 @@ const LandingPage = () => {
       {/* Landing Navigation Header */}
       <nav className='landing-nav'>
         <Link to='/' className='landing-brand'>
-          <span>❖ CollabCore</span>
+          <span style={{ whiteSpace: "nowrap" }}>❖ CollabCore</span>
           <span className='landing-brand-badge'>Workspace</span>
         </Link>
 
@@ -129,7 +129,7 @@ const LandingPage = () => {
             <button
               onClick={() => handleActivity("/dashboard")}
               className='btn-primary-teal w-100 justify-content-center'>
-              Open Dashboard
+              Go to Workspace →
             </button>
           ) : (
             <>

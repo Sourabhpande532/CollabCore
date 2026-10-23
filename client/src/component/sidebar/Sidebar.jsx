@@ -1,14 +1,25 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./sidebar.css";
+
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const { isAuthenticated, logout } = useAuth();
 
   return (
     <div className={`sidebar ${isOpen ? "open" : ""}`}>
-      <h5 className='logo'>
-        <Link to="/dashboard">CollabCore</Link>
-      </h5>
+      <div className="sidebar-header d-flex justify-content-between align-items-center mb-4">
+        <h5 className='logo m-0'>
+          <Link to="/dashboard" onClick={() => setIsOpen(false)}>CollabCore</Link>
+        </h5>
+        <button
+          type="button"
+          className="btn d-lg-none p-1 close-sidebar-btn"
+          onClick={() => setIsOpen(false)}
+          aria-label="Close Sidebar"
+        >
+          ✕
+        </button>
+      </div>
 
       <Link to='/dashboard' onClick={() => setIsOpen(false)}>
         <span>📊</span> Dashboard
