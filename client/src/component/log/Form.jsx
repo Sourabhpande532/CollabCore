@@ -12,7 +12,7 @@ const Form = () => {
     e.preventDefault();
     const success = await login(form);
     if (success) {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   };
   const handleGuestLogin = async () => {
@@ -23,7 +23,7 @@ const Form = () => {
     setForm(guestCredentials); // auto-fill inputs
     const success = await login(guestCredentials);
     if (success) {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   };
 
@@ -31,7 +31,7 @@ const Form = () => {
     <div className="login-page-container">
       <div className='login-box animate-fade-in'>
         <h2>Welcome Back</h2>
-        <p className="text-center text-secondary mb-4">Login to continue to collabcore</p>
+        <p className="text-center text-secondary mb-4">Sign in to continue to CollabCore</p>
 
         <form onSubmit={handleLogin}>
           <div className='user-box'>

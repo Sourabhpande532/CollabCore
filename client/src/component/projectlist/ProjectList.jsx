@@ -38,14 +38,14 @@ const ProjectPage = ({ refresh, searchQuery = "" }) => {
     }
     await axios.delete(`/projects/${id}`);
     setProjects((prev) => prev.filter((p) => p._id !== id));
-    toast.success("Deleted project");
+    toast.success("Project deleted successfully");
   };
 
   return (
     <div className='project-container'>
       <div className='project-toolbar'>
         <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value=''>--Sort--</option>
+          <option value=''>Sort by</option>
           <option value='name_asc'>Name A-Z</option>
           <option value='name_desc'>Name Z-A</option>
         </select>

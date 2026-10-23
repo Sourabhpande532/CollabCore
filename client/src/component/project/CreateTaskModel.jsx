@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import axios from "../../api/axiosHelper";
-import "./model.css";
+import "../model/modelcss/model.css";
 import toast from "react-hot-toast";
 
 const CreateTaskModal = ({ projectId, onClose, onCreated, projectName }) => {

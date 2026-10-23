@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error(error.message);
       toast.error(
-        error.response?.data?.message || "Invalide email or password",
+        error.response?.data?.message || "Invalid email or password",
       );
       return false;
     }

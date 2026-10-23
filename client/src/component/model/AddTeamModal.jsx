@@ -49,7 +49,7 @@ const AddTeamModal = ({ onClose, onCreated }) => {
       await axios.post("/teams", form);
       if (onCreated) onCreated();
       onClose();
-      toast.success("Team Added");
+      toast.success("Team created successfully");
     } catch (err) {
       console.error("Error creating team:", err);
       toast.error(err.response?.data?.error || "Failed to create team");

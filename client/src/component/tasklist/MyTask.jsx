@@ -74,7 +74,7 @@ const MyTasks = ({ refresh, searchQuery = "" }) => {
     try {
       await axios.delete(`/tasks/${id}`);
       setTasks((prev) => prev.filter((task) => task._id !== id));
-      toast.success("Deleted Task");
+      toast.success("Task deleted successfully");
     } catch (error) {
       toast.error("Failed to delete");
     }
@@ -91,7 +91,7 @@ const MyTasks = ({ refresh, searchQuery = "" }) => {
           task._id === id ? { ...task, status: "Completed" } : task,
         ),
       );
-      toast.success("Task Completed");
+      toast.success("Task completed successfully");
     } catch (error) {
       console.error(error);
     }
@@ -145,7 +145,7 @@ const MyTasks = ({ refresh, searchQuery = "" }) => {
         <select
           value={sort}
           onChange={(e) => updateFilter("sort", e.target.value)}>
-          <option value=''>Sort</option>
+          <option value=''>Sort by</option>
           <option value='due_asc'>Due Date ↑</option>
           <option value='due_desc'>Due Date ↓</option>
           <option value='priority'>Priority</option>
@@ -158,7 +158,7 @@ const MyTasks = ({ refresh, searchQuery = "" }) => {
           <ShimmerGrid count={15} />
         ) : tasks.length === 0 ? (
           <div className="w-100 text-center py-5" style={{ gridColumn: "1 / -1" }}>
-            <h5 className="text-secondary fw-bold">Task not found</h5>
+            <h5 className="text-secondary fw-bold">No tasks found</h5>
             <p className="text-muted">Try adjusting your filters.</p>
           </div>
         ) : (

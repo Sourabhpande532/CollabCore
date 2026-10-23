@@ -126,7 +126,7 @@ const ProjectDetails = () => {
         </div>
 
         {tasks?.length === 0 && (
-          <p className='alert alert-danger'>No Task for the Project</p>
+          <p className='alert alert-info'>No tasks found for this project</p>
         )}
 
         {/* TASK LIST */}

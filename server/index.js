@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
   res.status(200).send("Welcome to expressjs new library");
 });
 app.get("/photos", (req, res) => {
-  res.send("Welcome to photos libray");
+  res.send("Welcome to photos library");
 });
 
 const PORT = process.env.PORT || 4001;

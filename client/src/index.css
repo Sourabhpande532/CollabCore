@@ -90,6 +90,52 @@ a {
   box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
 }
 
+.btn-secondary {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius);
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--glass-border) !important;
+}
+
+.btn-outline-secondary {
+  color: var(--text-primary) !important;
+  border-color: var(--glass-border) !important;
+  background-color: transparent !important;
+  border-radius: var(--border-radius);
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--glass-border) !important;
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+[data-theme="dark"] .alert-secondary {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--glass-border) !important;
+}
+
+.border {
+  border-color: var(--glass-border) !important;
+}
+
 .themed-table-container {
   background: var(--card-bg);
   border: 1px solid var(--glass-border);

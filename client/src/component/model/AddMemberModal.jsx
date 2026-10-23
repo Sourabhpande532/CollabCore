@@ -28,7 +28,7 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
       await axios.post(`/teams/${teamId}/members`, { userId: selected });
       if (onAdded) onAdded();
       onClose();
-      toast.success("Added Member");
+      toast.success("Member added successfully");
     } catch (err) {
       console.error("Error adding member:", err);
       toast.error(err.response?.data?.error || "Failed to add member");

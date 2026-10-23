@@ -1,4 +1,6 @@
 const Task = require("../model/Task");
+require("../model/Team");
+require("../model/Project");
 
 exports.getReportsLastWeek = async (req, res) => {
   try {
