@@ -5,13 +5,14 @@
 .content {
   background: var(--bg-gradient);
   background-attachment: fixed;
-  transition: all var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) ease;
+  min-width: 0;
 }
 
 .navbar {
   border-bottom: 1px solid var(--glass-border);
-  z-index: 1000;
-  margin-top: 1rem;
+  z-index: 1030;
+  margin-top: 0.75rem;
   margin-left: 1rem;
   margin-right: 1rem;
   border-radius: var(--border-radius);
@@ -27,12 +28,30 @@
   color: white;
 }
 
+.workspace-footer {
+  border-top: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+}
+
+.workspace-footer-links a {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.workspace-footer-links a:hover {
+  color: var(--primary-color);
+}
+
 @media (max-width: 991.98px) {
   .content {
     margin-left: 0;
   }
-  
+
   .navbar {
+    margin-top: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }

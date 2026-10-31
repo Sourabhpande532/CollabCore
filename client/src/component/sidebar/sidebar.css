@@ -1,23 +1,31 @@
 .sidebar {
-  width: 260px;
+  width: 245px;
   height: 100vh;
   position: sticky;
   top: 0;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--glass-border);
-  padding: 1.5rem 1.25rem;
+  padding: 1.5rem 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  flex-shrink: 0;
   z-index: 1050;
   transition: transform 0.25s ease, left 0.25s ease, background-color var(--transition-speed);
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--primary-color);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+}
+
+.sidebar-icon {
+  width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
 }
 
 .close-sidebar-btn {
@@ -42,30 +50,42 @@
 }
 
 .sidebar a {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.68rem 0.95rem;
+  border-radius: 10px;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.94rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.2s ease;
 }
 
 .sidebar a:hover {
   background: var(--input-bg);
   color: var(--text-primary) !important;
-  transform: translateX(3px);
 }
 
 .sidebar a.active {
-  background: var(--primary-color);
-  color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+  background: rgba(var(--primary-rgb), 0.12);
+  color: var(--primary-color) !important;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .sidebar a.active {
+  background: rgba(var(--primary-rgb), 0.18);
+  color: var(--primary-color) !important;
+}
+
+.sidebar .logo a {
+  padding: 0;
+  color: var(--primary-color) !important;
+  background: transparent !important;
+  font-weight: 800;
+  font-size: 1.35rem;
 }
 
 .sidebar .logout-link {
-  margin-top: auto;
   color: #ef4444;
 }
 
@@ -82,12 +102,16 @@
   .sidebar {
     position: fixed;
     top: 0;
-    left: -280px;
-    width: 280px;
+    left: -275px;
+    width: 265px;
+    max-width: 82vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
     box-shadow: none;
     z-index: 1050;
   }
-  
+
   .sidebar.open {
     left: 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);

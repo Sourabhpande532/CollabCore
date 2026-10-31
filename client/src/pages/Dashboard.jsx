@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [projectSort, setProjectSort] = useState("");
 
   const handleAddProject = () => {
     if (!localStorage.getItem("userToken")) {
@@ -29,67 +30,85 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-page animate-fade-in">
-      {/* Global Search Section */}
-      <section 
-        className="mb-4 py-2"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1020,
-          background: "var(--bg-gradient)",
-          margin: "0 -10px",
-          padding: "10px",
-        }}
-      >
-        <input
-          type="text"
-          className="form-control form-control-lg shadow-sm"
-          placeholder="Search by project or task..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </section>
+    <div className='dashboard-page animate-fade-in'>
+      {/* Top Search Bar (Matches Reference PDF Screen 2) */}
+      <div className='dashboard-search-bar mb-4'>
+        <div className='position-relative'>
+          <input
+            type='text'
+            className='form-control pe-5'
+            style={{
+              height: "44px",
+              borderRadius: "10px",
+              background: "var(--card-bg)",
+            }}
+            aria-label='Search across projects and tasks'
+            placeholder='Search projects, tasks, teams, or #tags...'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery ? (
+            <button
+              type='button'
+              className='btn btn-sm position-absolute top-50 end-0 translate-middle-y me-2 text-secondary border-0'
+              aria-label='Clear search'
+              onClick={() => setSearchQuery("")}>
+              ✕
+            </button>
+          ) : (
+            <span
+              className='position-absolute top-50 end-0 translate-middle-y me-3 text-secondary'
+              style={{ pointerEvents: "none" }}>
+              🔍
+            </span>
+          )}
+        </div>
+      </div>
 
-      {/* Projects Section */}
-      <section className="mb-5">
-        <div className='dashboard-section-header d-flex justify-content-between align-items-center mb-4'>
-          <div>
-            <h2 className='fw-bold mb-0'>Projects</h2>
-            <p className="text-secondary mb-0 d-none d-sm-block">Manage your workspace projects</p>
+      {/* Projects Section (Header with inline Filter + "+ New Project" button) */}
+      <section className='mb-5'>
+        <div className='dashboard-section-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3'>
+          <div className='d-flex align-items-center gap-3 flex-wrap'>
+            <h2 className='fw-bold mb-0 fs-4'>Projects</h2>
+            <select
+              className='form-select form-select-sm w-auto'
+              style={{ minWidth: "130px", height: "34px", fontSize: "0.82rem" }}
+              aria-label='Filter or sort projects'
+              value={projectSort}
+              onChange={(e) => setProjectSort(e.target.value)}>
+              <option value=''>Filter: Newest</option>
+              <option value='name_asc'>Name (A–Z)</option>
+              <option value='name_desc'>Name (Z–A)</option>
+            </select>
           </div>
           <button
-            className='btn btn-primary shadow-sm dashboard-action-btn'
+            className='btn btn-primary btn-sm px-3 py-2 shadow-sm dashboard-action-btn'
             onClick={handleAddProject}>
             + New Project
           </button>
         </div>
         <div className='projects-grid-wrapper'>
-          <ProjectPage refresh={refreshProjects} searchQuery={searchQuery} />
+          <ProjectPage
+            refresh={refreshProjects}
+            searchQuery={searchQuery}
+            sort={projectSort}
+          />
         </div>
       </section>
 
-      {/* Tasks Section */}
-      <section className="mb-5">
-        <div className='dashboard-section-header d-flex justify-content-between align-items-center mb-4'>
-          <div>
-            <h2 className='fw-bold mb-0'>My Tasks</h2>
-            <p className="text-secondary mb-0 d-none d-sm-block">Track your personal progress</p>
-          </div>
-          <button
-            className='btn btn-primary shadow-sm dashboard-action-btn'
-            onClick={handleAddTask}>
-            + Add Task
-          </button>
-        </div>
-
-        <MyTasks refresh={refreshTasks} searchQuery={searchQuery} />
+      {/* My Tasks Section (Header + "+ New Task" button) */}
+      <section className='mb-4'>
+        <MyTasks
+          refresh={refreshTasks}
+          searchQuery={searchQuery}
+          onAddTask={handleAddTask}
+        />
       </section>
 
       {/* Modals */}
       <Modal
         show={showProjectModal}
-        title='Add Project'
+        title='Create New Project'
         onClose={() => setShowProjectModal(false)}>
         <AddProjectForm
           onSuccess={() => setRefreshProject((prev) => !prev)}
@@ -98,7 +117,7 @@ const Dashboard = () => {
       </Modal>
       <Modal
         show={showTaskModal}
-        title='Add Task'
+        title='Create New Task'
         onClose={() => setShowTaskModal(false)}>
         <AddTaskForm
           onSuccess={() => setRefreshTasks((prev) => !prev)}

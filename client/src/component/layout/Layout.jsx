@@ -10,13 +10,13 @@ const Layout = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   return (
-    <div className="layout d-flex">
+    <div className='layout d-flex'>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      
-      <div className="content flex-grow-1 min-vh-100">
+
+      <div className='content flex-grow-1 min-vh-100 d-flex flex-column'>
         <Navbar toggleSidebar={toggleSidebar} />
-        <main className="container-fluid px-4">
-          <div className="animate-fade-in">
+        <main className='container-fluid px-3 px-md-4 pb-5 flex-grow-1'>
+          <div className='animate-fade-in'>
             <Outlet />
           </div>
         </main>
@@ -24,17 +24,17 @@ const Layout = () => {
 
       {/* Mobile Sidebar Overlay */}
       {isOpen && (
-        <div 
-          className="sidebar-overlay d-lg-none" 
+        <div
+          className='sidebar-overlay d-lg-none'
           onClick={() => setIsOpen(false)}
           style={{
-            position: 'fixed',
+            position: "fixed",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'rgba(0,0,0,0.5)',
-            zIndex: 1045
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 1045,
           }}
         />
       )}

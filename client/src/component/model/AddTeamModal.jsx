@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 const AddTeamModal = ({ onClose, onCreated }) => {
   const [users, setUsers] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -41,18 +42,26 @@ const AddTeamModal = ({ onClose, onCreated }) => {
   };
 
   const createTeam = async () => {
+    if (submitting) return;
     if (!form.name.trim()) {
       toast.error("Team name is required");
       return;
     }
     try {
+      setSubmitting(true);
       await axios.post("/teams", form);
       if (onCreated) onCreated();
       onClose();
       toast.success("Team created successfully");
     } catch (err) {
       console.error("Error creating team:", err);
-      toast.error(err.response?.data?.error || "Failed to create team");
+      toast.error(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Failed to create team",
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -60,42 +69,54 @@ const AddTeamModal = ({ onClose, onCreated }) => {
     <div className='modal-overlay' onClick={onClose}>
       <div className='custom-modal' onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="modal-header">
-          <h5 className="modal-title fw-bold">Create New Team</h5>
-          <button type="button" className="close-btn" onClick={onClose} aria-label="Close">
+        <div className='modal-header'>
+          <h5 className='modal-title fw-bold'>Create New Team</h5>
+          <button
+            type='button'
+            className='close-btn'
+            onClick={onClose}
+            aria-label='Close'>
             &times;
           </button>
         </div>
 
         {/* Scrollable Body */}
-        <div className="modal-body">
+        <div className='modal-body'>
           {/* Team Name */}
           <div className='form-group mb-3'>
-            <label className="form-label">Team Name</label>
+            <label htmlFor='team-name-input' className='form-label'>
+              Team Name
+            </label>
             <input
+              id='team-name-input'
               type='text'
-              className="form-control"
+              className='form-control'
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder='Enter team name'
+              placeholder='Enter team name (e.g. Engineering, Design)'
             />
           </div>
 
           {/* Description */}
           <div className='form-group mb-3'>
-            <label className="form-label">Description</label>
+            <label htmlFor='team-desc-input' className='form-label'>
+              Description
+            </label>
             <textarea
-              className="form-control"
+              id='team-desc-input'
+              className='form-control'
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder='Enter description'
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+              placeholder='Describe this team’s responsibilities...'
               rows={3}
             />
           </div>
 
           {/* Members */}
           <div className='form-group mb-3'>
-            <label className="form-label">Add Members</label>
+            <label className='form-label'>Add Members</label>
             <div className='members-grid'>
               {users.map((user) => {
                 const selected = form.members.includes(user._id);
@@ -104,12 +125,11 @@ const AddTeamModal = ({ onClose, onCreated }) => {
                   <div
                     key={user._id}
                     className={`member-card ${selected ? "selected" : ""}`}
-                    onClick={() => toggleMember(user._id)}
-                  >
+                    onClick={() => toggleMember(user._id)}>
                     <div className='avatar'>
                       {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                     </div>
-                    <span>{user.name}</span>
+                    <span className='text-truncate'>{user.name}</span>
                   </div>
                 );
               })}
@@ -119,8 +139,11 @@ const AddTeamModal = ({ onClose, onCreated }) => {
 
         {/* Actions Footer */}
         <div className='modal-footer'>
-          <button className='btn btn-primary' onClick={createTeam}>
-            Create Team
+          <button
+            className='btn btn-primary'
+            onClick={createTeam}
+            disabled={submitting}>
+            {submitting ? "Creating..." : "Create Team"}
           </button>
           <button className='btn btn-secondary' onClick={onClose}>
             Cancel
@@ -128,7 +151,7 @@ const AddTeamModal = ({ onClose, onCreated }) => {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

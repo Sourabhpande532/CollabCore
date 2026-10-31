@@ -8,9 +8,10 @@ const corsOption = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  maxAge: 86400,
 };
 const dns = require("dns");
-dns.setServers(["8.8.8.8", "8.8.4.4"]); 
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 require("dotenv").config();
 dbConnect();
 
@@ -26,10 +27,10 @@ app.use("/auth/tasks", require("./routes/task"));
 app.use("/auth/report", require("./routes/report"));
 app.use("/auth/comments", require("./routes/comment"));
 
-app.use((err, _req, res, next) => {
+app.use((err, _req, res, _next) => {
   const status = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
-  return res.status(status).json({ message, stack: err.stack });
+  return res.status(status).json({ success: false, message });
 });
 
 app.get("/", (req, res) => {

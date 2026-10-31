@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import "../src/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Layout } from "./component/layout/Layout";
 
@@ -55,6 +55,35 @@ const PageLoader = () => (
   </div>
 );
 
+// Theme-aware 404 Not Found Page
+const NotFound = () => (
+  <div
+    className='d-flex justify-content-center align-items-center px-3'
+    style={{ minHeight: "100vh", background: "var(--bg-gradient)" }}>
+    <div
+      className='card p-4 p-md-5 text-center animate-fade-in'
+      style={{ maxWidth: "460px", width: "100%" }}>
+      <div
+        className='fw-bold mb-2'
+        style={{ fontSize: "3rem", color: "var(--primary-color)" }}>
+        404
+      </div>
+      <h3 className='fw-bold mb-2'>Page Not Found</h3>
+      <p className='text-secondary mb-4'>
+        The page you are looking for does not exist or may have been moved.
+      </p>
+      <div className='d-flex justify-content-center gap-3 flex-wrap'>
+        <Link to='/dashboard' className='btn btn-primary'>
+          Go to Dashboard
+        </Link>
+        <Link to='/' className='btn btn-outline-secondary'>
+          Back to Home
+        </Link>
+      </div>
+    </div>
+  </div>
+);
+
 function App() {
   return (
     <BrowserRouter>
@@ -62,8 +91,8 @@ function App() {
         position='top-right'
         toastOptions={{
           style: {
-            fontSize: "1rem",
-            borderRadius: "8px",
+            fontSize: "0.95rem",
+            borderRadius: "10px",
             background: "var(--card-bg)",
             color: "var(--text-primary)",
             border: "1px solid var(--glass-border)",
@@ -94,6 +123,9 @@ function App() {
             <Route path='/tasks' element={<Tasks />} />
             <Route path='/tasks/:id' element={<TaskDetails />} />
           </Route>
+
+          {/* 404 FALLBACK ROUTE */}
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

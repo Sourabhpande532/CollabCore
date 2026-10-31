@@ -15,9 +15,12 @@ exports.obtainedProjects = async (req, res) => {
       sortOption = { name: -1 };
     }
 
-    const maxLimit = limit ? parseInt(limit) : 7;
-    const project = await Project.find(filter).sort(sortOption).limit(maxLimit);
-    
+    const maxLimit = limit ? parseInt(limit, 10) : 50;
+    const project = await Project.find(filter)
+      .sort(sortOption)
+      .limit(maxLimit)
+      .lean();
+
     res.status(200).json({
       message: "Fetch projects",
       result: project.length,
@@ -34,40 +37,44 @@ exports.createProject = async (req, res) => {
   try {
     const { name, description } = req.body;
     if (!name || !name.trim()) {
-      return res.status(400).json({ success: false, message: "Project name is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Project name is required" });
     }
 
     const trimmedName = name.trim();
     const existingProject = await Project.findOne({
-      name: { $regex: `^${trimmedName}$`, $options: "i" }
+      name: { $regex: `^${trimmedName}$`, $options: "i" },
     });
 
     if (existingProject) {
       return res.status(400).json({
         success: false,
-        message: `Project name '${trimmedName}' already exists. Please choose a different name.`
+        message: `Project name '${trimmedName}' already exists. Please choose a different name.`,
       });
     }
 
     const project = await Project.create({
       name: trimmedName,
-      description: description ? description.trim() : ""
+      description: description ? description.trim() : "",
     });
 
     res.status(201).json({
       success: true,
       message: "Project created successfully",
-      data: { project }
+      data: { project },
     });
   } catch (error) {
     console.error("Error creating project:", error.message);
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        message: "Project name already exists. Please choose a different name."
+        message: "Project name already exists. Please choose a different name.",
       });
     }
-    res.status(500).json({ success: false, message: "Failed to create project", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to create project" });
   }
 };
 

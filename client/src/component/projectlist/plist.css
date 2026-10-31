@@ -1,90 +1,98 @@
 .project-container {
-  padding: 1.5rem 0;
+  padding: 0.25rem 0;
   width: 100%;
   box-sizing: border-box;
 }
 
-.project-toolbar {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.project-toolbar input,
-.project-toolbar select {
-  height: 42px;
-  padding: 0 1rem;
-  border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  color: var(--text-primary);
-  font-size: 14px;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(5px);
-}
-
-.project-toolbar input:focus,
-.project-toolbar select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-}
-
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1.25rem;
 }
 
 .project-card {
   background: var(--card-bg);
-  padding: 1.5rem;
+  padding: 1.35rem;
   border-radius: var(--border-radius);
   border: 1px solid var(--glass-border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.22s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 .project-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary-color);
 }
 
-.project-card h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
+.project-status-pill {
+  display: inline-block;
+  padding: 0.22rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.project-status-pill.InProgress,
+.project-status-pill.in-progress {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+}
+
+[data-theme="dark"] .project-status-pill.InProgress,
+[data-theme="dark"] .project-status-pill.in-progress {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+}
+
+.project-status-pill.Completed,
+.project-status-pill.completed {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+}
+
+[data-theme="dark"] .project-status-pill.Completed,
+[data-theme="dark"] .project-status-pill.completed {
+  background: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+}
+
+.project-card-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.45rem;
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.project-card p {
-  font-size: 0.9rem;
+.project-card-desc {
+  font-size: 0.86rem;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
+  margin-bottom: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.delete-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+.project-delete-icon-btn {
+  background: transparent;
   border: none;
+  color: var(--text-secondary);
   font-size: 0.85rem;
-  font-weight: 500;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
   cursor: pointer;
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  opacity: 0.65;
   transition: all 0.2s ease;
-  align-self: flex-start;
 }
 
-.delete-btn:hover {
-  background: #ef4444;
-  color: white;
+.project-delete-icon-btn:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.14);
+  color: #ef4444;
 }
 
 .text-decoration-none {

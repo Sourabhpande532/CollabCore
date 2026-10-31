@@ -9,30 +9,23 @@ exports.getReportsLastWeek = async (req, res) => {
     const tasks = await Task.find({
       status: "Completed",
       updatedAt: { $gte: date },
-    });
+    }).lean();
     res
       .status(200)
       .json({ success: true, count: tasks.length, data: { tasks } });
   } catch (error) {
     console.error("last week report error", error.message);
-    res.status(500).json({ success: false, message: "Server last-week-erro" });
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch last week report" });
   }
 };
-/* 
-DRY_RUN:
-TODAY: FEB 7, 2026
-const d = new Date();
-d.setData(d.getDate()-7);
-d.getDate() --> 7;
-7-7 = 0;
-JS CONVERT: JAN 31, 2026 (07 - 7 => 31)
-We filter tasks whose updatedAt is within the last 7 days
-$gte: somePastDate
-means from that date until now
-*/
+
 exports.getReportIfPending = async (req, res, next) => {
   try {
-    const tasks = await Task.find({ status: { $ne: "Completed" } });
+    const tasks = await Task.find({ status: { $ne: "Completed" } })
+      .select("timeToComplete")
+      .lean();
     const total = tasks.reduce(
       (acc, curr) => acc + (curr.timeToComplete || 0),
       0,
@@ -45,9 +38,9 @@ exports.getReportIfPending = async (req, res, next) => {
 
 exports.getReportIfClosedTask = async (req, res, next) => {
   try {
-    const tasks = await Task.find({ status: "Completed" }).populate(
-      "team project",
-    );
+    const tasks = await Task.find({ status: "Completed" })
+      .populate("team project")
+      .lean();
     const byTeam = {};
     tasks.forEach((task) => {
       const teamName = task.team ? task.team.name : "Unassigned";

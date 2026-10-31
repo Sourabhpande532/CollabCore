@@ -5,6 +5,14 @@
   justify-content: center;
   background: var(--bg-gradient);
   padding: 20px;
+  position: relative;
+}
+
+.auth-theme-toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
 }
 
 .signup-box {
@@ -15,6 +23,19 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-lg);
+}
+
+.auth-brand-link {
+  display: inline-block;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.auth-brand-link:hover {
+  color: var(--primary-hover);
 }
 
 .signup-box h2 {
@@ -104,9 +125,14 @@
   margin-top: 1rem;
 }
 
-.signup-btn:hover {
+.signup-btn:hover:not(:disabled) {
   background: var(--primary-hover);
   transform: translateY(-1px);
+}
+
+.signup-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .login-link-container {
@@ -123,4 +149,10 @@
 
 .login-link-container a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .signup-box {
+    padding: 1.75rem 1.25rem;
+  }
 }

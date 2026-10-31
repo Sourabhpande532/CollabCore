@@ -15,26 +15,26 @@ Built with a React frontend, Express/Node backend, MongoDB database, and JWT-bas
 
 ## Quick Start
 
-```
+```bash
 git clone https://github.com/Sourabhpande532/CollabCore.git
+cd CollabCore/client
 npm install
 npm start
-
 ```
 
 ---
 
 ## Technologies
 
-- React Js
+- React.js
 - React Router
-- Node Js
-- Express Js
-- MongoDB
-- Mongoose
-- JSON Web Token(JWT)
-- bcrypt (Password Hashing)
-- Bootstrap
+- Node.js
+- Express.js
+- MongoDB & Mongoose
+- JSON Web Token (JWT)
+- bcryptjs (Password Hashing)
+- Chart.js & react-chartjs-2
+- Bootstrap 5 & Custom CSS3 Design Tokens
 - RESTful APIs
 
 ---
@@ -47,9 +47,10 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 ---
 
-## Reference Images 
+## Reference Images
 
-![](./assets/landing.png)
+![Workspace Overview](./assets/content.png)
+![Login Page](./assets/login.png)
 
 ---
 
@@ -61,26 +62,19 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 - Register with name, email, and password
 - Password securely hashed using bcrypt
-- Password securely hashed using bcrypt
 
 **User Signin**
 
-- Login using email and password
+- Login using email and password (or one-click Guest Login)
 - Password verification using bcrypt
 - JWT token issued upon successful login
 - Token stored on frontend for authenticated requests
+- User profile loaded via `GET /auth/me` to personalize the workspace navbar
 
 **Protected Routes**
 
-- JWT middleware protects:
-  - Project routes
-  - Task routes
-  - Team routes
-- Only authenticated users can:
-  - Create tasks
-  - Update tasks
-  - Delete tasks
-  - Create project
+- JWT middleware protects mutation endpoints across projects, tasks, teams, tags, and comments
+- Unauthenticated users attempting protected routes or actions are redirected to `/login`
 
 **Logout**
 
@@ -91,83 +85,43 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 ## Dashboard
 
-- Overview of all projects and tasks
-- Task insights by:
-  - Status
-  - Priority
-  - Team
-- Displays recently created tasks
-- Summary statistics:
-  - Total Tasks
-  - Completed
-  - In Progress
-  - Blocked
+- Global search across projects and tasks
+- Overview of workspace projects with sorting (`A-Z`, `Z-A`, `Newest`)
+- Personal & workspace task board with multi-parameter filtering (`Owner`, `Team`, `Project`, `Tag`, `Status`, `Sort`)
+- Quick actions to create projects, create tasks, mark tasks completed, or delete items
 
 ---
 
 ## Project Management
 
-- Create, view, update, and delete projects
-- Search projects by name
-- Sort projects (A-Z / Z-A / Newest)
-- Click anywhere on project card to view details
-- Clean and responsive card layout
+- Create, view, search, sort, and delete projects
+- Project Details view grouping tasks by project with filters by `Status`, `Owner`, `Tag`, and `Sort`
+- Built-in Project Discussion comments section
 
 ---
 
-## Task Management
+## Task Management & URL-Based Filtering
 
 - Create, view, update, and delete tasks
-- Assign tasks to:
-  - Project
-  - Team
-  - Owners
-- Add:
-  - Status
-  - Priority
-  - Due Date
-  - Tags
-- Click anywhere on task Card to view task details
-- Responsive grid-based UI
-
----
-
-## Task Filtering & Sorting
-
-**Filtering By:**
-`Status`, `Team`, `Owner`, `Project`
-
-**Sorting by:**
-`Name (A-Z/Z-A)`, `High - Medium - Low`, `Due Date`, `Newest / Oldest`
-
-Ensured structured workflow tracking.
+- Assign tasks to a Project, Team, and multiple Owners
+- Configure Status (`To Do`, `In Progress`, `Completed`, `Blocked`), Priority (`High`, `Medium`, `Low`), Time to Complete (days), Due Date, and custom Tags
+- Shareable URL-based filtering & sorting (e.g., `/tasks?owner=Tanay`, `/tasks?team=development&tags=Urgent`)
 
 ---
 
 ## Team Management
 
-- Create and manage teams
-- Assign tasks to teams
-- View team-wise task organization
+- Create and manage teams with member rosters
+- Add members to existing teams
+- Team Details view with task filtering by `Status` and `Member`, and sorting by `Time to Complete` or `Status`
 
 ---
 
-## Owner Assignment
+## Reports & Analytics
 
-- Assign one or multiple owners to tasks
-- Populate owner details dynamically
-
----
-
-## Notification & Responsive UI
-
-- Toast notification for:
-  - Success actions
-  - Deletion Confirmation
-  - Updates
-- Responsive Design for:
-  - Sidebar navigation system
-  - Fully responsive design
+- **Total Work Done Last Week:** Bar chart of tasks completed in the last 7 days
+- **Total Days of Work Pending:** Bar chart of estimated remaining days across open tasks
+- **Tasks Closed Breakdown:** Pie chart of completed tasks grouped by **Team**, **Owner**, or **Project**
 
 ---
 
@@ -175,126 +129,46 @@ Ensured structured workflow tracking.
 
 ### Authentication APIs
 
-**POST /api/auth/signup**
-
-Register new user.
-
-Sample Response:
-
-```
-{
-
-"user": {"_id": "id", "name":"User", "email":"user@gmail.com", "password":"hash8343**#$"}
-}
-
-```
-
-**POST /api/auth/login**
-
-Login existing user.
-
-Sample Response:
-
-```
-{
-    "token": "jwt_token",
-    "user" : {
-    "id":"id", "name": "User",
-    "email": "user@email.com",
-    "token": 'xyzerefdfghereredfd...'
-     }
-}
-
-```
+- `POST /auth/signup` — Register a new user
+- `POST /auth/login` — Authenticate user and receive JWT
+- `GET /auth/me` — Fetch authenticated user details (Protected)
+- `GET /auth/users` — Fetch workspace users
 
 ### Task APIs
 
-**GET /api/tasks**
+- `GET /auth/tasks` — Retrieve tasks with URL query filtering (`owner`, `owners`, `team`, `project`, `tags`, `status`, `sort`)
+- `GET /auth/tasks/filter` — Retrieve filtered tasks
+- `GET /auth/tasks/team/:id` — Retrieve tasks assigned to a specific team
+- `GET /auth/tasks/:id` — Fetch single task details
+- `POST /auth/tasks` — Create new task (Protected)
+- `POST /auth/tasks/:id` — Update existing task (Protected)
+- `PUT /auth/tasks/:id/status` — Update task status (Protected)
+- `DELETE /auth/tasks/:id` — Delete task (Protected)
 
-Retrieve tasks with filtering & sorting.
-Query Parameter: `Status`,`team`, `owners`, `projectId`, `tags`, `sort`
+### Project, Team, Tag & Report APIs
 
-Sample Response:
-
-```
-[
-   {
-    "_id": "id",
-    "name": "Task Name",
-    "status": "To Do",
-    "priority": "High",
-    "project": {},
-    "team": {},
-    "owners": [],
-    "createdAt": "date"
-  }
-]
-
-```
-
-**GET /api/tasks/:id**
-Fetch single task details
-
-**POST /api/tasks**
-Create new task (Protected).
-
-**PUT /api/tasks/:id**
-Update existing task (Protected).
-
-**DELETE /api/tasks/:id**
-Delete task (Protected).
-
----
-
-### Project APIs
-
-**GET /api/projects**
-Retrieve all projects.
-
-**POST /api/projects**
-Create project (Protected).
-
-**DELETE /api/projects/:id**
-Delete project (Protected).
-
----
-
-### Team APIs
-
-**GET /api/teams**
-Retrieve all teams.
-
-**POST /api/teams**
-Create team (Protected).
+- `GET /auth/projects`, `POST /auth/projects` (Protected), `DELETE /auth/projects/:id`
+- `GET /auth/teams`, `POST /auth/teams` (Protected), `GET /auth/teams/:id`, `POST /auth/teams/:id/members` (Protected)
+- `GET /auth/tags`, `POST /auth/tags` (Protected)
+- `GET /auth/report/last-week`, `GET /auth/report/pending`, `GET /auth/report/closed-tasks`
+- `GET /auth/comments/project/:projectId`, `POST /auth/comments` (Protected)
 
 ---
 
 ### Environment Setup
 
-**Backend(/server/.env)**
+**Backend (`/server/.env`)**
 
-```
-# Server
+```env
 PORT=4001
-NODE_ENV=development
-
-# Database
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/CollaCore
-
-# JWT
-JWT_SECRET=your_super_secret_key
-JWT_EXPIRE=7d
-
-# CORS
-CLIENT_URL=http://localhost:3000
-
+MONGO_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/myWorkasanaDatabase
+JWT_SECRET=your_jwt_secret_key
 ```
 
-**Frontend(./src/api/)**
+**Frontend (`/client/.env`)**
 
-```
-Base URL=http://localhost:4001/api
-
+```env
+REACT_APP_API_URL=http://localhost:4001/auth
 ```
 
 ---
@@ -302,5 +176,3 @@ Base URL=http://localhost:4001/api
 ## Contact
 
 For bugs or feature requests, please reach out to [sourabhpande43@gmail.com](mailto:sourabhpande43@gmail.com)
-
----

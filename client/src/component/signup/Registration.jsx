@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./register.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -11,53 +12,90 @@ const Registration = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const { userRegister } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+
   const register = async (e) => {
     e.preventDefault();
-    await userRegister(form);
-    navigate("/login", { replace: true });
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      const success = await userRegister(form);
+      if (success) {
+        navigate("/login", { replace: true });
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className='signup-page-container'>
+      <button
+        type='button'
+        className='theme-toggle-btn auth-theme-toggle'
+        onClick={toggleTheme}
+        aria-label={
+          theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"
+        }
+        title={
+          theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"
+        }>
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
+
       <div className='signup-box animate-fade-in'>
+        <div className='text-center mb-3'>
+          <Link to='/' className='auth-brand-link'>
+            ❖ CollabCore
+          </Link>
+        </div>
         <h2>Create Account</h2>
-        <p className='text-center text-secondary mb-4'>Join CollabCore today</p>
+        <p className='text-center text-secondary mb-4'>
+          Join CollabCore to collaborate with your team
+        </p>
 
         <form onSubmit={register}>
           <div className='user-box'>
-            <label>Full Name</label>
+            <label htmlFor='signup-name'>Full Name</label>
             <input
+              id='signup-name'
               type='text'
               name='name'
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder='Your Name'
+              placeholder='Your full name'
+              autoComplete='name'
               required
             />
           </div>
 
           <div className='user-box'>
-            <label>Email Address</label>
+            <label htmlFor='signup-email'>Email Address</label>
             <input
+              id='signup-email'
               type='email'
               name='email'
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               placeholder='name@company.com'
+              autoComplete='email'
               required
             />
           </div>
 
           <div className='user-box'>
-            <label>Password</label>
+            <label htmlFor='signup-password'>Password</label>
             <div className='password-input-wrapper'>
               <input
+                id='signup-password'
                 type={showPassword ? "text" : "password"}
                 name='password'
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 placeholder='••••••••'
+                autoComplete='new-password'
                 required
               />
               <button
@@ -65,8 +103,7 @@ const Registration = () => {
                 className='password-toggle-btn'
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                title={showPassword ? "Hide password" : "Show password"}
-                tabIndex={-1}>
+                title={showPassword ? "Hide password" : "Show password"}>
                 {showPassword ? (
                   <svg
                     width='20'
@@ -98,8 +135,8 @@ const Registration = () => {
             </div>
           </div>
 
-          <button type='submit' className='signup-btn'>
-            Sign Up
+          <button type='submit' className='signup-btn' disabled={submitting}>
+            {submitting ? "Creating Account..." : "Sign Up"}
           </button>
 
           <div className='login-link-container'>
