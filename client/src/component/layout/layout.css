@@ -16,6 +16,24 @@
   margin-left: 1rem;
   margin-right: 1rem;
   border-radius: var(--border-radius);
+  flex-wrap: nowrap !important;
+  gap: 0.5rem;
+}
+
+.navbar > div:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.navbar > div:first-child h5 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar > div:last-child {
+  flex-shrink: 0;
 }
 
 .theme-toggle-btn {

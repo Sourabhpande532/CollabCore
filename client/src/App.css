@@ -191,15 +191,27 @@ select option {
 }
 
 /* TEAMS CSS */
-.teams-page {
-  padding: 1rem 0;
+.teams-page,
+.team-details-page,
+.dashboard-page {
+  padding: 0.5rem 0;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .teams-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 1.75rem;
+  width: 100%;
+}
+
+.teams-header > div:first-child {
+  flex: 1 1 200px;
+  min-width: 0;
 }
 
 .primary-btn {
@@ -210,6 +222,12 @@ select option {
   border-radius: 10px;
   font-weight: 600;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 .primary-btn:hover {
@@ -377,7 +395,30 @@ select option {
   background: var(--input-bg);
 }
 
-/* Dashboard & Mobile Responsive Adjustments */
+/* Dashboard Section Header & Mobile Responsive Adjustments */
+.dashboard-section-header {
+  width: 100%;
+}
+
+.dashboard-section-header > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.dashboard-action-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-height: 36px;
+}
+
+.team-details-page .task-card {
+  height: auto !important;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .project-content {
     padding: 1.1rem;
@@ -392,16 +433,65 @@ select option {
     width: 100%;
   }
 
+  .top-actions > .d-flex {
+    width: 100%;
+  }
+
   .top-actions select {
-    flex: 1 1 calc(50% - 0.5rem);
+    flex: 1 1 calc(33.333% - 0.5rem);
     min-width: 120px;
+  }
+
+  .team-details-page > .d-flex {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .team-details-page > .d-flex > .d-flex {
+    width: 100%;
+  }
+
+  .team-details-page > .d-flex > .d-flex select,
+  .team-details-page > .d-flex > .d-flex .primary-btn {
+    flex: 1 1 calc(50% - 0.35rem) !important;
+    width: auto !important;
   }
 }
 
 @media (max-width: 576px) {
-  .dashboard-action-btn {
-    font-size: 0.85rem !important;
-    padding: 0.45rem 0.9rem !important;
+  .dashboard-section-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.65rem !important;
+  }
+
+  .dashboard-section-header > div:first-child {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  .dashboard-section-header > div:first-child h2 {
+    margin: 0 !important;
+    font-size: 1.25rem !important;
+    flex-shrink: 0;
+  }
+
+  .dashboard-section-header > div:first-child select {
+    flex: 0 1 170px !important;
+    min-width: 130px !important;
+    height: 36px !important;
+    margin-left: auto !important;
+  }
+
+  .dashboard-section-header > .dashboard-action-btn {
+    width: 100% !important;
+    min-height: 38px !important;
+    font-size: 0.88rem !important;
+    padding: 0.5rem 1rem !important;
     border-radius: 8px !important;
   }
 
@@ -423,13 +513,34 @@ select option {
   }
 
   .teams-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .teams-header > div:first-child {
+    flex: 1 1 auto;
+    width: 100%;
   }
 
   .teams-header .primary-btn {
-    width: 100%;
+    width: 100% !important;
+    min-height: 40px;
     text-align: center;
+    justify-content: center;
+  }
+
+  .team-details-page > .d-flex > .d-flex select,
+  .team-details-page > .d-flex > .d-flex .primary-btn {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-section-header > div:first-child select {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 }

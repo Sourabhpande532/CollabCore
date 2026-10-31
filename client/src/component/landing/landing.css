@@ -288,6 +288,12 @@
 }
 
 /* Uncluttered Hero Workspace Preview Card */
+.min-w-0 {
+  min-width: 0 !important;
+  flex: 1 1 0%;
+  overflow: hidden;
+}
+
 .hero-mockup-container {
   background: var(--card-bg);
   border: 1px solid var(--glass-border);
@@ -296,6 +302,9 @@
   box-shadow: var(--shadow-lg);
   min-width: 0;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .mockup-header {
@@ -422,21 +431,41 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .mockup-task-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.65rem;
   background: var(--input-bg);
   border: 1px solid var(--glass-border);
-  padding: 0.7rem 0.9rem;
+  padding: 0.7rem 0.85rem;
   border-radius: 10px;
   font-size: 0.85rem;
   cursor: pointer;
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
   transition: border-color 0.18s ease;
+}
+
+.mockup-task-item > div:first-child {
+  min-width: 0 !important;
+  flex: 1 1 0%;
+  overflow: hidden;
+}
+
+.mockup-task-item > div:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  max-width: 100%;
 }
 
 .mockup-task-item:hover {
@@ -1224,6 +1253,9 @@
   .landing-hero {
     padding: 1.75rem 1rem 2.25rem;
   }
+  .hero-mockup-container {
+    padding: 1rem;
+  }
   .landing-hero-ctas .btn-primary-teal,
   .landing-hero-ctas .btn-outline-slate {
     width: 100%;
@@ -1235,6 +1267,20 @@
   .playbooks-grid,
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+  .mockup-task-item {
+    padding: 0.65rem 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  .mockup-avatar {
+    width: 22px;
+    height: 22px;
+    font-size: 0.58rem;
+  }
+  .mockup-badge {
+    font-size: 0.66rem;
+    padding: 0.15rem 0.45rem;
   }
   .metric-item {
     border-bottom: 1px solid var(--glass-border);
@@ -1251,5 +1297,21 @@
   }
   .cta-banner-inner {
     padding: 2.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .mockup-task-item {
+    flex-wrap: wrap;
+  }
+  .mockup-task-item > div:first-child {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .mockup-task-item > div:last-child {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 0.25rem;
+    border-top: 1px dashed var(--glass-border);
   }
 }
