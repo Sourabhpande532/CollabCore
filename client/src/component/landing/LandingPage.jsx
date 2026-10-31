@@ -197,7 +197,6 @@ const LandingPage = () => {
           <Link to='/' className='landing-brand'>
             <span className='brand-logo-mark'>❖</span>
             <span>CollabCore</span>
-            <span className='landing-brand-badge'>Workspace</span>
           </Link>
 
           {/* Desktop Nav Links */}
