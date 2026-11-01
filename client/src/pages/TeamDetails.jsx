@@ -37,10 +37,14 @@ const TeamDetails = () => {
     }
   };
 
-  const fetchTeamDetails = async () => {
+  const fetchTeamDetails = async (updatedTeam) => {
+    if (updatedTeam && updatedTeam._id) {
+      setTeam(updatedTeam);
+      return;
+    }
     try {
       setLoading(true);
-      const res = await axios.get(`/teams/${id}`);
+      const res = await axios.get(`/teams/${id}`, { skipCache: true });
       setTeam(res.data?.data?.team || null);
     } catch (error) {
       console.error("Failed to fetch team details:", error);

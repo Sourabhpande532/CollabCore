@@ -292,24 +292,29 @@
 }
 
 .delete-btn {
-  padding: 0.28rem 0.5rem;
+  padding: 0.28rem 0.55rem;
   border-radius: 6px;
   font-size: 0.78rem;
   font-weight: 600;
-  border: none;
+  border: 1px solid rgba(239, 68, 68, 0.25);
   cursor: pointer;
   background: rgba(239, 68, 68, 0.12);
   color: #dc2626;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 [data-theme="dark"] .delete-btn {
   background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.35);
   color: #f87171;
 }
 
 .delete-btn:hover {
   background: #ef4444;
+  border-color: #ef4444;
   color: #ffffff;
 }
 
@@ -342,11 +347,15 @@
   }
 
   .task-container > .d-flex:first-child:not(.dashboard-section-header) > .btn-primary {
-    width: 100% !important;
-    display: flex !important;
+    width: auto !important;
+    align-self: flex-start !important;
+    display: inline-flex !important;
     justify-content: center !important;
     align-items: center !important;
-    min-height: 40px;
+    min-height: 36px;
+    font-size: 0.84rem;
+    padding: 0.38rem 0.95rem;
+    border-radius: 8px;
   }
 
   .task-filters {

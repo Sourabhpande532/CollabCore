@@ -5,6 +5,7 @@ import { getProjects } from "../../api/project.api";
 import { getTeams } from "../../api/team.api";
 import axios from "../../api/axiosHelper";
 import toast from "react-hot-toast";
+import "../model/modelcss/model.css";
 
 const EditTaskModal = ({ task, onClose, onUpdated }) => {
   const [teams, setTeams] = useState([]);

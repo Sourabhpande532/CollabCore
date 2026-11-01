@@ -1,8 +1,12 @@
 @import "./model.css";
 
+.custom-modal {
+  max-width: 540px !important;
+}
+
 .members-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr));
   gap: 10px;
   max-height: 220px;
   overflow-y: auto;
@@ -24,6 +28,11 @@
   background: var(--card-bg);
   color: var(--text-primary);
   user-select: none;
+}
+
+[data-theme="dark"] .member-card {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .member-card:hover {
@@ -55,4 +64,11 @@
 .member-card.selected .avatar {
   background: #ffffff;
   color: var(--primary-color);
+}
+
+@media (max-width: 576px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    max-height: 180px;
+  }
 }

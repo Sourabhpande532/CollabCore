@@ -20,7 +20,7 @@ const Team = () => {
   const fetchTeams = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/teams");
+      const res = await axios.get("/teams", { skipCache: true });
       setTeams(res.data?.data?.team || []);
     } catch (error) {
       console.error("Error fetching teams:", error);

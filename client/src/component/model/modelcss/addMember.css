@@ -28,6 +28,13 @@
   transition: all 0.2s ease !important;
 }
 
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] .cancel-btn {
+  background-color: #1e293b !important;
+  color: #f9fafb !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
 .btn-secondary:hover,
 .cancel-btn:hover {
   background-color: rgba(var(--primary-rgb), 0.1) !important;

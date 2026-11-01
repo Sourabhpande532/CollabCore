@@ -238,54 +238,56 @@ const ProjectDetails = () => {
           </div>
 
           {/* Right: Filter dropdowns + New Task button */}
-          <div className='d-flex flex-wrap gap-2 align-items-center'>
-            <select
-              className='form-select form-select-sm w-auto'
-              aria-label='Filter by Owner'
-              value={owner}
-              onChange={(e) => updateFilter("owner", e.target.value)}>
-              <option value=''>By Owner</option>
-              {users.map((u) => (
-                <option key={u._id} value={u.name}>
-                  {u.name}
-                </option>
-              ))}
-            </select>
+          <div className='top-actions-right d-flex align-items-center gap-2'>
+            <div className='top-actions-filter-group d-flex align-items-center gap-2'>
+              <select
+                className='form-select form-select-sm w-auto'
+                aria-label='Filter by Owner'
+                value={owner}
+                onChange={(e) => updateFilter("owner", e.target.value)}>
+                <option value=''>By Owner</option>
+                {users.map((u) => (
+                  <option key={u._id} value={u.name}>
+                    {u.name}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              className='form-select form-select-sm w-auto'
-              aria-label='Filter by Tag'
-              value={tag}
-              onChange={(e) => updateFilter("tags", e.target.value)}>
-              <option value=''>By Tag</option>
-              {availableTags.map((tg) => (
-                <option key={tg} value={tg}>
-                  {tg}
-                </option>
-              ))}
-            </select>
+              <select
+                className='form-select form-select-sm w-auto'
+                aria-label='Filter by Tag'
+                value={tag}
+                onChange={(e) => updateFilter("tags", e.target.value)}>
+                <option value=''>By Tag</option>
+                {availableTags.map((tg) => (
+                  <option key={tg} value={tg}>
+                    {tg}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              className='form-select form-select-sm w-auto'
-              aria-label='Filter by Status'
-              value={status}
-              onChange={(e) => updateFilter("status", e.target.value)}>
-              <option value=''>By Status</option>
-              {STATUS_OPTIONS.map((st) => (
-                <option key={st} value={st}>
-                  {st}
-                </option>
-              ))}
-            </select>
+              <select
+                className='form-select form-select-sm w-auto'
+                aria-label='Filter by Status'
+                value={status}
+                onChange={(e) => updateFilter("status", e.target.value)}>
+                <option value=''>By Status</option>
+                {STATUS_OPTIONS.map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </select>
 
-            {(sort || status || owner || tag) && (
-              <button
-                type='button'
-                className='btn btn-outline-secondary btn-sm'
-                onClick={() => setSearchParams({})}>
-                Reset
-              </button>
-            )}
+              {(sort || status || owner || tag) && (
+                <button
+                  type='button'
+                  className='btn btn-outline-secondary btn-sm'
+                  onClick={() => setSearchParams({})}>
+                  Reset
+                </button>
+              )}
+            </div>
 
             <button
               className='btn btn-primary btn-sm px-3 fw-semibold dashboard-action-btn'

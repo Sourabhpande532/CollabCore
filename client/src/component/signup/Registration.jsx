@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 const Registration = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -11,17 +13,64 @@ const Registration = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { userRegister } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
+  const validateForm = (values) => {
+    const nextErrors = {};
+    const name = (values.name || "").trim();
+    const email = (values.email || "").trim();
+    const password = values.password || "";
+
+    if (!name) {
+      nextErrors.name = "Full name is required";
+    } else if (name.length < 2) {
+      nextErrors.name = "Full name must be at least 2 characters";
+    }
+
+    if (!email) {
+      nextErrors.email = "Email address is required";
+    } else if (!EMAIL_REGEX.test(email)) {
+      nextErrors.email = "Please enter a valid email address";
+    }
+
+    if (!password || !password.trim()) {
+      nextErrors.password = "Password is required";
+    } else if (password.trim().length < 6) {
+      nextErrors.password = "Password must be at least 6 characters";
+    }
+
+    return nextErrors;
+  };
+
+  const handleFieldChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const register = async (e) => {
     e.preventDefault();
     if (submitting) return;
+
+    const validationErrors = validateForm(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
     setSubmitting(true);
     try {
-      const success = await userRegister(form);
+      const success = await userRegister({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      });
       if (success) {
         navigate("/login", { replace: true });
       }
@@ -56,19 +105,26 @@ const Registration = () => {
           Join CollabCore to collaborate with your team
         </p>
 
-        <form onSubmit={register}>
+        <form onSubmit={register} noValidate>
           <div className='user-box'>
             <label htmlFor='signup-name'>Full Name</label>
             <input
               id='signup-name'
               type='text'
               name='name'
+              className={errors.name ? "input-error" : ""}
               value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              onChange={(e) => handleFieldChange("name", e.target.value)}
               placeholder='Your full name'
               autoComplete='name'
+              aria-invalid={Boolean(errors.name)}
               required
             />
+            {errors.name && (
+              <span className='auth-error-text' role='alert'>
+                {errors.name}
+              </span>
+            )}
           </div>
 
           <div className='user-box'>
@@ -77,12 +133,19 @@ const Registration = () => {
               id='signup-email'
               type='email'
               name='email'
+              className={errors.email ? "input-error" : ""}
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(e) => handleFieldChange("email", e.target.value)}
               placeholder='name@company.com'
               autoComplete='email'
+              aria-invalid={Boolean(errors.email)}
               required
             />
+            {errors.email && (
+              <span className='auth-error-text' role='alert'>
+                {errors.email}
+              </span>
+            )}
           </div>
 
           <div className='user-box'>
@@ -92,10 +155,12 @@ const Registration = () => {
                 id='signup-password'
                 type={showPassword ? "text" : "password"}
                 name='password'
+                className={errors.password ? "input-error" : ""}
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                onChange={(e) => handleFieldChange("password", e.target.value)}
                 placeholder='••••••••'
                 autoComplete='new-password'
+                aria-invalid={Boolean(errors.password)}
                 required
               />
               <button
@@ -133,6 +198,11 @@ const Registration = () => {
                 )}
               </button>
             </div>
+            {errors.password && (
+              <span className='auth-error-text' role='alert'>
+                {errors.password}
+              </span>
+            )}
           </div>
 
           <button type='submit' className='signup-btn' disabled={submitting}>

@@ -5,8 +5,11 @@ import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import API_URL from "../../api/axiosHelper";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
@@ -19,12 +22,50 @@ const Login = () => {
     API_URL.get("/tags").catch(() => {});
   }, []);
 
+  const validateForm = (values) => {
+    const nextErrors = {};
+    const email = (values.email || "").trim();
+    const password = values.password || "";
+
+    if (!email) {
+      nextErrors.email = "Email address is required";
+    } else if (!EMAIL_REGEX.test(email)) {
+      nextErrors.email = "Please enter a valid email address";
+    }
+
+    if (!password || !password.trim()) {
+      nextErrors.password = "Password is required";
+    } else if (password.trim().length < 4) {
+      nextErrors.password = "Password must be at least 4 characters";
+    }
+
+    return nextErrors;
+  };
+
+  const handleFieldChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (submitting) return;
+
+    const validationErrors = validateForm(form);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
     setSubmitting(true);
     try {
-      const success = await login(form);
+      const success = await login({
+        email: form.email.trim(),
+        password: form.password,
+      });
       if (success) {
         navigate("/dashboard", { replace: true });
       }
@@ -39,6 +80,7 @@ const Login = () => {
       email: "a@gmail.com",
       password: "5321",
     };
+    setErrors({});
     setForm(guestCredentials);
     setSubmitting(true);
     try {
@@ -77,19 +119,26 @@ const Login = () => {
           Sign in to continue to your CollabCore workspace
         </p>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} noValidate>
           <div className='user-box'>
             <label htmlFor='login-email'>Email Address</label>
             <input
               id='login-email'
               type='email'
               name='email'
+              className={errors.email ? "input-error" : ""}
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              onChange={(e) => handleFieldChange("email", e.target.value)}
               placeholder='e.g. name@company.com'
               autoComplete='email'
+              aria-invalid={Boolean(errors.email)}
               required
             />
+            {errors.email && (
+              <span className='auth-error-text' role='alert'>
+                {errors.email}
+              </span>
+            )}
           </div>
 
           <div className='user-box'>
@@ -99,10 +148,12 @@ const Login = () => {
                 id='login-password'
                 type={showPassword ? "text" : "password"}
                 name='password'
+                className={errors.password ? "input-error" : ""}
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                onChange={(e) => handleFieldChange("password", e.target.value)}
                 placeholder='••••••••'
                 autoComplete='current-password'
+                aria-invalid={Boolean(errors.password)}
                 required
               />
               <button
@@ -140,6 +191,11 @@ const Login = () => {
                 )}
               </button>
             </div>
+            {errors.password && (
+              <span className='auth-error-text' role='alert'>
+                {errors.password}
+              </span>
+            )}
           </div>
 
           <button type='submit' className='login-btn' disabled={submitting}>

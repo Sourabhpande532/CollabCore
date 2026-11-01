@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { getProjects } from "../api/project.api";
+import axios from "../api/axiosHelper";
+import toast from "react-hot-toast";
 import Modal from "../component/model/Model";
 import AddProjectForm from "../component/projectform/AddProjectForm";
 import "../component/project/project.css";
@@ -32,6 +34,21 @@ const Project = () => {
     }
   };
 
+  const deleteProject = async (id) => {
+    if (!localStorage.getItem("userToken")) {
+      window.location.href = "/login";
+      return;
+    }
+    try {
+      await axios.delete(`/projects/${id}`);
+      setProjects((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Project deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete project");
+    }
+  };
+
   const filteredProjects = useMemo(() => {
     let list = projects.filter((p) => {
       if (!search.trim()) return true;
@@ -59,14 +76,16 @@ const Project = () => {
 
   return (
     <Container fluid className='project-page animate-fade-in px-0'>
-      <div className='d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4'>
+      <div className='projects-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4'>
         <div>
           <h2 className='fw-bold mb-1'>Projects</h2>
           <p className='text-secondary mb-0'>
             Overview of all active workspace projects
           </p>
         </div>
-        <button className='btn btn-primary shadow-sm' onClick={handleAddProject}>
+        <button
+          className='btn btn-primary btn-sm px-3 py-2 shadow-sm dashboard-action-btn'
+          onClick={handleAddProject}>
           + New Project
         </button>
       </div>
@@ -115,21 +134,34 @@ const Project = () => {
             const isCompleted = statusText.toLowerCase() === "completed";
 
             return (
-              <Col md={6} lg={4} key={p._id}>
+              <Col xs={12} sm={6} md={6} lg={6} xl={4} key={p._id}>
                 <Card
                   className='project-card h-100 p-2'
                   onClick={() => navigate(`/project/${p._id}`)}>
                   <Card.Body className='d-flex flex-column'>
-                    <div className='d-flex justify-content-between align-items-center mb-2'>
+                    <div className='d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2'>
                       <span
                         className={`project-status-pill ${isCompleted ? "completed" : "in-progress"}`}>
                         {statusText}
                       </span>
-                      {p.createdAt && (
-                        <span className='text-secondary small'>
-                          {new Date(p.createdAt).toLocaleDateString()}
-                        </span>
-                      )}
+                      <div className='d-flex align-items-center gap-2 ms-auto flex-shrink-0'>
+                        {p.createdAt && (
+                          <span className='text-secondary small'>
+                            {new Date(p.createdAt).toLocaleDateString()}
+                          </span>
+                        )}
+                        <button
+                          type='button'
+                          title='Delete project'
+                          aria-label={`Delete project ${p.name}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteProject(p._id);
+                          }}
+                          className='project-delete-icon-btn'>
+                          🗑
+                        </button>
+                      </div>
                     </div>
                     <Card.Title className='fw-bold fs-5 mb-2'>
                       {p.name}
@@ -155,6 +187,7 @@ const Project = () => {
       <Modal
         show={showProjectModal}
         title='Add Project'
+        size='md'
         onClose={() => setShowProjectModal(false)}>
         <AddProjectForm
           onSuccess={loadProjects}

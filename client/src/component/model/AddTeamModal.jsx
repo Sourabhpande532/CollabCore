@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import axios from "../../api/axiosHelper";
+import axios, { clearApiCache } from "../../api/axiosHelper";
 import "./modelcss/model.css";
 import "./modelcss/addTeam.css";
 import toast from "react-hot-toast";
@@ -49,8 +49,11 @@ const AddTeamModal = ({ onClose, onCreated }) => {
     }
     try {
       setSubmitting(true);
-      await axios.post("/teams", form);
-      if (onCreated) onCreated();
+      const res = await axios.post("/teams", form);
+      clearApiCache();
+      if (onCreated) {
+        await onCreated(res.data?.data?.team);
+      }
       onClose();
       toast.success("Team created successfully");
     } catch (err) {

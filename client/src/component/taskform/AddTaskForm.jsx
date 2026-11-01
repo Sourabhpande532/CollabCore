@@ -4,6 +4,7 @@ import { getProjects } from "../../api/project.api";
 import { getTeams } from "../../api/team.api";
 import toast from "react-hot-toast";
 import axios from "../../api/axiosHelper";
+import "../model/modelcss/model.css";
 
 const initialState = {
   name: "",
@@ -54,16 +55,31 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
     }
     try {
       await axios.post("/tags", { name: trimmed });
-      setAvailableTags([...availableTags, trimmed]);
-      setForm({ ...form, tags: [...form.tags, trimmed] });
-      setNewTagInput("");
-      toast.success("Tag created successfully");
-    } catch (err) {
-      setAvailableTags([...availableTags, trimmed]);
-      setForm({ ...form, tags: [...form.tags, trimmed] });
-      setNewTagInput("");
-      toast.success("Tag added to task");
+    } catch {
+      // Fallback if tag endpoint fails
     }
+    setAvailableTags((prev) => [...prev, trimmed]);
+    setForm((prev) => ({ ...prev, tags: [...prev.tags, trimmed] }));
+    setNewTagInput("");
+    toast.success("Tag added");
+  };
+
+  const toggleTag = (tag) => {
+    setForm((prev) => ({
+      ...prev,
+      tags: prev.tags.includes(tag)
+        ? prev.tags.filter((t) => t !== tag)
+        : [...prev.tags, tag],
+    }));
+  };
+
+  const handleOwnerSelect = (userId) => {
+    setForm((prev) => ({
+      ...prev,
+      owners: prev.owners.includes(userId)
+        ? prev.owners.filter((id) => id !== userId)
+        : [...prev.owners, userId],
+    }));
   };
 
   const handleChange = (e) => {
@@ -107,11 +123,11 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <div style={{ maxHeight: "70vh", overflowY: "auto", paddingRight: "8px" }}>
+    <div className='add-task-form-wrapper'>
       <form onSubmit={handleSubmit}>
         <div className='row g-3'>
           {/* Task Name */}
-          <div className='col-md-6'>
+          <div className='col-12'>
             <label htmlFor='task-name-input' className='form-label'>
               Task Name
             </label>
@@ -126,26 +142,8 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
             />
           </div>
 
-          {/* Time */}
-          <div className='col-md-6'>
-            <label htmlFor='task-time-input' className='form-label'>
-              Time to Complete (Days)
-            </label>
-            <input
-              id='task-time-input'
-              type='number'
-              min='1'
-              className='form-control'
-              placeholder='Estimated days (e.g. 5)'
-              name='timeToComplete'
-              value={form.timeToComplete}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
           {/* Project */}
-          <div className='col-md-6'>
+          <div className='col-12 col-md-6'>
             <label htmlFor='task-project-select' className='form-label'>
               Project Name
             </label>
@@ -166,7 +164,7 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           </div>
 
           {/* Team */}
-          <div className='col-md-6'>
+          <div className='col-12 col-md-6'>
             <label htmlFor='task-team-select' className='form-label'>
               Team
             </label>
@@ -186,8 +184,41 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
             </select>
           </div>
 
+          {/* Time */}
+          <div className='col-12 col-md-6'>
+            <label htmlFor='task-time-input' className='form-label'>
+              Time to Complete (Days)
+            </label>
+            <input
+              id='task-time-input'
+              type='number'
+              min='1'
+              className='form-control'
+              placeholder='Estimated days (e.g. 5)'
+              name='timeToComplete'
+              value={form.timeToComplete}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Due Date */}
+          <div className='col-12 col-md-6'>
+            <label htmlFor='task-due-date' className='form-label'>
+              Due Date (Optional)
+            </label>
+            <input
+              id='task-due-date'
+              type='date'
+              className='form-control'
+              name='dueDate'
+              value={form.dueDate}
+              onChange={handleChange}
+            />
+          </div>
+
           {/* Status */}
-          <div className='col-md-6'>
+          <div className='col-12 col-md-6'>
             <label htmlFor='task-status-select' className='form-label'>
               Status
             </label>
@@ -205,7 +236,7 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
           </div>
 
           {/* Priority */}
-          <div className='col-md-6'>
+          <div className='col-12 col-md-6'>
             <label htmlFor='task-priority-select' className='form-label'>
               Priority
             </label>
@@ -221,84 +252,29 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
             </select>
           </div>
 
-          {/* Due Date */}
-          <div className='col-12'>
-            <label htmlFor='task-due-date' className='form-label'>
-              Due Date (Optional)
-            </label>
-            <input
-              id='task-due-date'
-              type='date'
-              className='form-control'
-              name='dueDate'
-              value={form.dueDate}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Owners */}
-          <div className='col-12'>
-            <label className='form-label d-block'>Owners (Team Members)</label>
-            <div className='d-flex flex-wrap gap-2'>
-              {users.map((u) => {
-                const checkId = `add-task-owner-${u._id}`;
-                return (
-                  <div key={u._id} className='form-check form-check-inline'>
-                    <input
-                      id={checkId}
-                      type='checkbox'
-                      className='form-check-input'
-                      value={u._id}
-                      checked={form.owners.includes(u._id)}
-                      onChange={(e) => {
-                        const updated = e.target.checked
-                          ? [...form.owners, u._id]
-                          : form.owners.filter((id) => id !== u._id);
-                        setForm({ ...form, owners: updated });
-                      }}
-                    />
-                    <label htmlFor={checkId} className='form-check-label'>
-                      {u.name}
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
           {/* Tags */}
           <div className='col-12'>
             <label className='form-label d-block'>Tags</label>
             <div className='d-flex flex-wrap gap-2 mb-2'>
               {availableTags.map((tag) => {
-                const tagId = `add-task-tag-${tag}`;
+                const active = form.tags.includes(tag);
                 return (
-                  <div key={tag} className='form-check form-check-inline'>
-                    <input
-                      id={tagId}
-                      type='checkbox'
-                      className='form-check-input'
-                      checked={form.tags.includes(tag)}
-                      onChange={(e) => {
-                        const updated = e.target.checked
-                          ? [...form.tags, tag]
-                          : form.tags.filter((t) => t !== tag);
-                        setForm({ ...form, tags: updated });
-                      }}
-                    />
-                    <label htmlFor={tagId} className='form-check-label'>
-                      {tag}
-                    </label>
-                  </div>
+                  <button
+                    key={tag}
+                    type='button'
+                    onClick={() => toggleTag(tag)}
+                    className={`btn btn-sm ${active ? "btn-primary" : "btn-outline-secondary"}`}
+                    style={{ padding: "0.25rem 0.65rem", fontSize: "0.8rem" }}>
+                    #{tag}
+                  </button>
                 );
               })}
             </div>
-            <div className='d-flex mt-2' style={{ maxWidth: "320px" }}>
+            <div className='d-flex gap-2' style={{ maxWidth: "340px" }}>
               <input
                 type='text'
-                className='form-control form-control-sm me-2'
-                placeholder='New Tag Name'
-                aria-label='New Tag Name'
+                className='form-control form-control-sm'
+                placeholder='Add custom tag...'
                 value={newTagInput}
                 onChange={(e) => setNewTagInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -310,10 +286,37 @@ const AddTaskForm = ({ onClose, onSuccess }) => {
               />
               <button
                 type='button'
-                className='btn btn-sm btn-secondary'
+                className='btn btn-sm btn-secondary text-nowrap'
                 onClick={handleAddTag}>
                 + Add Tag
               </button>
+            </div>
+          </div>
+
+          {/* Assign Owners */}
+          <div className='col-12'>
+            <label className='form-label'>Assign Owners</label>
+            <div className='row g-2'>
+              {users.map((user) => {
+                const selected = form.owners.includes(user._id);
+
+                return (
+                  <div key={user._id} className='col-6 col-sm-4 col-md-3'>
+                    <div
+                      className={`owner-card-btn ${selected ? "selected" : ""}`}
+                      onClick={() => handleOwnerSelect(user._id)}>
+                      <div className='avatar-initial'>
+                        {user.name
+                          ? user.name.charAt(0).toUpperCase()
+                          : "U"}
+                      </div>
+                      <div className='owner-name' title={user.name}>
+                        {user.name}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -78,21 +78,33 @@
 }
 
 .project-delete-icon-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #dc2626;
   font-size: 0.85rem;
-  padding: 0.25rem 0.45rem;
+  padding: 0.28rem 0.5rem;
   border-radius: 6px;
   cursor: pointer;
-  opacity: 0.65;
+  opacity: 0.95;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .project-delete-icon-btn {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f87171;
 }
 
 .project-delete-icon-btn:hover {
   opacity: 1;
-  background: rgba(239, 68, 68, 0.14);
-  color: #ef4444;
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
 }
 
 .text-decoration-none {

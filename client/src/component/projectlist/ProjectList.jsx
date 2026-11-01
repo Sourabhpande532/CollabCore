@@ -92,7 +92,7 @@ const ProjectPage = ({ refresh, searchQuery = "", sort = "" }) => {
                 className='shadow-sm project-card'
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate(`/project/${project._id}`)}>
-                <div className='d-flex justify-content-between align-items-center gap-2 mb-3'>
+                <div className='d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3'>
                   <span className={`project-status-pill ${statusClass}`}>
                     {statusLabel}
                   </span>

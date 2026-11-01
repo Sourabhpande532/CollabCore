@@ -70,7 +70,7 @@ const AddProjectForm = ({ onSuccess, onClose }) => {
       <div className='d-flex justify-content-end gap-3 mt-4'>
         <button
           type='button'
-          className='btn btn-outline-secondary'
+          className='btn btn-secondary'
           onClick={onClose}>
           Cancel
         </button>

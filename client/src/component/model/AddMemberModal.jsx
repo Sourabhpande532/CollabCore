@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import axios from "../../api/axiosHelper";
+import axios, { clearApiCache } from "../../api/axiosHelper";
 import "./modelcss/model.css";
 import "./modelcss/addMember.css";
 import toast from "react-hot-toast";
@@ -28,8 +28,12 @@ const AddMemberModal = ({ teamId, onClose, onAdded }) => {
     }
     try {
       setSubmitting(true);
-      await axios.post(`/teams/${teamId}/members`, { userId: selected });
-      if (onAdded) onAdded();
+      const res = await axios.post(`/teams/${teamId}/members`, { userId: selected });
+      clearApiCache();
+      const updatedTeam = res.data?.data?.team;
+      if (onAdded) {
+        await onAdded(updatedTeam);
+      }
       onClose();
       toast.success("Member added successfully");
     } catch (err) {

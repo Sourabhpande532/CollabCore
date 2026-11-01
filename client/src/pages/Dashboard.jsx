@@ -109,6 +109,7 @@ const Dashboard = () => {
       <Modal
         show={showProjectModal}
         title='Create New Project'
+        size='md'
         onClose={() => setShowProjectModal(false)}>
         <AddProjectForm
           onSuccess={() => setRefreshProject((prev) => !prev)}

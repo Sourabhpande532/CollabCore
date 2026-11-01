@@ -88,6 +88,36 @@
   padding-right: 44px !important;
 }
 
+.password-input-wrapper input::-ms-reveal,
+.password-input-wrapper input::-ms-clear,
+.signup-box input[type="password"]::-ms-reveal,
+.signup-box input[type="password"]::-ms-clear {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.signup-box .user-box input.input-error {
+  border-color: #ef4444 !important;
+}
+
+.signup-box .user-box input.input-error:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+}
+
+.auth-error-text {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+[data-theme="dark"] .auth-error-text {
+  color: #f87171;
+}
+
 .password-toggle-btn {
   position: absolute;
   right: 8px;

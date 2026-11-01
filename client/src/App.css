@@ -27,7 +27,7 @@
 .top-actions {
   display: flex;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.65rem;
   align-items: center;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
@@ -36,19 +36,34 @@
 .sort-pills-group {
   display: flex;
   align-items: center;
+  gap: 0.35rem;
+  flex-wrap: nowrap;
+}
+
+.top-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.top-actions-filter-group {
+  display: flex;
+  align-items: center;
   gap: 0.45rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .sort-by-label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-secondary);
-  margin-right: 0.2rem;
+  margin-right: 0.15rem;
+  white-space: nowrap;
 }
 
 .sort-pill-btn {
-  padding: 0.32rem 0.75rem;
+  padding: 0.25rem 0.58rem;
   border-radius: 999px;
   border: 1px solid var(--glass-border);
   background: var(--input-bg);
@@ -58,6 +73,7 @@
   cursor: pointer;
   transition: all 0.18s ease;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .sort-pill-btn:hover {
@@ -106,18 +122,38 @@ select option {
 }
 
 .top-actions select {
-  padding: 0.5rem 0.9rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 8px;
   border: 1px solid var(--glass-border);
   background: var(--input-bg);
   color: var(--text-primary);
   cursor: pointer;
   outline: none;
-  min-height: 40px;
+  min-height: 34px;
+  font-size: 0.82rem;
+  line-height: 1.2;
 }
 
 .top-actions select:focus {
   border-color: var(--primary-color);
+}
+
+.top-actions .btn-outline-secondary {
+  padding: 0.28rem 0.65rem;
+  border-radius: 8px;
+  min-height: 34px;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.top-actions .dashboard-action-btn {
+  min-height: 34px;
+  font-size: 0.82rem;
+  padding: 0.28rem 0.85rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 /* TASK TABLE */
@@ -419,7 +455,7 @@ select option {
   width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .project-content {
     padding: 1.1rem;
   }
@@ -427,19 +463,34 @@ select option {
   .top-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
   }
 
   .sort-pills-group {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
 
-  .top-actions > .d-flex {
+  .top-actions-right {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .top-actions-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
   }
 
   .top-actions select {
-    flex: 1 1 calc(33.333% - 0.5rem);
-    min-width: 120px;
+    min-width: 110px;
   }
 
   .team-details-page > .d-flex {
@@ -451,10 +502,8 @@ select option {
     width: 100%;
   }
 
-  .team-details-page > .d-flex > .d-flex select,
-  .team-details-page > .d-flex > .d-flex .primary-btn {
+  .team-details-page > .d-flex > .d-flex select {
     flex: 1 1 calc(50% - 0.35rem) !important;
-    width: auto !important;
   }
 }
 
@@ -487,34 +536,103 @@ select option {
     margin-left: auto !important;
   }
 
-  .dashboard-section-header > .dashboard-action-btn {
-    width: 100% !important;
-    min-height: 38px !important;
-    font-size: 0.88rem !important;
-    padding: 0.5rem 1rem !important;
+  /* Consistent mobile buttons across ALL pages */
+  .dashboard-section-header > .dashboard-action-btn,
+  .projects-header .dashboard-action-btn,
+  .top-actions .dashboard-action-btn,
+  .teams-header .primary-btn,
+  .team-details-page > .d-flex > .d-flex .primary-btn,
+  .task-container > .d-flex:first-child:not(.dashboard-section-header) > .btn-primary {
+    width: auto !important;
+    align-self: flex-start !important;
+    min-height: 36px !important;
+    font-size: 0.84rem !important;
+    padding: 0.38rem 0.95rem !important;
     border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+
+  .projects-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .projects-header > div:first-child {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .top-actions {
+    gap: 0.85rem !important;
+  }
+
+  .sort-pills-group {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
   }
 
   .sort-by-label {
-    width: 100%;
-    margin-bottom: 0.15rem;
+    width: 100% !important;
+    display: block !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    margin-bottom: 0.2rem !important;
   }
 
   .sort-pill-btn {
-    flex: 1 1 calc(50% - 0.35rem);
-    text-align: center;
-    justify-content: center;
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.78rem !important;
   }
 
-  .top-actions select,
-  .top-actions .dashboard-action-btn {
+  .top-actions-right {
     width: 100% !important;
-    flex: 1 1 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.65rem !important;
+  }
+
+  .top-actions-filter-group {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.35rem !important;
+  }
+
+  .top-actions select {
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .top-actions .btn-outline-secondary {
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    min-height: 36px !important;
+    font-size: 0.82rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .teams-header {
+    display: flex !important;
     flex-direction: column !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
     gap: 0.75rem !important;
   }
 
@@ -523,17 +641,9 @@ select option {
     width: 100%;
   }
 
-  .teams-header .primary-btn {
-    width: 100% !important;
-    min-height: 40px;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .team-details-page > .d-flex > .d-flex select,
-  .team-details-page > .d-flex > .d-flex .primary-btn {
-    flex: 1 1 100% !important;
-    width: 100% !important;
+  .team-details-page > .d-flex > .d-flex select {
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    width: auto !important;
   }
 }
 

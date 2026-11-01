@@ -38,20 +38,27 @@
 }
 
 @media (max-width: 576px) {
-  .project-page > .d-flex:first-child {
+  .project-page > .d-flex:first-child,
+  .projects-header {
     flex-direction: column !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
     gap: 0.75rem !important;
   }
 
-  .project-page > .d-flex:first-child > div:first-child {
+  .project-page > .d-flex:first-child > div:first-child,
+  .projects-header > div:first-child {
     flex: 1 1 auto;
     width: 100%;
   }
 
-  .project-page > .d-flex:first-child > .btn-primary {
-    width: 100% !important;
-    min-height: 40px;
+  .project-page > .d-flex:first-child > .btn-primary,
+  .projects-header .dashboard-action-btn {
+    width: auto !important;
+    align-self: flex-start !important;
+    min-height: 36px !important;
+    font-size: 0.84rem !important;
+    padding: 0.38rem 0.95rem !important;
+    border-radius: 8px !important;
   }
 
   .project-page > .d-flex:nth-of-type(2) {
