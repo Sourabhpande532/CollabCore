@@ -49,8 +49,7 @@ Watch a walkthrough (5-7 minutes) of all major features of this app:
 
 ## Reference Images
 
-![Workspace Overview](./assets/content.png)
-![Login Page](./assets/login.png)
+![Workspace Overview](./assets/landing.png)
 
 ---
 
