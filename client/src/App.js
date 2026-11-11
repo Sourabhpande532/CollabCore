@@ -4,23 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Layout } from "./component/layout/Layout";
-
 import { PrivateRoute } from "./component/ProtectedRoute/PrivateRoute";
+import { Signin } from "./pages/Signin";
+import { Signup } from "./pages/Signup";
+import { Dashboard } from "./pages/Dashboard";
 
-// Code splitting with React.lazy for optimized bundle loading
+// Code splitting with React.lazy for secondary routes
 const LandingPage = lazy(() =>
   import("./component/landing/LandingPage").then((m) => ({
     default: m.LandingPage,
   })),
-);
-const Signin = lazy(() =>
-  import("./pages/Signin").then((m) => ({ default: m.Signin })),
-);
-const Signup = lazy(() =>
-  import("./pages/Signup").then((m) => ({ default: m.Signup })),
-);
-const Dashboard = lazy(() =>
-  import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })),
 );
 const Project = lazy(() =>
   import("./pages/Project").then((m) => ({ default: m.Project })),

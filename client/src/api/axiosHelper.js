@@ -9,7 +9,10 @@ const API_URL = axios.create({
 
 const inFlightRequests = new Map();
 const responseCache = new Map();
-const CACHE_TTL_MS = 15000;
+const CACHE_TTL_MS = 60000;
+
+const isAuthOnlyRequest = (url = "") =>
+  url.includes("/login") || url.includes("/signup");
 
 const buildCacheKey = (url, config = {}) => {
   const params = config.params || {};
@@ -31,6 +34,23 @@ const buildCacheKey = (url, config = {}) => {
 export const clearApiCache = () => {
   responseCache.clear();
   inFlightRequests.clear();
+};
+
+export const getCachedData = (url, config = {}) => {
+  const key = buildCacheKey(url, config);
+  const cached = responseCache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+    return cached.response?.data || null;
+  }
+  return null;
+};
+
+export const warmUpDashboardData = () => {
+  API_URL.get("/projects").catch(() => {});
+  API_URL.get("/tasks").catch(() => {});
+  API_URL.get("/users").catch(() => {});
+  API_URL.get("/teams").catch(() => {});
+  API_URL.get("/tags").catch(() => {});
 };
 
 const originalGet = API_URL.get.bind(API_URL);
@@ -72,7 +92,7 @@ API_URL.interceptors.request.use((req) => {
     req.headers.Authorization = "Bearer " + token;
   }
   const method = req.method?.toLowerCase();
-  if (method && method !== "get") {
+  if (method && method !== "get" && !isAuthOnlyRequest(req.url)) {
     responseCache.clear();
   }
   return req;
@@ -81,7 +101,7 @@ API_URL.interceptors.request.use((req) => {
 API_URL.interceptors.response.use(
   (res) => {
     const method = res.config?.method?.toLowerCase();
-    if (method && method !== "get") {
+    if (method && method !== "get" && !isAuthOnlyRequest(res.config?.url)) {
       responseCache.clear();
     }
     return res;

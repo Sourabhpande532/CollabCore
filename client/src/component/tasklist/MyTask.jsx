@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import axios from "../../api/axiosHelper";
+import axios, { getCachedData } from "../../api/axiosHelper";
 import "./myTasks.css";
 import toast from "react-hot-toast";
 import ShimmerGrid from "../common/ShimmerGrid";
@@ -13,11 +13,20 @@ import {
 } from "../../utils/uiHelpers";
 
 const MyTasks = ({ refresh, searchQuery = "", onAddTask }) => {
-  const [tasks, setTasks] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [tagsList, setTagsList] = useState([]);
+  const initialTasks = getCachedData("/tasks")?.data?.tasks;
+  const [tasks, setTasks] = useState(() => initialTasks || []);
+  const [users, setUsers] = useState(
+    () => getCachedData("/users")?.data?.users || [],
+  );
+  const [teams, setTeams] = useState(
+    () => getCachedData("/teams")?.data?.team || [],
+  );
+  const [projects, setProjects] = useState(
+    () => getCachedData("/projects")?.data?.project || [],
+  );
+  const [tagsList, setTagsList] = useState(
+    () => getCachedData("/tags")?.data?.tag?.map((t) => t.name) || [],
+  );
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -28,7 +37,7 @@ const MyTasks = ({ refresh, searchQuery = "", onAddTask }) => {
   const tags = searchParams.get("tags") || "";
   const sort = searchParams.get("sort") || "";
 
-  const { loading, startLoading, stopLoading } = useLoading(true);
+  const { loading, startLoading, stopLoading } = useLoading(!initialTasks);
 
   useEffect(() => {
     fetchTasks();
@@ -40,7 +49,10 @@ const MyTasks = ({ refresh, searchQuery = "", onAddTask }) => {
 
   const fetchTasks = async () => {
     try {
-      startLoading();
+      const hasWarmCache = Boolean(getCachedData("/tasks")?.data?.tasks);
+      if (!hasWarmCache) {
+        startLoading();
+      }
       const res = await axios.get("/tasks");
       setTasks(res.data?.data?.tasks || []);
     } catch (error) {

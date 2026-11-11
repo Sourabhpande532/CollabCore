@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useState } from "react";
 import "./plist.css";
-import axios from "../../api/axiosHelper";
+import axios, { getCachedData } from "../../api/axiosHelper";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import ProjectShimmerGrid from "../common/ProjectShimmerGrid";
 import useLoading from "../../hooks/useLoading";
 
 const ProjectPage = ({ refresh, searchQuery = "", sort = "" }) => {
-  const [projects, setProjects] = useState([]);
-  const { loading, startLoading, stopLoading } = useLoading(true);
+  const initialProjects = getCachedData("/projects")?.data?.project;
+  const [projects, setProjects] = useState(() => initialProjects || []);
+  const { loading, startLoading, stopLoading } = useLoading(!initialProjects);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +19,10 @@ const ProjectPage = ({ refresh, searchQuery = "", sort = "" }) => {
 
   const fetchProject = async () => {
     try {
-      startLoading();
+      const hasWarmCache = Boolean(getCachedData("/projects")?.data?.project);
+      if (!hasWarmCache) {
+        startLoading();
+      }
       const res = await axios.get("/projects");
       setProjects(res.data?.data?.project || []);
     } catch (error) {

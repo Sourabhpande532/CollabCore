@@ -88,6 +88,11 @@
   padding-right: 44px !important;
 }
 
+.password-input-wrapper input.password-masked {
+  -webkit-text-security: disc !important;
+  text-security: disc !important;
+}
+
 .password-input-wrapper input::-ms-reveal,
 .password-input-wrapper input::-ms-clear,
 .signup-box input[type="password"]::-ms-reveal,

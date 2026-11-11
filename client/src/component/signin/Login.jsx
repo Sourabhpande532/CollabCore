@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import "./login.css";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import {
+  GUEST_CREDENTIALS,
+  useAuth,
+  warmUpGuestSession,
+} from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import API_URL from "../../api/axiosHelper";
+import { warmUpDashboardData } from "../../api/axiosHelper";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -12,14 +16,14 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { login, guestLogin } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Preload Dashboard chunk and warm up API connection while user is on Login screen
-    import("../../pages/Dashboard").catch(() => {});
-    API_URL.get("/tags").catch(() => {});
+    // Preload Dashboard data and warm up guest session while user is on Login screen
+    warmUpDashboardData();
+    warmUpGuestSession();
   }, []);
 
   const validateForm = (values) => {
@@ -76,15 +80,11 @@ const Login = () => {
 
   const handleGuestLogin = async () => {
     if (submitting) return;
-    const guestCredentials = {
-      email: "a@gmail.com",
-      password: "5321",
-    };
     setErrors({});
-    setForm(guestCredentials);
+    setForm(GUEST_CREDENTIALS);
     setSubmitting(true);
     try {
-      const success = await login(guestCredentials);
+      const success = await guestLogin();
       if (success) {
         navigate("/dashboard", { replace: true });
       }
@@ -119,7 +119,7 @@ const Login = () => {
           Sign in to continue to your CollabCore workspace
         </p>
 
-        <form onSubmit={handleLogin} noValidate>
+        <form onSubmit={handleLogin} noValidate autoComplete='off'>
           <div className='user-box'>
             <label htmlFor='login-email'>Email Address</label>
             <input
@@ -130,7 +130,7 @@ const Login = () => {
               value={form.email}
               onChange={(e) => handleFieldChange("email", e.target.value)}
               placeholder='e.g. name@company.com'
-              autoComplete='email'
+              autoComplete='off'
               aria-invalid={Boolean(errors.email)}
               required
             />
@@ -146,13 +146,22 @@ const Login = () => {
             <div className='password-input-wrapper'>
               <input
                 id='login-password'
-                type={showPassword ? "text" : "password"}
-                name='password'
-                className={errors.password ? "input-error" : ""}
+                type='text'
+                name='login_secret'
+                className={[
+                  errors.password ? "input-error" : "",
+                  !showPassword && form.password ? "password-masked" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 value={form.password}
                 onChange={(e) => handleFieldChange("password", e.target.value)}
                 placeholder='••••••••'
-                autoComplete='current-password'
+                autoComplete='off'
+                data-lpignore='true'
+                data-1p-ignore='true'
+                data-form-type='other'
+                spellCheck={false}
                 aria-invalid={Boolean(errors.password)}
                 required
               />

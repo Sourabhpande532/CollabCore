@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./register.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
+import { warmUpDashboardData } from "../../api/axiosHelper";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -18,6 +19,10 @@ const Registration = () => {
   const [submitting, setSubmitting] = useState(false);
   const { userRegister } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    warmUpDashboardData();
+  }, []);
 
   const validateForm = (values) => {
     const nextErrors = {};
@@ -105,7 +110,7 @@ const Registration = () => {
           Join CollabCore to collaborate with your team
         </p>
 
-        <form onSubmit={register} noValidate>
+        <form onSubmit={register} noValidate autoComplete='off'>
           <div className='user-box'>
             <label htmlFor='signup-name'>Full Name</label>
             <input
@@ -116,7 +121,7 @@ const Registration = () => {
               value={form.name}
               onChange={(e) => handleFieldChange("name", e.target.value)}
               placeholder='Your full name'
-              autoComplete='name'
+              autoComplete='off'
               aria-invalid={Boolean(errors.name)}
               required
             />
@@ -137,7 +142,7 @@ const Registration = () => {
               value={form.email}
               onChange={(e) => handleFieldChange("email", e.target.value)}
               placeholder='name@company.com'
-              autoComplete='email'
+              autoComplete='off'
               aria-invalid={Boolean(errors.email)}
               required
             />
@@ -153,13 +158,22 @@ const Registration = () => {
             <div className='password-input-wrapper'>
               <input
                 id='signup-password'
-                type={showPassword ? "text" : "password"}
-                name='password'
-                className={errors.password ? "input-error" : ""}
+                type='text'
+                name='signup_secret'
+                className={[
+                  errors.password ? "input-error" : "",
+                  !showPassword && form.password ? "password-masked" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 value={form.password}
                 onChange={(e) => handleFieldChange("password", e.target.value)}
                 placeholder='••••••••'
-                autoComplete='new-password'
+                autoComplete='off'
+                data-lpignore='true'
+                data-1p-ignore='true'
+                data-form-type='other'
+                spellCheck={false}
                 aria-invalid={Boolean(errors.password)}
                 required
               />

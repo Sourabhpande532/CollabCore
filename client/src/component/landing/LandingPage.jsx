@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth, warmUpGuestSession } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
+import { warmUpDashboardData } from "../../api/axiosHelper";
 import toast from "react-hot-toast";
 import "./landing.css";
 
@@ -156,6 +157,13 @@ const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [selectedCategory, setSelectedCategory] = useState("All Playbooks");
+
+  useEffect(() => {
+    warmUpDashboardData();
+    if (!isAuthenticated) {
+      warmUpGuestSession();
+    }
+  }, [isAuthenticated]);
 
   const handleActivity = (targetPath = "/dashboard", featureName = "") => {
     setMobileMenuOpen(false);
